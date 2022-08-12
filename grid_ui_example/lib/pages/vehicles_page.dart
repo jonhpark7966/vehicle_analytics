@@ -38,15 +38,21 @@ class _VehiclesPageState extends State<VehiclesPage>{
     var db = FirebaseFirestore.instance;
 
     db.collection("data").get().then((event) {
+      List<PlutoRow> fetchedRows = [];
       for(var doc in event.docs){
         var row = ChartData.fromJson(doc.data());
-        rows.add(row.toPlutoRow());
+        fetchedRows.add(row.toPlutoRow());
       }
-      PlutoGridStateManager.initializeRowsAsync(columns, rows).then((value) {
+
+      PlutoGridStateManager.initializeRowsAsync(
+        columns,
+        fetchedRows,
+      ).then((value) {
         stateManager.refRows.addAll(FilteredList(initialList: value));
-        stateManager.notifyListeners();
+        stateManager.setShowLoading(false);
       });
     });
+
   }
 
   @override
@@ -69,8 +75,10 @@ class _VehiclesPageState extends State<VehiclesPage>{
                 configuration: PlutoGridConfiguration(
                   style: gridStyle,
                 ),
-                onLoaded: (event) => stateManager = event.stateManager,
-              )),
+                onLoaded: (event) {
+                    stateManager = event.stateManager;
+                    stateManager.setShowLoading(true);
+                  })),
         ));
   }
 
