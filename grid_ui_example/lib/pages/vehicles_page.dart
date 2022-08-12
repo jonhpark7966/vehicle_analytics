@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:grid_ui_example/data/chart_data.dart';
 import 'package:grid_ui_example/settings/theme.dart';
@@ -34,8 +35,18 @@ class _VehiclesPageState extends State<VehiclesPage>{
     var cGroups = ColumnGroups.fromJson(jsonDecode(columnGroupJson));
     _buildColumns(cGroups);
 
-    var dataRow = ChartRows.fromJson(jsonDecode(rowDataJson));
-    rows = dataRow.toPlutoRows();
+    var db = FirebaseFirestore.instance;
+
+    db.collection("data").get().then((event) {
+      for(var doc in event.docs){
+        var row = ChartData.fromJson(doc.data());
+        rows.add(row.toPlutoRow());
+      }
+      PlutoGridStateManager.initializeRowsAsync(columns, rows).then((value) {
+        stateManager.refRows.addAll(FilteredList(initialList: value));
+        stateManager.notifyListeners();
+      });
+    });
   }
 
   @override
@@ -58,6 +69,7 @@ class _VehiclesPageState extends State<VehiclesPage>{
                 configuration: PlutoGridConfiguration(
                   style: gridStyle,
                 ),
+                onLoaded: (event) => stateManager = event.stateManager,
               )),
         ));
   }
