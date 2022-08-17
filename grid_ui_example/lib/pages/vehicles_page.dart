@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,6 +27,7 @@ class _VehiclesPageState extends State<VehiclesPage>{
   List<PlutoColumn> columns = [];
   List<PlutoRow> rows = [];
 
+  late PlutoGrid gridWidget;
   late PlutoGridStateManager stateManager;
 
   @override
@@ -50,13 +52,29 @@ class _VehiclesPageState extends State<VehiclesPage>{
       ).then((value) {
         stateManager.refRows.addAll(FilteredList(initialList: value));
         stateManager.setShowLoading(false);
-      });
+          for(var column in columns){
+            stateManager.resizeColumn(column, -1000);
+          }
+          stateManager.notifyResizingListeners();
+        });
     });
 
   }
 
   @override
   Widget build(BuildContext context) {
+    gridWidget = PlutoGrid(
+        columnGroups: columnGroups,
+        columns: columns,
+        rows: rows,
+        configuration: PlutoGridConfiguration(
+          style: gridStyle,
+        ),
+        onLoaded: (event) {
+          stateManager = event.stateManager;
+          stateManager.setShowLoading(true);
+        });
+
     return Container(
         decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -64,21 +82,11 @@ class _VehiclesPageState extends State<VehiclesPage>{
                 end: Alignment.bottomRight,
                 colors: [Color.fromARGB(255, 170, 124, 178), Color.fromARGB(255, 155, 215, 243)])),
         child: Scaffold(
-          appBar: AppBar(title: const Text("Charts"), backgroundColor: Color.fromARGB(255, 44, 17, 89),),
+          appBar: AppBar(title: const Text("Charts"), backgroundColor: const Color.fromARGB(255, 44, 17, 89),),
           backgroundColor: Colors.transparent,
           body: Container(
               padding: const EdgeInsets.all(15),
-              child: PlutoGrid(
-                columnGroups: columnGroups,
-                columns: columns,
-                rows: rows,
-                configuration: PlutoGridConfiguration(
-                  style: gridStyle,
-                ),
-                onLoaded: (event) {
-                    stateManager = event.stateManager;
-                    stateManager.setShowLoading(true);
-                  })),
+              child: gridWidget),
         ));
   }
 
@@ -94,6 +102,8 @@ class _VehiclesPageState extends State<VehiclesPage>{
           title: column.title,
           field: column.id,
           type: _typeStringToPlutoType(column.type),
+          enableEditingMode: false,
+          renderer: _typeStringToRenderer(column.type),
         ));
       }
 
@@ -105,6 +115,24 @@ class _VehiclesPageState extends State<VehiclesPage>{
 
  PlutoColumnType _typeStringToPlutoType(String type){
   return PlutoColumnType.text();
+ }
+
+ PlutoColumnRenderer? _typeStringToRenderer(String type){
+  if(type == "graph"){
+    return (rendererContext){
+      return IconButton(
+        icon: const Icon(Icons.stacked_line_chart_rounded),
+        color: Colors.lightBlueAccent,
+        onPressed: (){
+          //TODO, _popupGraph()
+          print("TODO! graph popup!");
+        },
+      );
+    };
+  }
+  else{
+    return null;
+    }
  }
 
 }
