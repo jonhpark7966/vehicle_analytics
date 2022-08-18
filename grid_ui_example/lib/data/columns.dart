@@ -91,8 +91,124 @@ String columnGroupJson  = """
       "title": "Noise",
       "type": "double",
       "hide": false 
+      },
+      {
+      "id" : "idle vibration",
+      "title": "Vib",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "idle vibration source",
+      "title": "Vib (Src)",
+      "type": "double",
+      "hide": false 
       }
     ]
+},
+{
+     "name": "Wide Open Throttle NVH",
+     "columns":[
+      {
+      "id" : "wot noise coefficient",
+      "title": "Noise Coeff",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "wot noise intercept",
+      "title": "Noise Intrcpt",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "wot vibration",
+      "title": "Vib",
+      "type": "double",
+      "hide": false 
+      }
+    ]
+},
+{
+     "name": "Cruise NVH (Road Noise)",
+     "columns":[
+      {
+      "id" : "road noise",
+      "title": "Road Noise",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "road booming",
+      "title": "Road Boom",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "tire noise",
+      "title": "Tire Noise",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "rumble",
+      "title": "Rumble",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "cruise 60 vibration",
+      "title": "Vib (60kph)",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "wind noise",
+      "title": "Wind Noise",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "cruise 120 vibration",
+      "title": "Vib (120kph)",
+      "type": "double",
+      "hide": false 
+      }
+    ]
+},
+{
+     "name": "Acceleration NVH",
+     "columns":[
+      {
+      "id" : "acceleration noise coefficient",
+      "title": "Noise Coeff",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "acceleration noise intercept",
+      "title": "Noise Intrcpt",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "acceleration vibration",
+      "title": "Vib",
+      "type": "double",
+      "hide": false 
+      }
+   ]
+},
+{
+     "name": "MDPS NVH",
+     "columns":[
+      {
+      "id" : "mdps noise",
+      "title": "Noise",
+      "type": "double",
+      "hide": false 
+      }
+   ]
 }
 
 ]

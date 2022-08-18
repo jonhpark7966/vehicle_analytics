@@ -33,11 +33,32 @@ class ChartData{
   final double c;
   final String coastDownSpeedGraph;
   final double idleNoise;
+  final double idleVibraton;
+  final double idleVibrationSrc;
+  final double wotNoiseCoefficient;
+  final double wotNoiseIntercept;
+  final double wotVibration;
+  final double roadNoise;
+  final double roadBooming;
+  final double tireNoise;
+  final double rumble;
+  final double cruise60Vibration;
+  final double windNoise;
+  final double cruise120Vibration;
+  final double accNoiseCoefficient;
+  final double accNoiseIntercept;
+  final double accVibration;
+  final double mdpsNoise;
 
   ChartData({required this.name, required this.vin, required this.odo, required this.modelYear, required this.fuelType,
    required this.layout, required this.tire, required this.fgr,
    required this.a, required this.b, required this.c, required this.coastDownSpeedGraph,
-   required this.idleNoise,
+   required this.idleNoise, required this.idleVibraton, required this.idleVibrationSrc,
+   required this.wotNoiseCoefficient, required this.wotNoiseIntercept, required this.wotVibration,
+   required this.roadNoise, required this.roadBooming, required this.tireNoise, required this.rumble, required this.cruise60Vibration,
+   required this.windNoise, required this.cruise120Vibration,
+   required this.accNoiseCoefficient, required this.accNoiseIntercept, required this.accVibration,
+   required this.mdpsNoise,
    });
 
   factory ChartData.fromJson(Map<String, dynamic> json){
@@ -54,7 +75,23 @@ class ChartData{
       b: json["b"]??0.0,
       c: json["c"]??0.0,
       coastDownSpeedGraph: json["coastdown speed graph"]??"",
-      idleNoise: json["idle noise"]??0.0
+      idleNoise: json["idle noise"]??0.0,
+      idleVibraton: json["idle vibration"]??0.0,
+      idleVibrationSrc: json["idle vibration source"]??0.0,
+      wotNoiseCoefficient: json["wot noise coefficient"]??0.0,
+      wotNoiseIntercept: json["wot noise intercept"]??0.0,
+      wotVibration: json["wot vibration"]??0.0,
+      roadNoise: json["road noise"]??0.0,
+      roadBooming: json["road booming"]??0.0,
+      tireNoise: json["tire noise"]??0.0,
+      rumble: json["rumble"]??0.0,
+      cruise60Vibration: json["cruise 60 vibration"]??0.0,
+      windNoise: json["wind noise"]??0.0,
+      cruise120Vibration: json["cruise 120 vibration"]??0.0,
+      accNoiseCoefficient: json["acceleration noise coefficient"]??0.0,
+      accNoiseIntercept: json["acceleration noise intercept"]??0.0,
+      accVibration: json["acceleration vibration"]??0.0,
+      mdpsNoise: json["mdps noise"]??0.0,
     );
     }
 
@@ -73,6 +110,22 @@ class ChartData{
     cells["c"] = PlutoCell(value:c);
     cells["coastdown speed graph"] = PlutoCell(value:coastDownSpeedGraph);
     cells["idle noise"] = PlutoCell(value:idleNoise);
+    cells["idle vibration"] = PlutoCell(value:idleVibraton);
+    cells["idle vibration source"] = PlutoCell(value:idleVibrationSrc);
+    cells["wot noise coefficient"] = PlutoCell(value:wotNoiseCoefficient);
+    cells["wot noise intercept"] = PlutoCell(value:wotNoiseIntercept);
+    cells["wot vibration"] = PlutoCell(value:wotVibration);
+    cells["road noise"] = PlutoCell(value:roadNoise);
+    cells["road booming"] = PlutoCell(value:roadBooming);
+    cells["tire noise"] = PlutoCell(value:tireNoise);
+    cells["rumble"] = PlutoCell(value:rumble);
+    cells["cruise 60 vibration"] = PlutoCell(value:cruise60Vibration);
+    cells["wind noise"] = PlutoCell(value:windNoise);
+    cells["cruise 120 vibration"] = PlutoCell(value:cruise120Vibration);
+    cells["acceleration noise coefficient"] = PlutoCell(value:accNoiseCoefficient);
+    cells["acceleration noise intercept"] = PlutoCell(value:accNoiseIntercept);
+    cells["acceleration vibration"] = PlutoCell(value:accVibration);
+    cells["mdps noise"] = PlutoCell(value:mdpsNoise);
 
     return PlutoRow(cells: cells);
   }

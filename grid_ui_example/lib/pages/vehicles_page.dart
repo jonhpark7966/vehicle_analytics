@@ -53,7 +53,7 @@ class _VehiclesPageState extends State<VehiclesPage>{
         stateManager.refRows.addAll(FilteredList(initialList: value));
         stateManager.setShowLoading(false);
           for(var column in columns){
-            stateManager.resizeColumn(column, -1000);
+            stateManager.resizeColumn(column, -80);
           }
           stateManager.notifyResizingListeners();
         });
