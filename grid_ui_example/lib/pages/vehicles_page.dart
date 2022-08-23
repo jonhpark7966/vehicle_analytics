@@ -69,6 +69,7 @@ class _VehiclesPageState extends State<VehiclesPage>{
         rows: rows,
         configuration: PlutoGridConfiguration(
           style: gridStyle,
+          scrollbar: const PlutoGridScrollbarConfig(isAlwaysShown: true),
         ),
         onLoaded: (event) {
           stateManager = event.stateManager;
@@ -82,7 +83,17 @@ class _VehiclesPageState extends State<VehiclesPage>{
                 end: Alignment.bottomRight,
                 colors: [Color.fromARGB(255, 170, 124, 178), Color.fromARGB(255, 155, 215, 243)])),
         child: Scaffold(
-          appBar: AppBar(title: const Text("Charts"), backgroundColor: const Color.fromARGB(255, 44, 17, 89),),
+          appBar: AppBar(
+            iconTheme: const IconThemeData(color: Colors.white, opacity: 1),
+            leading:const Icon(Icons.area_chart_outlined),
+            title: const Text("Automotive Statistics", style: TextStyle(fontWeight: FontWeight.bold),),
+            centerTitle: false,
+            backgroundColor: const Color.fromARGB(255, 0x1e, 0x02, 0x45),
+            actions: [
+              IconButton(icon:const Icon(Icons.account_circle), onPressed: (){return ;}),
+              const SizedBox(width:20),
+              ],
+            ),
           backgroundColor: Colors.transparent,
           body: Container(
               padding: const EdgeInsets.all(15),
