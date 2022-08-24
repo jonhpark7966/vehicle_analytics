@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grid_ui_example/pages/test_dashboard_page.dart';
 import 'package:grid_ui_example/pages/vehicles_page.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       initialRoute: VehiclesPage.routeName,
       routes: {
         VehiclesPage.routeName: (context) => const VehiclesPage(),
+        TestDashboardPage.routeName: (context) => TestDashboardPage(ModalRoute.of(context)?.settings.arguments as int),
       },
  /*     theme: ThemeData(
         primaryColor: PlutoGridExampleColors.primaryColor,

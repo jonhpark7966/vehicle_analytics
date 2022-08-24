@@ -5,6 +5,12 @@ String columnGroupJson  = """
      "name": "Vehicle",
      "columns":[
       {
+      "id" : "test id",
+      "title": "Test #",
+      "type": "dashboard",
+      "hide": false 
+      },
+      {
       "id" : "name",
       "title": "Name",
       "type": "text",

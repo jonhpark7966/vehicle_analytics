@@ -20,6 +20,7 @@ class ChartRows{
 }
 
 class ChartData{
+  final int testId;
   final String name;
   final int modelYear;
   final String fuelType;
@@ -50,7 +51,7 @@ class ChartData{
   final double accVibration;
   final double mdpsNoise;
 
-  ChartData({required this.name, required this.vin, required this.odo, required this.modelYear, required this.fuelType,
+  ChartData({required this.testId, required this.name, required this.vin, required this.odo, required this.modelYear, required this.fuelType,
    required this.layout, required this.tire, required this.fgr,
    required this.a, required this.b, required this.c, required this.coastDownSpeedGraph,
    required this.idleNoise, required this.idleVibraton, required this.idleVibrationSrc,
@@ -63,6 +64,7 @@ class ChartData{
 
   factory ChartData.fromJson(Map<String, dynamic> json){
     return ChartData(
+      testId:json["test id"]??0,
       name:json["name"]??"",
       modelYear:json["model year"]??1886,
       fuelType:json["fuel type"]??"",
@@ -97,6 +99,7 @@ class ChartData{
 
   toPlutoRow(){
     Map<String, PlutoCell> cells = {};
+    cells["test id"] = PlutoCell(value:testId);
     cells["name"] = PlutoCell(value:name);
     cells["model year"] = PlutoCell(value:modelYear);
     cells["fuel type"] = PlutoCell(value:fuelType);

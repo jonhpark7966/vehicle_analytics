@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:grid_ui_example/data/chart_data.dart';
+import 'package:grid_ui_example/pages/test_dashboard_page.dart';
 import 'package:grid_ui_example/settings/theme.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -129,7 +130,19 @@ class _VehiclesPageState extends State<VehiclesPage>{
  }
 
  PlutoColumnRenderer? _typeStringToRenderer(String type){
-  if(type == "graph"){
+  if(type == "dashboard"){
+      return (rendererContext) {
+        String testId = rendererContext
+            .row.cells[rendererContext.column.field]!.value
+            .toString();
+        return TextButton(
+        child: Text("#$testId",style: const TextStyle(color: Colors.lightBlueAccent, fontWeight: FontWeight.bold)),
+        onPressed: (){
+          Navigator.pushNamed(context, TestDashboardPage.routeName, arguments: int.parse(testId));
+        },
+        );
+    };
+  }else if(type == "graph"){
     return (rendererContext){
       return IconButton(
         icon: const Icon(Icons.stacked_line_chart_rounded),
