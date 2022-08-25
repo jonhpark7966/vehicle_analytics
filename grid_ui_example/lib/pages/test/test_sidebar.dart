@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 
-class ExampleSidebarX extends StatelessWidget {
-  const ExampleSidebarX({
+class TestSidebarX extends StatelessWidget {
+  const TestSidebarX({
     Key? key,
     required SidebarXController controller,
   })  : _controller = controller,
@@ -95,23 +95,6 @@ class ExampleSidebarX extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-String _getTitleByIndex(int index) {
-  switch (index) {
-    case 0:
-      return 'Home';
-    case 1:
-      return 'Search';
-    case 2:
-      return 'People';
-    case 3:
-      return 'Favorites';
-    case 4:
-      return 'Custom iconWidget';
-    default:
-      return 'Not found page';
   }
 }
 
