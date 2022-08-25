@@ -23,6 +23,7 @@ class ChartData{
   final int testId;
   final String name;
   final int modelYear;
+  final String brand;
   final String fuelType;
   final String vin;
   final int odo;
@@ -51,8 +52,8 @@ class ChartData{
   final double accVibration;
   final double mdpsNoise;
 
-  ChartData({required this.testId, required this.name, required this.vin, required this.odo, required this.modelYear, required this.fuelType,
-   required this.layout, required this.tire, required this.fgr,
+  ChartData({required this.testId, required this.name, required this.vin, required this.odo, required this.modelYear, required this.brand,
+   required this.fuelType, required this.layout, required this.tire, required this.fgr,
    required this.a, required this.b, required this.c, required this.coastDownSpeedGraph,
    required this.idleNoise, required this.idleVibraton, required this.idleVibrationSrc,
    required this.wotNoiseCoefficient, required this.wotNoiseIntercept, required this.wotVibration,
@@ -67,6 +68,7 @@ class ChartData{
       testId:json["test id"]??0,
       name:json["name"]??"",
       modelYear:json["model year"]??1886,
+      brand:json["brand"]??"",
       fuelType:json["fuel type"]??"",
       vin:json["vin"]??"",
       odo:json["odo"]??0,
@@ -102,6 +104,7 @@ class ChartData{
     cells["test id"] = PlutoCell(value:testId);
     cells["name"] = PlutoCell(value:name);
     cells["model year"] = PlutoCell(value:modelYear);
+    cells["brand"] = PlutoCell(value:brand);
     cells["fuel type"] = PlutoCell(value:fuelType);
     cells["vin"] = PlutoCell(value:vin);
     cells["odo"] = PlutoCell(value:odo);

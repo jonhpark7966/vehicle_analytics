@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:grid_ui_example/brands/colors.dart';
 import 'package:grid_ui_example/brands/manufacturers.dart';
+import 'package:grid_ui_example/data/chart_data.dart';
 import 'package:grid_ui_example/pages/test/test_dashboard.dart';
 import 'package:grid_ui_example/pages/test/test_sidebar.dart';
 import 'package:grid_ui_example/pages/test/test_vehicle.dart';
@@ -27,6 +28,7 @@ final _controller = SidebarXController(selectedIndex: 0, extended: false);
 
   String? _imageUrl;
   bool onLoading = true;
+  List<Color> colors = defaultColors;
 
   @override
   void initState() {
@@ -36,13 +38,20 @@ final _controller = SidebarXController(selectedIndex: 0, extended: false);
     final storageRef = FirebaseStorage.instance.refFromURL("gs://a18s-app.appspot.com");
     db.collection("data").where("test id", isEqualTo: widget.testId).get().then((event) {
       // parse data and pass to pages.
+      assert(event.docs.length == 1);
+      ChartData data = ChartData.fromJson(event.docs.first.data());
+      colors = _getBackgroundColorPalette(Manufactureres.fromString(data.brand));
+
+      // (ex) "vehicles/2021palisade.jpg"
+      String vehicleImagePath = "vehicles/${data.modelYear}${data.name}.jpg";
+      storageRef.child(vehicleImagePath).getDownloadURL().then((loc) => setState(() => _imageUrl = loc));
+      //TODO, if no image, get it default.
 
       setState(() {
         onLoading = false;
       });
     });
 
-    storageRef.child("vehicles/2021palisade.jpg").getDownloadURL().then((loc) => setState(() => _imageUrl = loc));
   }
 
   List<Color> _getBackgroundColorPalette(Manufactureres brand){
@@ -59,9 +68,6 @@ final _controller = SidebarXController(selectedIndex: 0, extended: false);
 
   @override
   Widget build(BuildContext context) {
-    //TODO, get brand from db.
-    var brand = Manufactureres.hyundai;
-    var colors = _getBackgroundColorPalette(brand);
 
     final spinkit = SpinKitFadingCircle(
       itemBuilder: (BuildContext context, int index) {

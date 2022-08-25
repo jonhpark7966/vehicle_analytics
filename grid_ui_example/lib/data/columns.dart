@@ -23,6 +23,12 @@ String columnGroupJson  = """
       "hide": false 
       },
       {
+      "id" : "brand",
+      "title": "Brand",
+      "type": "text",
+      "hide": false 
+      },
+      {
       "id" : "fuel type",
       "title": "Fuel",
       "type": "text",
