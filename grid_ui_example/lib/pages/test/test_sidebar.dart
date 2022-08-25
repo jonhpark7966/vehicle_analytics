@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class TestSidebarX extends StatelessWidget {
-  const TestSidebarX({
+  TestSidebarX({
     Key? key,
     required SidebarXController controller,
-  })  : _controller = controller,
+    required String? imageUrl,
+    required setState,
+  })  : _controller = controller, _imageUrl = imageUrl, _setState = setState,
         super(key: key);
 
   final SidebarXController _controller;
+  String? _imageUrl;
+  var _setState;
 
   @override
   Widget build(BuildContext context) {
@@ -62,36 +67,38 @@ class TestSidebarX extends StatelessWidget {
       footerDivider: divider,
       headerBuilder: (context, extended) {
         return SizedBox(
-          height: 100,
+          height: extended?150:60,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Image.asset('assets/images/avatar.png'),
-          ),
+              padding: const EdgeInsets.all(12.0),
+              child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child:
+                  (_imageUrl==null)?
+                   Image.memory(kTransparentImage):
+                   Image.network(_imageUrl!)
+                  )),
         );
       },
       items: [
         SidebarXItem(
-          icon: Icons.home,
-          label: 'Home',
+          icon: Icons.dashboard ,
+          label: 'Dashboard',
           onTap: () {
-            debugPrint('Home');
+            _setState((){});
           },
         ),
-        const SidebarXItem(
-          icon: Icons.search,
-          label: 'Search',
+        SidebarXItem(
+          icon: Icons.car_crash,
+          label: 'Vehicle',
+          onTap: (){ _setState((){}); }
         ),
         const SidebarXItem(
-          icon: Icons.people,
-          label: 'People',
+          icon: Icons.multiline_chart,
+          label: 'CoastDown',
         ),
         const SidebarXItem(
-          icon: Icons.favorite,
-          label: 'Favorite',
-        ),
-        const SidebarXItem(
-          iconWidget: FlutterLogo(size: 20),
-          label: 'Flutter',
+          icon: Icons.mic,
+          label: 'Idle NVH',
         ),
       ],
     );

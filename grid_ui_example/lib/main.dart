@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grid_ui_example/pages/test/test_dashboard_page.dart';
+import 'package:grid_ui_example/pages/test/test_page.dart';
 import 'package:grid_ui_example/pages/vehicles_page.dart';
 
 import 'package:firebase_core/firebase_core.dart';

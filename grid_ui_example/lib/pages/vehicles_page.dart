@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:grid_ui_example/data/chart_data.dart';
-import 'package:grid_ui_example/pages/test/test_dashboard_page.dart';
+import 'package:grid_ui_example/pages/test/test_page.dart';
 import 'package:grid_ui_example/settings/route.dart';
 import 'package:grid_ui_example/settings/theme.dart';
 import 'package:grid_ui_example/widgets/appbar.dart';
