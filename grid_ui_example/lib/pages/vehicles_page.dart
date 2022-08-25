@@ -4,7 +4,8 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:grid_ui_example/data/chart_data.dart';
-import 'package:grid_ui_example/pages/test_dashboard_page.dart';
+import 'package:grid_ui_example/pages/test/test_dashboard_page.dart';
+import 'package:grid_ui_example/settings/route.dart';
 import 'package:grid_ui_example/settings/theme.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -14,7 +15,6 @@ import '../settings/columns.dart';
 
 
 class VehiclesPage extends StatefulWidget{
-  static const routeName = 'vehicles';
   const VehiclesPage({Key? key}) : super(key:key);
 
   @override
@@ -138,7 +138,7 @@ class _VehiclesPageState extends State<VehiclesPage>{
         return TextButton(
         child: Text("#$testId",style: const TextStyle(color: Colors.lightBlueAccent, fontWeight: FontWeight.bold)),
         onPressed: (){
-          Navigator.pushNamed(context, TestDashboardPage.routeName, arguments: int.parse(testId));
+          FRouter.router.navigateTo(context, FRouter.testPageRouteName.replaceAll(":id", testId));
         },
         );
     };
