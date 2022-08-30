@@ -27,23 +27,36 @@ final _controller = SidebarXController(selectedIndex: 0, extended: false);
   final _key = GlobalKey<ScaffoldState>();
 
   String? _imageUrl;
+  ChartData? data;
   bool onLoading = true;
-  List<Color> colors = defaultColors;
+  List<Color> colors = [Colors.black, Colors.white];
+  late Widget spinkit;
 
   @override
   void initState() {
     super.initState();
+
+    spinkit = SpinKitFadingCircle(
+      itemBuilder: (BuildContext context, int index) {
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: index.isEven ? colors[0] : colors[1],
+          ),
+        );
+      },
+    );
 
     var db = FirebaseFirestore.instance;
     final storageRef = FirebaseStorage.instance.refFromURL("gs://a18s-app.appspot.com");
     db.collection("data").where("test id", isEqualTo: widget.testId).get().then((event) {
       // parse data and pass to pages.
       assert(event.docs.length == 1);
-      ChartData data = ChartData.fromJson(event.docs.first.data());
-      colors = _getBackgroundColorPalette(Manufactureres.fromString(data.brand));
+      data = ChartData.fromJson(event.docs.first.data());
+      colors = _getBackgroundColorPalette(Manufactureres.fromString(data!.brand));
 
       // (ex) "vehicles/2021palisade.jpg"
-      String vehicleImagePath = "vehicles/${data.modelYear}${data.name}.jpg";
+      String vehicleImagePath = "vehicles/${data!.modelYear}${data!.name}.jpg";
       storageRef.child(vehicleImagePath).getDownloadURL().then((loc) => setState(() => _imageUrl = loc));
       //TODO, if no image, get it default.
 
@@ -61,24 +74,13 @@ final _controller = SidebarXController(selectedIndex: 0, extended: false);
   Widget _getBodyWidget(int index){
     switch(index){
       case 0: return TestDashboardPage();
-      case 1: return TestVehiclePage();
+      case 1: return TestVehiclePage(data, spinkit, colors);
     }
     return TestDashboardPage();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    final spinkit = SpinKitFadingCircle(
-      itemBuilder: (BuildContext context, int index) {
-        return DecoratedBox(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: index.isEven ? colors[0] : colors[1],
-          ),
-        );
-      },
-    );
 
     return Container(
         decoration: BoxDecoration(
