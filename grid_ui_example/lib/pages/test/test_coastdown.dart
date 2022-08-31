@@ -37,6 +37,33 @@ class _TestCoastdownPageState extends State<TestCoastdownPage> {
 
  }
 
+ getAvalue(){
+  if(widget.type == CoastdownType.J2263)
+    return widget.dataModel.data!.j2263_a;
+  else if(widget.type == CoastdownType.WLTP)
+    return widget.dataModel.data!.wltp_a;
+  else
+    return widget.dataModel.data!.wltp_a;
+ }
+
+ getBvalue(){
+  if(widget.type == CoastdownType.J2263)
+    return widget.dataModel.data!.j2263_b;
+  else if(widget.type == CoastdownType.WLTP)
+    return widget.dataModel.data!.wltp_b;
+  else
+    return widget.dataModel.data!.wltp_b;
+ }
+
+ getCvalue(){
+  if(widget.type == CoastdownType.J2263)
+    return widget.dataModel.data!.j2263_c;
+  else if(widget.type == CoastdownType.WLTP)
+    return widget.dataModel.data!.wltp_c;
+  else
+    return widget.dataModel.data!.wltp_c;
+ }
+
   @override
   Widget build(BuildContext context) {
     return (widget.dataModel.data == null)
@@ -56,19 +83,19 @@ class _TestCoastdownPageState extends State<TestCoastdownPage> {
                       ValueCard(
                           title: "coefficient A",
                           color: widget.dataModel.colors[0],
-                          value: widget.dataModel.data!.a.toStringAsFixed(3),
+                          value: getAvalue().toStringAsFixed(3),
                           unit: "N",
                           icon: Icons.abc),
                       ValueCard(
                           title: "coefficient B",
                           color: widget.dataModel.colors[0],
-                          value: widget.dataModel.data!.b.toStringAsFixed(5),
+                          value: getBvalue().toStringAsFixed(4),
                           unit: "N/kph",
                           icon: Icons.abc),
                       ValueCard(
                           title: "coefficient C",
                           color: widget.dataModel.colors[0],
-                          value: widget.dataModel.data!.c.toStringAsFixed(5),
+                          value: getCvalue().toStringAsFixed(5),
                           unit: "N/kph2",
                         icon: Icons.abc),
                   ]),
@@ -86,7 +113,7 @@ class _TestCoastdownPageState extends State<TestCoastdownPage> {
                           Expanded(child:Padding(padding: const EdgeInsets.all(defaultPadding),
                            child:GraphCard(
                             graph:RoadloadGraph(
-                              data: RoadloadGraphData(widget.dataModel.data!.a, widget.dataModel.data!.b, widget.dataModel.data!.c, _runs),
+                              data: RoadloadGraphData(getAvalue(),getBvalue(),getCvalue(), _runs),
                               color: widget.dataModel.colors[0],
                                ),
                             color: widget.dataModel.colors[0],

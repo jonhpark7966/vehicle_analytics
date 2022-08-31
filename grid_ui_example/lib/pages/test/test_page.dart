@@ -75,8 +75,8 @@ final _controller = SidebarXController(selectedIndex: 0, extended: false);
     switch(index){
       case 0: return TestDashboardPage();
       case 1: return TestDashboardPage();
-      case 2: return TestCoastdownPage(dataModel, spinkit, CoastdownType.J2263);
-      case 3: return TestCoastdownPage(dataModel, spinkit, CoastdownType.WLTP);
+      case 2: return TestCoastdownPage(dataModel, spinkit, CoastdownType.WLTP, key:UniqueKey());
+      case 3: return TestCoastdownPage(dataModel, spinkit, CoastdownType.J2263, key:UniqueKey());
     }
     return TestDashboardPage();
   }

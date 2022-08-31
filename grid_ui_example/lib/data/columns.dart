@@ -67,34 +67,52 @@ String columnGroupJson  = """
      ]
 },
 {
-     "name": "Coastdown",
+     "name": "Coastdown (WLTP)",
      "columns":[
       {
-      "id" : "a",
+      "id" : "wltp_a",
       "title": "A",
       "type": "double",
       "hide": false 
       },
       {
-      "id" : "b",
+      "id" : "wltp_b",
       "title": "B",
       "type": "double",
       "hide": false 
       },
       {
-      "id" : "c",
+      "id" : "wltp_c",
       "title": "C",
+      "type": "double",
+      "hide": false 
+      }
+    ]
+},
+{
+     "name": "Coastdown (J2263)",
+     "columns":[
+      {
+      "id" : "j2263_a",
+      "title": "A",
       "type": "double",
       "hide": false 
       },
       {
-      "id" : "coastdown speed graph",
-      "title": "Graph",
-      "type": "graph",
+      "id" : "j2263_b",
+      "title": "B",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "j2263_c",
+      "title": "C",
+      "type": "double",
       "hide": false 
       }
-     ]
+    ]
 },
+
 {
      "name": "Idle NVH",
      "columns":[

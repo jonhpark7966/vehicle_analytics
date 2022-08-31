@@ -30,10 +30,12 @@ class ChartData{
   final String layout;
   final String tire;
   final double fgr;
-  final double a;
-  final double b; 
-  final double c;
-  final String coastDownSpeedGraph;
+  final double wltp_a;
+  final double wltp_b; 
+  final double wltp_c;
+  final double j2263_a;
+  final double j2263_b;
+  final double j2263_c;
   final double idleNoise;
   final double idleVibraton;
   final double idleVibrationSrc;
@@ -54,7 +56,8 @@ class ChartData{
 
   ChartData({required this.testId, required this.name, required this.vin, required this.odo, required this.modelYear, required this.brand,
    required this.fuelType, required this.layout, required this.tire, required this.fgr,
-   required this.a, required this.b, required this.c, required this.coastDownSpeedGraph,
+   required this.wltp_a, required this.wltp_b, required this.wltp_c,
+   required this.j2263_a, required this.j2263_b, required this.j2263_c,
    required this.idleNoise, required this.idleVibraton, required this.idleVibrationSrc,
    required this.wotNoiseCoefficient, required this.wotNoiseIntercept, required this.wotVibration,
    required this.roadNoise, required this.roadBooming, required this.tireNoise, required this.rumble, required this.cruise60Vibration,
@@ -75,10 +78,12 @@ class ChartData{
       layout:json["layout"]??"",
       tire:json["tire"]??"",
       fgr:json["fgr"]??1.0,
-      a: json["a"]??0.0,
-      b: json["b"]??0.0,
-      c: json["c"]??0.0,
-      coastDownSpeedGraph: json["coastdown speed graph"]??"",
+      wltp_a: json["wltp_a"]??0.0,
+      wltp_b: json["wltp_b"]??0.0,
+      wltp_c: json["wltp_c"]??0.0,
+      j2263_a: json["j2263_a"]??0.0,
+      j2263_b: json["j2263_b"]??0.0,
+      j2263_c: json["j2263_c"]??0.0,
       idleNoise: json["idle noise"]??0.0,
       idleVibraton: json["idle vibration"]??0.0,
       idleVibrationSrc: json["idle vibration source"]??0.0,
@@ -111,10 +116,12 @@ class ChartData{
     cells["layout"] = PlutoCell(value:layout);
     cells["tire"] = PlutoCell(value:tire);
     cells["fgr"] = PlutoCell(value:fgr);
-    cells["a"] = PlutoCell(value:a);
-    cells["b"] = PlutoCell(value:b);
-    cells["c"] = PlutoCell(value:c);
-    cells["coastdown speed graph"] = PlutoCell(value:coastDownSpeedGraph);
+    cells["wltp_a"] = PlutoCell(value:wltp_a);
+    cells["wltp_b"] = PlutoCell(value:wltp_b);
+    cells["wltp_c"] = PlutoCell(value:wltp_c);
+    cells["j2263_a"] = PlutoCell(value:j2263_a);
+    cells["j2263_b"] = PlutoCell(value:j2263_b);
+    cells["j2263_c"] = PlutoCell(value:j2263_c);
     cells["idle noise"] = PlutoCell(value:idleNoise);
     cells["idle vibration"] = PlutoCell(value:idleVibraton);
     cells["idle vibration source"] = PlutoCell(value:idleVibrationSrc);

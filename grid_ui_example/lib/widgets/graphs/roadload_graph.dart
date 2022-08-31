@@ -33,7 +33,7 @@ class RoadloadGraph extends FlGraph {
   @override
   initMinMaxFromData() {
     minX = (((data.minSpeed)~/10)*10).toDouble();
-    maxX = (((data.maxSpeed+10)~/10)*10).toDouble();
+    maxX = (((data.maxSpeed+10)~/10)*10+5).toDouble();
     var maxload = data.a + data.maxSpeed * data.b + data.maxSpeed*data.maxSpeed*data.c;
     maxY =  (((maxload+100)~/100)*100).toDouble();
   }
@@ -42,7 +42,7 @@ class RoadloadGraph extends FlGraph {
   List<LineChartBarData> get lineBarsData1 {
     var ret = <LineChartBarData>[];
     var spots = <FlSpot>[];
-    for (var speed = minX + 5; speed < maxX - 5; speed = speed + 5) {
+    for (var speed = minX + 15; speed < maxX - 5; speed = speed + 5) {
       spots.add(FlSpot(speed, data.a + speed * data.b + speed * speed * data.c));
     }
 
