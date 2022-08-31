@@ -6,6 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:grid_ui_example/brands/colors.dart';
 import 'package:grid_ui_example/brands/manufacturers.dart';
 import 'package:grid_ui_example/data/chart_data.dart';
+import 'package:grid_ui_example/loader/loader.dart';
 import 'package:grid_ui_example/pages/test/test_dashboard.dart';
 import 'package:grid_ui_example/pages/test/test_sidebar.dart';
 import 'package:grid_ui_example/pages/test/test_vehicle.dart';
@@ -48,7 +49,6 @@ final _controller = SidebarXController(selectedIndex: 0, extended: false);
     );
 
     var db = FirebaseFirestore.instance;
-    final storageRef = FirebaseStorage.instance.refFromURL("gs://a18s-app.appspot.com");
     db.collection("data").where("test id", isEqualTo: widget.testId).get().then((event) {
       // parse data and pass to pages.
       assert(event.docs.length == 1);
@@ -57,7 +57,7 @@ final _controller = SidebarXController(selectedIndex: 0, extended: false);
 
       // (ex) "vehicles/2021palisade.jpg"
       String vehicleImagePath = "vehicles/${data!.modelYear}${data!.name}.jpg";
-      storageRef.child(vehicleImagePath).getDownloadURL().then((loc) => setState(() => _imageUrl = loc));
+      Loader.storageRef.child(vehicleImagePath).getDownloadURL().then((loc) => setState(() => _imageUrl = loc));
       //TODO, if no image, get it default.
 
       setState(() {

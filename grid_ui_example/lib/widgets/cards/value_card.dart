@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grid_ui_example/settings/theme.dart';
 import 'package:grid_ui_example/settings/ui_constants.dart';
 
 
@@ -24,17 +25,18 @@ class ValueCard extends StatelessWidget {
       height:150,
       width: 350,
       child:Card(
-        color: Colors.white70,
-        elevation: 20,
-        shadowColor: Colors.black,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            color: cardBackgroundColor,
+            elevation: 20,
+            shadowColor: Colors.black,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         margin: EdgeInsets.all(defaultPadding),
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.all(defaultPadding),
+                padding: const EdgeInsets.all(defaultPadding),
                 child:
               Ink(
                 decoration: BoxDecoration(
@@ -49,6 +51,7 @@ class ValueCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(defaultPadding),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(title,
                         style: const TextStyle(

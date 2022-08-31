@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
+Color cardBackgroundColor = Colors.white70;
+
+
 // ignore: prefer_const_constructors
 PlutoGridStyleConfig gridStyle = PlutoGridStyleConfig(
     enableGridBorderShadow : true,
