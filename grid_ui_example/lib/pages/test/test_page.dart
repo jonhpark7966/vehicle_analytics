@@ -6,10 +6,12 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:grid_ui_example/brands/colors.dart';
 import 'package:grid_ui_example/brands/manufacturers.dart';
 import 'package:grid_ui_example/data/chart_data.dart';
+import 'package:grid_ui_example/data/coastdown_data.dart';
 import 'package:grid_ui_example/loader/loader.dart';
 import 'package:grid_ui_example/pages/test/test_dashboard.dart';
+import 'package:grid_ui_example/pages/test/test_data_models.dart';
 import 'package:grid_ui_example/pages/test/test_sidebar.dart';
-import 'package:grid_ui_example/pages/test/test_vehicle.dart';
+import 'package:grid_ui_example/pages/test/test_coastdown.dart';
 import 'package:grid_ui_example/widgets/appbar.dart';
 import 'package:sidebarx/sidebarx.dart';
 
@@ -27,11 +29,9 @@ class _TestPageState extends State<TestPage> {
 final _controller = SidebarXController(selectedIndex: 0, extended: false);
   final _key = GlobalKey<ScaffoldState>();
 
-  String? _imageUrl;
-  ChartData? data;
   bool onLoading = true;
-  List<Color> colors = [Colors.black, Colors.white];
   late Widget spinkit;
+  TestDataModels dataModel = TestDataModels();
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ final _controller = SidebarXController(selectedIndex: 0, extended: false);
         return DecoratedBox(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: index.isEven ? colors[0] : colors[1],
+            color: index.isEven ? dataModel.colors[0] : dataModel.colors[1],
           ),
         );
       },
@@ -52,12 +52,12 @@ final _controller = SidebarXController(selectedIndex: 0, extended: false);
     db.collection("data").where("test id", isEqualTo: widget.testId).get().then((event) {
       // parse data and pass to pages.
       assert(event.docs.length == 1);
-      data = ChartData.fromJson(event.docs.first.data());
-      colors = _getBackgroundColorPalette(Manufactureres.fromString(data!.brand));
+      dataModel.data = ChartData.fromJson(event.docs.first.data());
+      dataModel.colors = _getBackgroundColorPalette(Manufactureres.fromString(dataModel.data!.brand));
 
       // (ex) "vehicles/2021palisade.jpg"
-      String vehicleImagePath = "vehicles/${data!.modelYear}${data!.name}.jpg";
-      Loader.storageRef.child(vehicleImagePath).getDownloadURL().then((loc) => setState(() => _imageUrl = loc));
+      String vehicleImagePath = "vehicles/${dataModel.data!.modelYear}${dataModel.data!.name}.jpg";
+      Loader.storageRef.child(vehicleImagePath).getDownloadURL().then((loc) => setState(() => dataModel.imageUrl = loc));
       //TODO, if no image, get it default.
 
       setState(() {
@@ -74,7 +74,9 @@ final _controller = SidebarXController(selectedIndex: 0, extended: false);
   Widget _getBodyWidget(int index){
     switch(index){
       case 0: return TestDashboardPage();
-      case 1: return TestVehiclePage(data, spinkit, colors);
+      case 1: return TestDashboardPage();
+      case 2: return TestCoastdownPage(dataModel, spinkit, CoastdownType.J2263);
+      case 3: return TestCoastdownPage(dataModel, spinkit, CoastdownType.WLTP);
     }
     return TestDashboardPage();
   }
@@ -87,14 +89,14 @@ final _controller = SidebarXController(selectedIndex: 0, extended: false);
           gradient: LinearGradient(
             begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: colors,
+                colors: dataModel.colors,
                ),),
         child: Scaffold(
-            appBar: AppBarFactory.getColoredAppBar(color: colors.first),
+            appBar: AppBarFactory.getColoredAppBar(color: dataModel.colors.first),
             backgroundColor: Colors.transparent,
             body: Row(
               children: [
-                TestSidebarX(controller: _controller, imageUrl:_imageUrl, setState: setState,),
+                TestSidebarX(controller: _controller, imageUrl:dataModel.imageUrl, setState: setState,),
                 Expanded(child:Container(
                     padding: const EdgeInsets.all(15),
                     child: onLoading

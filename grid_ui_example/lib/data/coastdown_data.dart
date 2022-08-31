@@ -1,5 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 
+enum CoastdownType{
+  WLTP,
+  J2263;
+
+  String get toLowerString => '$name'.toLowerCase();
+}
 
 class CoastdownRawData{
   final String runName;

@@ -92,9 +92,15 @@ class TestSidebarX extends StatelessWidget {
           label: 'Vehicle',
           onTap: (){ _setState((){}); }
         ),
-        const SidebarXItem(
+        SidebarXItem(
           icon: Icons.multiline_chart,
-          label: 'CoastDown',
+          label: 'CoastDown-J2263',
+          onTap: (){ _setState((){}); }
+        ),
+        SidebarXItem(
+          icon: Icons.multiline_chart,
+          label: 'CoastDown-WLTP',
+          onTap: (){ _setState((){}); }
         ),
         const SidebarXItem(
           icon: Icons.mic,
