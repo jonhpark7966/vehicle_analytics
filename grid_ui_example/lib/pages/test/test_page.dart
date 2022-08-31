@@ -95,6 +95,7 @@ final _controller = SidebarXController(selectedIndex: 0, extended: false);
             appBar: AppBarFactory.getColoredAppBar(color: dataModel.colors.first),
             backgroundColor: Colors.transparent,
             body: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TestSidebarX(controller: _controller, imageUrl:dataModel.imageUrl, setState: setState,),
                 Expanded(child:Container(

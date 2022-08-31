@@ -18,4 +18,18 @@ class Loader{
     }
 
   } 
+
+  static loadFromCoastdownLog(String path) async {
+    try {
+      final Uint8List? data = await storageRef.child(path).getData();
+      var ret = CoastdownParser.logDataParser(data);
+
+      return ret;
+    } on FirebaseException catch (e) {
+      // Handle any errors.
+      assert(false);
+    }
+
+  } 
+
 }

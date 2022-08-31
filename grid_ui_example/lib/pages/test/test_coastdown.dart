@@ -5,9 +5,11 @@ import 'package:grid_ui_example/loader/loader.dart';
 import 'package:grid_ui_example/pages/test/test_data_models.dart';
 import 'package:grid_ui_example/settings/ui_constants.dart';
 import 'package:grid_ui_example/widgets/cards/graph_card.dart';
+import 'package:grid_ui_example/widgets/cards/multi_value_card.dart';
 import 'package:grid_ui_example/widgets/cards/value_card.dart';
 import 'package:grid_ui_example/widgets/graphs/coastdown_graph.dart';
 import 'package:grid_ui_example/widgets/graphs/roadload_graph.dart';
+import 'package:grid_ui_example/widgets/test_title.dart';
 
 class TestCoastdownPage extends StatefulWidget{
   TestDataModels dataModel;
@@ -24,6 +26,7 @@ class TestCoastdownPage extends StatefulWidget{
 class _TestCoastdownPageState extends State<TestCoastdownPage> {
   bool _onLoading = true;
   late List<CoastdownRawData> _runs; 
+  late CoastdownLogData _log;
   @override
   void initState() {
     super.initState();
@@ -32,6 +35,7 @@ class _TestCoastdownPageState extends State<TestCoastdownPage> {
       setState(() {
         _onLoading = false;
         _runs = widget.dataModel.coastdownDataMap[widget.type].runs;
+        _log = widget.dataModel.coastdownDataMap[widget.type].log;
       });
     });
 
@@ -64,8 +68,74 @@ class _TestCoastdownPageState extends State<TestCoastdownPage> {
     return widget.dataModel.data!.wltp_c;
  }
 
+  _getLoadedCard() {
+    if (_onLoading) {
+      return [Column(children: [const SizedBox(height:100),Center(child: widget.spinkit)])];
+    } else {
+      return [
+        Row(
+          children: [
+            Expanded(
+                child: Padding(
+                    padding: const EdgeInsets.all(defaultPadding),
+                    child: GraphCard(
+                      graph: CoastdownGraph(
+                          data: _runs, color: widget.dataModel.colors[0]),
+                      color: widget.dataModel.colors[0],
+                      title: 'Test Result',
+                      subtitle: 'Time (seconds) vs Speed (kph)',
+                    ))),
+            Expanded(
+                child: Padding(
+                    padding: const EdgeInsets.all(defaultPadding),
+                    child: GraphCard(
+                      graph: RoadloadGraph(
+                        data: RoadloadGraphData(
+                            getAvalue(), getBvalue(), getCvalue(), _runs),
+                        color: widget.dataModel.colors[0],
+                      ),
+                      color: widget.dataModel.colors[0],
+                      title: 'Road Load',
+                      subtitle: 'Speed (kph) vs Road Load (N)',
+                    ))),
+          ],
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: MultiValueCard(
+                title: "Target Infomation",
+                color: widget.dataModel.colors[0],
+                dataList: _log.toDataList(_log.targetInfo),
+              ),
+            ),
+            Expanded(
+              child: MultiValueCard(
+                title: "Calibration Coefficients",
+                color: widget.dataModel.colors[0],
+                dataList: _log.toDataList(_log.calibrationCoeffs),
+              ),
+            ),
+            Expanded(
+              child: MultiValueCard(
+                title: "Errors",
+                color: widget.dataModel.colors[0],
+                dataList: _log.toDataList(_log.totalError),
+              ),
+            ),
+          ],
+        )
+      ];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    List<Widget> loadedCard = [];
+    loadedCard = _getLoadedCard();
+
     return (widget.dataModel.data == null)
         ? Center(child: widget.spinkit)
         : Padding(
@@ -74,7 +144,8 @@ class _TestCoastdownPageState extends State<TestCoastdownPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
+                TestTitle(title:"Coastdown", subtitle:widget.type.toLowerString.toUpperCase(), color:widget.dataModel.colors[0]),
                 SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -99,28 +170,7 @@ class _TestCoastdownPageState extends State<TestCoastdownPage> {
                           unit: "N/kph2",
                         icon: Icons.abc),
                   ]),
-                ),
-                (_onLoading)?Center(child:widget.spinkit):
-                Row(
-                        children: [
-                          Expanded(child:Padding(padding: const EdgeInsets.all(defaultPadding),
-                           child:GraphCard(
-                            graph:CoastdownGraph(data:_runs, color: widget.dataModel.colors[0]),
-                            color: widget.dataModel.colors[0],
-                            title:'Test Result',
-                            subtitle:'Time (seconds) vs Speed (kph)',
-                            ))),
-                          Expanded(child:Padding(padding: const EdgeInsets.all(defaultPadding),
-                           child:GraphCard(
-                            graph:RoadloadGraph(
-                              data: RoadloadGraphData(getAvalue(),getBvalue(),getCvalue(), _runs),
-                              color: widget.dataModel.colors[0],
-                               ),
-                            color: widget.dataModel.colors[0],
-                            title:'Road Load',
-                            subtitle:'Speed (kph) vs Road Load (N)',
-                            ))),
-              ],
-            )])));
+                ),] + loadedCard
+                            )));
   }
 }

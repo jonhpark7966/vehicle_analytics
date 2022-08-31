@@ -107,7 +107,7 @@ class FlGraph extends StatelessWidget {
   SideTitles leftTitles() => SideTitles(
         getTitlesWidget: leftTitleWidgets,
         showTitles: true,
-        interval: 10,
+        interval: 20,
         reservedSize: 80
       );
 

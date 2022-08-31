@@ -42,6 +42,19 @@ class CoastdownParser{
   }
 
   static logDataParser(Uint8List? data){
-    assert(false);
+
+    CoastdownLogData ret = CoastdownLogData("","","","");
+
+    if(data == null){ return ret; }
+
+    String rawString = String.fromCharCodes(data.buffer.asUint16List());
+    List<String> paragraphs = rawString.split("\r\n\r\n");
+
+    String targetInfo = paragraphs.where((e)=>e.contains("Target information")).last;
+    String numberOfRuns = paragraphs.where((e)=>e.contains("Number of runs")).last;
+    String calibrationCoeffs = paragraphs.where((e)=>e.contains("Calibration coefficients")).last;
+    String totalError = paragraphs.where((e)=>e.contains("Total error")).last;
+
+    return CoastdownLogData(targetInfo,numberOfRuns,calibrationCoeffs,totalError);
   }
 }

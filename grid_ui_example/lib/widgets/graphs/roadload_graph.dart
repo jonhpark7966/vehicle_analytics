@@ -66,7 +66,7 @@ class RoadloadGraph extends FlGraph {
   SideTitles leftTitles() => SideTitles(
       getTitlesWidget: leftTitleWidgets,
       showTitles: true,
-      interval: 100,
+      interval: 200,
       reservedSize: 100);
 
   @override

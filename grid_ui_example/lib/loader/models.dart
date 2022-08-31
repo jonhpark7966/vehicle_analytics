@@ -7,4 +7,5 @@ class LoadedDataModel {
 
 class CoastdownRawLoadedDataModel extends LoadedDataModel{
   List<CoastdownRawData> runs = [];
+  CoastdownLogData log = CoastdownLogData("","","","");
 }

@@ -23,8 +23,11 @@ class TestDataModels{
    }
 
     var runs = await Loader.loadFromCoastdownRaw("test/${testId}/$testPath/raw.txt");
-    data.loaded = true;
     data.runs = runs;
+
+    var log = await Loader.loadFromCoastdownLog("test/${testId}/$testPath/log.txt");
+    data.log = log;
+    data.loaded = true;
 
     return;
   }
