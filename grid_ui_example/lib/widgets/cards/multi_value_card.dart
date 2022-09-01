@@ -9,6 +9,7 @@ class MultiValueCard extends StatelessWidget {
     required this.title,
     required this.color,
     required this.dataList,
+    this.help = "",
   }) : super(key: key);
 
   final String title;
@@ -16,6 +17,7 @@ class MultiValueCard extends StatelessWidget {
   // [key, value, unit]
   // ex) [Kr, 1.44, kph]
   final List<List<String>> dataList;
+  final String help;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +36,21 @@ class MultiValueCard extends StatelessWidget {
                 children: [
                   Padding(
                       padding: const EdgeInsets.all(defaultPadding),
-                      child: Text(title,
-                       style: TextStyle(fontSize: 20, color: color, fontWeight: FontWeight.bold),)),
-                  Expanded(child:ListView.separated(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              title,
+                              style: TextStyle(fontSize: 20,color: color, fontWeight: FontWeight.bold),
+                            ),
+                            (help=="")?SizedBox(width:1)
+                            :Tooltip(
+                              padding: const EdgeInsets.all(defaultPadding),
+                              message: help,
+                              child:const Icon(Icons.help_outline_outlined, color:Colors.blueGrey)),
+                          ])),
+                  Expanded(
+                    child: ListView.separated(
                     padding: const EdgeInsets.all(5),
                     itemCount: dataList.length,
                     itemBuilder: (BuildContext context, int index) {

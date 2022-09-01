@@ -18,7 +18,10 @@ import 'package:sidebarx/sidebarx.dart';
 
 class TestPage extends StatefulWidget{
   final int? testId;
-  const TestPage(this.testId, {Key? key}) : super(key:key);
+  SidebarIndex? selectedIndex;
+  TestPage(this.testId, {Key? key, this.selectedIndex}) : super(key:key){
+    selectedIndex=selectedIndex??SidebarIndex.Dashboard;
+  }
 
   @override
   // ignore: library_private_types_in_public_api
@@ -26,7 +29,7 @@ class TestPage extends StatefulWidget{
 }
 
 class _TestPageState extends State<TestPage> {
-final _controller = SidebarXController(selectedIndex: 0, extended: false);
+  late SidebarXController _controller;
   final _key = GlobalKey<ScaffoldState>();
 
   bool onLoading = true;
@@ -36,6 +39,7 @@ final _controller = SidebarXController(selectedIndex: 0, extended: false);
   @override
   void initState() {
     super.initState();
+    _controller = SidebarXController(selectedIndex: widget.selectedIndex!.index, extended: true);
 
     spinkit = SpinKitFadingCircle(
       itemBuilder: (BuildContext context, int index) {
@@ -75,8 +79,8 @@ final _controller = SidebarXController(selectedIndex: 0, extended: false);
     switch(index){
       case 0: return TestDashboardPage();
       case 1: return TestDashboardPage();
-      case 2: return TestCoastdownPage(dataModel, spinkit, CoastdownType.WLTP, key:UniqueKey());
-      case 3: return TestCoastdownPage(dataModel, spinkit, CoastdownType.J2263, key:UniqueKey());
+      case 2: return TestCoastdownPage(dataModel, spinkit, CoastdownType.J2263, key:UniqueKey());
+      case 3: return TestCoastdownPage(dataModel, spinkit, CoastdownType.WLTP, key:UniqueKey());
     }
     return TestDashboardPage();
   }

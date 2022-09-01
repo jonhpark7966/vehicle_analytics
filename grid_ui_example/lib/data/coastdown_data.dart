@@ -62,7 +62,10 @@ class CoastdownLogData{
     for(var i = startIndex; i < lines.length; ++i){
       var elemsString = lines[i].split(":");
       List<String> elem = [];
+
       if(elemsString[0].contains("MTPLM")) elemsString[0] = "  MTPLM";
+      if(elemsString[0].contains("Road Grade")) elemsString[0] = "  MTPLM";
+
 
       // remove extra text
       if (elemsString[0].contains("(")) {
@@ -70,8 +73,18 @@ class CoastdownLogData{
             elemsString[0].split("(").first + elemsString[0].split(")").last;
       }
 
+      var valueAndUnit = Units.splitUnits(elemsString[1].replaceAll("\n", ""));
+      try{
+        // skip if value is 0
+        if(double.parse(valueAndUnit[0]) == 0){
+          continue;
+        }
+      }catch(_){
+        continue;
+      }
+
       elem.add(elemsString[0]);
-      elem = elem + Units.splitUnits(elemsString[1].replaceAll("\n", ""));
+      elem = elem + valueAndUnit;
       ret.add(elem);
     }
     return ret;

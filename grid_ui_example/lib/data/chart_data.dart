@@ -119,9 +119,11 @@ class ChartData{
     cells["wltp_a"] = PlutoCell(value:wltp_a);
     cells["wltp_b"] = PlutoCell(value:wltp_b);
     cells["wltp_c"] = PlutoCell(value:wltp_c);
+    cells["nav_to_test_wltp"] = PlutoCell(value:"");
     cells["j2263_a"] = PlutoCell(value:j2263_a);
     cells["j2263_b"] = PlutoCell(value:j2263_b);
     cells["j2263_c"] = PlutoCell(value:j2263_c);
+    cells["nav_to_test_j2263"] = PlutoCell(value:"");
     cells["idle noise"] = PlutoCell(value:idleNoise);
     cells["idle vibration"] = PlutoCell(value:idleVibraton);
     cells["idle vibration source"] = PlutoCell(value:idleVibrationSrc);

@@ -67,29 +67,6 @@ String columnGroupJson  = """
      ]
 },
 {
-     "name": "Coastdown (WLTP)",
-     "columns":[
-      {
-      "id" : "wltp_a",
-      "title": "A",
-      "type": "double",
-      "hide": false 
-      },
-      {
-      "id" : "wltp_b",
-      "title": "B",
-      "type": "double",
-      "hide": false 
-      },
-      {
-      "id" : "wltp_c",
-      "title": "C",
-      "type": "double",
-      "hide": false 
-      }
-    ]
-},
-{
      "name": "Coastdown (J2263)",
      "columns":[
       {
@@ -109,10 +86,44 @@ String columnGroupJson  = """
       "title": "C",
       "type": "double",
       "hide": false 
+      },
+      {
+      "id" : "nav_to_test_j2263",
+      "title": "...",
+      "type": "nav_to_test",
+      "hide": false 
       }
     ]
 },
-
+{
+     "name": "Coastdown (WLTP)",
+     "columns":[
+      {
+      "id" : "wltp_a",
+      "title": "A",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "wltp_b",
+      "title": "B",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "wltp_c",
+      "title": "C",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "nav_to_test_wltp",
+      "title": "...",
+      "type": "nav_to_test",
+      "hide": false 
+      }
+    ]
+},
 {
      "name": "Idle NVH",
      "columns":[

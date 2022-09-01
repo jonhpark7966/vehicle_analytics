@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:grid_ui_example/data/chart_data.dart';
 import 'package:grid_ui_example/pages/test/test_page.dart';
+import 'package:grid_ui_example/pages/test/test_sidebar.dart';
 import 'package:grid_ui_example/settings/route.dart';
 import 'package:grid_ui_example/settings/theme.dart';
 import 'package:grid_ui_example/widgets/appbar.dart';
@@ -106,7 +107,7 @@ class _VehiclesPageState extends State<VehiclesPage>{
           field: column.id,
           type: _typeStringToPlutoType(column.type),
           enableEditingMode: false,
-          renderer: _typeStringToRenderer(column.type),
+          renderer: _typeStringToRenderer(column.type, group),
         ));
       }
 
@@ -120,7 +121,7 @@ class _VehiclesPageState extends State<VehiclesPage>{
   return PlutoColumnType.text();
  }
 
- PlutoColumnRenderer? _typeStringToRenderer(String type){
+ PlutoColumnRenderer? _typeStringToRenderer(String type, ColumnGroup group){
   if(type == "dashboard"){
       return (rendererContext) {
         String testId = rendererContext
@@ -129,18 +130,23 @@ class _VehiclesPageState extends State<VehiclesPage>{
         return TextButton(
         child: Text("#$testId",style: const TextStyle(color: Colors.lightBlueAccent, fontWeight: FontWeight.bold)),
         onPressed: (){
-          FRouter.router.navigateTo(context, FRouter.testPageRouteName.replaceAll(":id", testId));
+          FRouter.router.navigateTo(
+            context, FRouter.testPageRouteName.replaceAll(":id", testId));
         },
         );
     };
-  }else if(type == "graph"){
+  }else if(type == "nav_to_test"){
     return (rendererContext){
       return IconButton(
         icon: const Icon(Icons.stacked_line_chart_rounded),
         color: Colors.lightBlueAccent,
         onPressed: (){
-          //TODO, _popupGraph()
-          print("TODO! graph popup!");
+        String testId = rendererContext
+            .row.cells["test id"]!.value
+            .toString();
+          FRouter.router.navigateTo(
+            context, FRouter.testPageRouteName.replaceAll(":id", testId),
+            routeSettings: RouteSettings(arguments:SidebarIndex.fromName(group.name)));
         },
       );
     };

@@ -3,6 +3,7 @@ import 'package:grid_ui_example/data/chart_data.dart';
 import 'package:grid_ui_example/data/coastdown_data.dart';
 import 'package:grid_ui_example/loader/loader.dart';
 import 'package:grid_ui_example/pages/test/test_data_models.dart';
+import 'package:grid_ui_example/resources/help.dart';
 import 'package:grid_ui_example/settings/ui_constants.dart';
 import 'package:grid_ui_example/widgets/cards/graph_card.dart';
 import 'package:grid_ui_example/widgets/cards/multi_value_card.dart';
@@ -115,6 +116,7 @@ class _TestCoastdownPageState extends State<TestCoastdownPage> {
                 title: "Calibration Coefficients",
                 color: widget.dataModel.colors[0],
                 dataList: _log.toDataList(_log.calibrationCoeffs),
+                help:HelpResources.coastdownCalibration,
               ),
             ),
             Expanded(

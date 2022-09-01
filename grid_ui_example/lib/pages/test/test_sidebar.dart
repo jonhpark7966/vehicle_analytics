@@ -2,6 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+
+enum SidebarIndex{
+  Dashboard,
+  Vehicle,
+  J2263,
+  WLTP,
+  IdleNVH;
+
+  static fromName(String name){
+    if(name.contains("Vehicle")){
+      return SidebarIndex.Dashboard;
+    }else if(name.contains("J2263")){
+      return SidebarIndex.J2263;
+    }else if(name.contains("WLTP")){
+      return SidebarIndex.WLTP;
+    }
+    return SidebarIndex.Dashboard;
+  }
+}
+
 class TestSidebarX extends StatelessWidget {
   TestSidebarX({
     Key? key,
