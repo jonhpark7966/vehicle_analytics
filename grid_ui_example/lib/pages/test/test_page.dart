@@ -41,18 +41,11 @@ class _TestPageState extends State<TestPage> {
   void initState() {
     super.initState();
     _controller = SidebarXController(selectedIndex: widget.selectedIndex!.index, extended: true);
+    _controller.addListener(() {setState(() {});});
 
-    spinkit = SpinKitFadingCircle(
-      itemBuilder: (BuildContext context, int index) {
-        return DecoratedBox(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: index.isEven ? dataModel.colors[0] : dataModel.colors[1],
-          ),
-        );
-      },
-    );
+    spinkit =  SpinKitCubeGrid(color: dataModel.colors[0]);
 
+    
     var db = FirebaseFirestore.instance;
     db.collection("data").where("test id", isEqualTo: widget.testId).get().then((event) {
       // parse data and pass to pages.
@@ -78,17 +71,16 @@ class _TestPageState extends State<TestPage> {
 
   Widget _getBodyWidget(int index){
     switch(index){
-      case 0: return TestDashboardPage();
+      case 0: return TestDashboardPage(dataModel, _controller);
       case 1: return TestVehiclePage(dataModel, key:UniqueKey());
       case 2: return TestCoastdownPage(dataModel, spinkit, CoastdownType.J2263, key:UniqueKey());
       case 3: return TestCoastdownPage(dataModel, spinkit, CoastdownType.WLTP, key:UniqueKey());
     }
-    return TestDashboardPage();
+    return TestDashboardPage(dataModel, _controller);
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

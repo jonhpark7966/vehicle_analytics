@@ -171,7 +171,7 @@ class _TestCoastdownPageState extends State<TestCoastdownPage> {
                           title: "coefficient C",
                           color: widget.dataModel.colors[0],
                           value: getCvalue().toStringAsFixed(5),
-                          unit: "N/kph2",
+                          unit: "N/kph²",
                         icon: Icons.abc),
                   ]),
                 ),] + loadedCard

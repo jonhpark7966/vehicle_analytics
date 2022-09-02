@@ -1,3 +1,4 @@
+import 'package:grid_ui_example/data/coastdown_data.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class ChartRows{
@@ -186,5 +187,43 @@ class ChartData{
 
     return ret;
   }
+
+  toDashboardVehicleDataList(){
+    List<List<String>> ret = [];
+
+    ret.add(["Manufacturer", brand, ""]);
+    ret.add(["Model", name, ""]);
+    ret.add(["Model Year", modelYear.toString(), ""]);
+    ret.add(["VIN", vin, ""]);
+    ret.add(["Odometer", odo.toString(), "km"]);
+    ret.add(["Fuel Type", fuelType, ""]);
+
+    return ret;
+  }
+
+  toDashboardCoastdownDataList(CoastdownType type){
+    List<List<String>> ret = [];
+
+    var a = wltp_a;
+    var b = wltp_b;
+    var c = wltp_c;
+    if(type == CoastdownType.J2263){
+      a = j2263_a;
+      b = j2263_b;
+      c = j2263_c;
+    }
+
+    ret.add(["Coeff A", a.toStringAsFixed(3), "N"]);
+    ret.add(["Coeff B", b.toStringAsFixed(4), "N/kph"]);
+    ret.add(["Coeff C", c.toStringAsFixed(5), "N/kph²"]);
+    ret.add(["Roadload at 60kph", (a + b*60 + c*60*60).toStringAsFixed(1), "N"]);
+    ret.add(["Roadload at 100kph", (a + b*100 + c*100*100).toStringAsFixed(1), "N"]);
+
+    return ret;
+  }
+
+
+
+
 
 }

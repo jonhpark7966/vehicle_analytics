@@ -4,6 +4,14 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 Color cardBackgroundColor = Colors.white70;
 
+List<Color> graphColors = const[
+  Color.fromARGB(255, 0x89, 0x05, 0x79),
+  Color.fromARGB(255, 0x3c, 0x04, 0x8a),
+  Color.fromARGB(255, 0x0c, 0x45, 0x82),
+  Color.fromARGB(255, 0x1b, 0x47, 0x73),
+  Color.fromARGB(255, 0x36, 0x58, 0x58),
+];
+
 var buttonStyleColor = MaterialStateProperty.resolveWith((states) {
       // If the button is pressed, return green, otherwise blue
       if (states.contains(MaterialState.pressed)) {
