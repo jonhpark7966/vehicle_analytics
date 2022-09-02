@@ -25,6 +25,11 @@ class ChartData{
   final int modelYear;
   final String brand;
   final String fuelType;
+  final int cylinderVolumn;
+  final String engineName;
+  final String engineType;
+  final int transmission;
+  final String wheelDrive;
   final String vin;
   final int odo;
   final String layout;
@@ -53,9 +58,11 @@ class ChartData{
   final double accNoiseIntercept;
   final double accVibration;
   final double mdpsNoise;
+  final String detailsPage;
 
   ChartData({required this.testId, required this.name, required this.vin, required this.odo, required this.modelYear, required this.brand,
    required this.fuelType, required this.layout, required this.tire, required this.fgr,
+   required this.engineName, required this.engineType,  required this.cylinderVolumn, required this.transmission, required this.wheelDrive,
    required this.wltp_a, required this.wltp_b, required this.wltp_c,
    required this.j2263_a, required this.j2263_b, required this.j2263_c,
    required this.idleNoise, required this.idleVibraton, required this.idleVibrationSrc,
@@ -64,6 +71,7 @@ class ChartData{
    required this.windNoise, required this.cruise120Vibration,
    required this.accNoiseCoefficient, required this.accNoiseIntercept, required this.accVibration,
    required this.mdpsNoise,
+   required this.detailsPage,
    });
 
   factory ChartData.fromJson(Map<String, dynamic> json){
@@ -73,6 +81,11 @@ class ChartData{
       modelYear:json["model year"]??1886,
       brand:json["brand"]??"",
       fuelType:json["fuel type"]??"",
+      engineName: json["engine name"]??"",
+      engineType: json["engine type"]??"",
+      cylinderVolumn: json["cylinder volumn"]??0.0,
+      transmission: json["transmission"]??0,
+      wheelDrive: json["wheel drive"]??"",
       vin:json["vin"]??"",
       odo:json["odo"]??0,
       layout:json["layout"]??"",
@@ -101,6 +114,7 @@ class ChartData{
       accNoiseIntercept: json["acceleration noise intercept"]??0.0,
       accVibration: json["acceleration vibration"]??0.0,
       mdpsNoise: json["mdps noise"]??0.0,
+      detailsPage: json["details page"]??"",
     );
     }
 
@@ -111,6 +125,11 @@ class ChartData{
     cells["model year"] = PlutoCell(value:modelYear);
     cells["brand"] = PlutoCell(value:brand);
     cells["fuel type"] = PlutoCell(value:fuelType);
+    cells["engine name"] = PlutoCell(value:engineName);
+    cells["engine type"] = PlutoCell(value:engineType);
+    cells["cylinder volumn"] = PlutoCell(value:cylinderVolumn);
+    cells["transmission"] = PlutoCell(value:transmission);
+    cells["wheel drive"] = PlutoCell(value:wheelDrive);
     cells["vin"] = PlutoCell(value:vin);
     cells["odo"] = PlutoCell(value:odo);
     cells["layout"] = PlutoCell(value:layout);
@@ -144,4 +163,28 @@ class ChartData{
 
     return PlutoRow(cells: cells);
   }
+
+  toPowertrainCardDataList(){
+    List<List<String>> ret = [];
+
+    ret.add(["Fuel Type", fuelType, ""]);
+    ret.add(["Engine Name", engineName, ""]);
+    ret.add(["Engine Type", engineType, ""]);
+    ret.add(["Cylinder Volumn", cylinderVolumn.toString(), "cc"]);
+    ret.add(["Transmission", transmission.toString(), "speed"]);
+
+    return ret;
+  }
+
+  toOthersCardDataList(){
+    List<List<String>> ret = [];
+
+    ret.add(["Tire", tire, ""]);
+    ret.add(["Layout", layout, ""]);
+    ret.add(["Wheel Drive", wheelDrive, ""]);
+    ret.add(["Final Gear Ratio", fgr.toStringAsFixed(3), ""]);
+
+    return ret;
+  }
+
 }

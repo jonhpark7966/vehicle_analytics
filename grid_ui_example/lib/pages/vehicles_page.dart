@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:grid_ui_example/brands/colors.dart';
 import 'package:grid_ui_example/data/chart_data.dart';
 import 'package:grid_ui_example/pages/test/test_page.dart';
 import 'package:grid_ui_example/pages/test/test_sidebar.dart';
@@ -32,6 +33,9 @@ class _VehiclesPageState extends State<VehiclesPage>{
 
   late PlutoGrid gridWidget;
   late PlutoGridStateManager stateManager;
+  late List<bool> initialHideStatus = [];
+
+  bool _isHide = true;
 
   @override
   void initState(){
@@ -61,11 +65,45 @@ class _VehiclesPageState extends State<VehiclesPage>{
           stateManager.notifyResizingListeners();
         });
     });
+  }
 
+  _hideToggle() {
+    if (!_isHide) {
+      for (var i = 0; i < columns.length; ++i) {
+        if (initialHideStatus[i]) {
+          stateManager.hideColumn(columns[i], true);
+        }
+      }
+    }else{
+      for(var column in columns){
+        stateManager.hideColumn(column, false);
+      }
+    }
+
+    _isHide = !_isHide;
+    setState(() {});
+  }
+
+  Widget _getButtonsRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        ElevatedButton.icon(
+          icon: Icon(_isHide?Icons.arrow_forward:Icons.arrow_back, color: defaultColors[0]),
+          label: Text(_isHide?"Expand Columns":"Hide Columns", style: TextStyle(color: defaultColors[0])),
+          style: ButtonStyle(
+            backgroundColor: buttonStyleColor,
+          ),
+          onPressed: _hideToggle
+                   ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget upperButtonsRow = _getButtonsRow();
+
     gridWidget = PlutoGrid(
         columnGroups: columnGroups,
         columns: columns,
@@ -88,10 +126,12 @@ class _VehiclesPageState extends State<VehiclesPage>{
         child: Scaffold(
           appBar: AppBarFactory.getColoredAppBar(),
           backgroundColor: Colors.transparent,
-          body: Container(
-              padding: const EdgeInsets.all(15),
-              child: gridWidget),
-        ));
+          body:
+          Column(children: [
+              Container(padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                child: upperButtonsRow),
+              Expanded(child:Container(padding: const EdgeInsets.all(15), child: gridWidget)),
+            ])));
   }
 
   _buildColumns(ColumnGroups cGroups){
@@ -108,7 +148,10 @@ class _VehiclesPageState extends State<VehiclesPage>{
           type: _typeStringToPlutoType(column.type),
           enableEditingMode: false,
           renderer: _typeStringToRenderer(column.type, group),
+          hide:column.hide,
         ));
+
+        initialHideStatus.add(column.hide);
       }
 
       columnGroups.add(

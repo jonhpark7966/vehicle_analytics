@@ -35,6 +35,31 @@ String columnGroupJson  = """
       "hide": false 
       },
       {
+      "id" : "engine type",
+      "title": "Eng. Type",
+      "type": "text",
+      "hide": true 
+      },
+      {
+      "id" : "engine name",
+      "title": "Eng. Name",
+      "type": "text",
+      "hide": true 
+      },
+      {
+       "id" : "cylinder volumn",
+      "title": "Cyl Vol (cc)",
+      "type": "number",
+      "hide": true 
+      },
+      {
+      "id" : "transmission",
+      "title": "Trans",
+      "type": "number",
+      "hide": true 
+      },
+
+      {
       "id" : "vin",
       "title": "VIN",
       "type": "text",
@@ -50,19 +75,25 @@ String columnGroupJson  = """
       "id" : "layout",
       "title": "Layout",
       "type": "String",
-      "hide": false 
+      "hide": true 
       },
       {
       "id" : "tire",
       "title": "Tire",
       "type": "String",
-      "hide": false 
+      "hide": true 
+      },
+      {
+      "id" : "wheel drive",
+      "title": "WD",
+      "type": "String",
+      "hide": true 
       },
       {
       "id" : "fgr",
       "title": "FGR",
       "type": "double",
-      "hide": false 
+      "hide": true 
       }
      ]
 },

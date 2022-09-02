@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:grid_ui_example/pages/test/test_page.dart';
 import 'package:grid_ui_example/pages/vehicles_page.dart';
@@ -5,6 +6,15 @@ import 'package:grid_ui_example/pages/vehicles_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:grid_ui_example/settings/route.dart';
 import 'firebase_options.dart';
+
+class CustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
+}
+
 
 void main() async {
   await Firebase.initializeApp(
@@ -25,6 +35,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       onGenerateRoute: FRouter.router.generator,
       initialRoute: FRouter.vehiclesPageRouteName,
+      scrollBehavior: CustomScrollBehavior(),
     );
   }
 }

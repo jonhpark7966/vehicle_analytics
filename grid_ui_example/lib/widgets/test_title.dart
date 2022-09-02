@@ -6,8 +6,9 @@ class TestTitle extends StatelessWidget{
   final String title;
   final String subtitle;
   final Color color;
+  final Widget rightButton;
 
-  TestTitle({required this.title, required this.subtitle, required this.color});
+  TestTitle({required this.title, required this.subtitle, required this.color, required this.rightButton});
 
 
   @override
@@ -20,30 +21,7 @@ class TestTitle extends StatelessWidget{
      child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [Text.rich(titleSpan),
-      ElevatedButton.icon(
-        icon: Icon(Icons.download, color:color), label: Text("Raw Data", style:TextStyle(color:color)),
-        style: ButtonStyle(backgroundColor: buttonStyleColor, ),
-        
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      content: const Text("Not Supported Yet!"),
-                      insetPadding: const EdgeInsets.all(defaultPadding),
-                      backgroundColor: cardBackgroundColor,
-                      actions: [
-                        TextButton(
-                          child: const Text('OK', style:TextStyle(color:Colors.black,)),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  });
-           }, ),
+      rightButton
      ]));
   }
 

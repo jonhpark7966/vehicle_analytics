@@ -5,6 +5,7 @@ import 'package:grid_ui_example/loader/loader.dart';
 import 'package:grid_ui_example/pages/test/test_data_models.dart';
 import 'package:grid_ui_example/resources/help.dart';
 import 'package:grid_ui_example/settings/ui_constants.dart';
+import 'package:grid_ui_example/widgets/buttons/test_download_button.dart';
 import 'package:grid_ui_example/widgets/cards/graph_card.dart';
 import 'package:grid_ui_example/widgets/cards/multi_value_card.dart';
 import 'package:grid_ui_example/widgets/cards/value_card.dart';
@@ -147,7 +148,8 @@ class _TestCoastdownPageState extends State<TestCoastdownPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TestTitle(title:"Coastdown", subtitle:widget.type.toLowerString.toUpperCase(), color:widget.dataModel.colors[0]),
+                TestTitle(title:"Coastdown", subtitle:widget.type.toLowerString.toUpperCase(), color:widget.dataModel.colors[0],
+                 rightButton: TestDownloadButton(color: widget.dataModel.colors[0]),),
                 SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(

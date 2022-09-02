@@ -12,6 +12,7 @@ import 'package:grid_ui_example/pages/test/test_dashboard.dart';
 import 'package:grid_ui_example/pages/test/test_data_models.dart';
 import 'package:grid_ui_example/pages/test/test_sidebar.dart';
 import 'package:grid_ui_example/pages/test/test_coastdown.dart';
+import 'package:grid_ui_example/pages/test/test_vehicle.dart';
 import 'package:grid_ui_example/widgets/appbar.dart';
 import 'package:sidebarx/sidebarx.dart';
 
@@ -60,7 +61,7 @@ class _TestPageState extends State<TestPage> {
       dataModel.colors = _getBackgroundColorPalette(Manufactureres.fromString(dataModel.data!.brand));
 
       // (ex) "vehicles/2021palisade.jpg"
-      String vehicleImagePath = "vehicles/${dataModel.data!.modelYear}${dataModel.data!.name}.jpg";
+      String vehicleImagePath = "vehicles/${dataModel.data!.modelYear}${dataModel.data!.name.toLowerCase()}.jpg";
       Loader.storageRef.child(vehicleImagePath).getDownloadURL().then((loc) => setState(() => dataModel.imageUrl = loc));
       //TODO, if no image, get it default.
 
@@ -78,7 +79,7 @@ class _TestPageState extends State<TestPage> {
   Widget _getBodyWidget(int index){
     switch(index){
       case 0: return TestDashboardPage();
-      case 1: return TestDashboardPage();
+      case 1: return TestVehiclePage(dataModel, key:UniqueKey());
       case 2: return TestCoastdownPage(dataModel, spinkit, CoastdownType.J2263, key:UniqueKey());
       case 3: return TestCoastdownPage(dataModel, spinkit, CoastdownType.WLTP, key:UniqueKey());
     }

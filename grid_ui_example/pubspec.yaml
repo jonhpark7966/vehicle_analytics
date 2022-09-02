@@ -32,22 +32,30 @@ dependencies:
 
   cupertino_icons: ^1.0.2
 
-  # chart
+  # chart table
   pluto_grid: ^5.0.4
+
+  #graph
+  fl_chart: ^0.55.1
 
   #firebase
   firebase_core: ^1.20.1
   cloud_firestore: ^3.4.4
+  firebase_storage: ^10.3.6
 
   # sidebar (drawer)
   sidebarx: ^0.10.0
 
   # routing
   fluro: ^2.0.3
-  firebase_storage: ^10.3.6
+
+  # UIs
   transparent_image: ^2.0.0
   flutter_spinkit: ^5.1.0
-  fl_chart: ^0.55.1
+
+  #url
+  url_launcher: ^6.1.5
+
 
 dev_dependencies:
   flutter_test:

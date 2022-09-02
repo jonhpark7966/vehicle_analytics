@@ -14,13 +14,13 @@ class ColumnGroups{
 
 class ColumnGroup{
   final String name;
-  final List<Column> columns;
+  final List<GridColumn> columns;
   
   ColumnGroup({required this.name, required this.columns});
 
   factory ColumnGroup.fromJson(Map<String, dynamic> json){
     var list = json["columns"] as List;
-    List<Column> columns = list.map((i) => Column.fromJson(i)).toList();
+    List<GridColumn> columns = list.map((i) => GridColumn.fromJson(i)).toList();
 
     return ColumnGroup(
       name:json["name"],
@@ -29,16 +29,16 @@ class ColumnGroup{
   }
 }
 
-class Column{
+class GridColumn{
   final String id;
   final String title;
   final String type;
   final bool hide; 
 
-  Column({required this.id, required this.title, required this.type, required this.hide});
+  GridColumn({required this.id, required this.title, required this.type, required this.hide});
 
-  factory Column.fromJson(Map<String, dynamic> json){
-    return Column(
+  factory GridColumn.fromJson(Map<String, dynamic> json){
+    return GridColumn(
       id:json["id"],
       title:json["title"],
       type: json["type"],
