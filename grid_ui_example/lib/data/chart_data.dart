@@ -223,7 +223,4 @@ class ChartData{
   }
 
 
-
-
-
 }

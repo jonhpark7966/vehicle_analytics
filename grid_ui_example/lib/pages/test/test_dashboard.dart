@@ -51,6 +51,7 @@ _getCoastdownRows(){
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
         Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
@@ -63,7 +64,9 @@ _getCoastdownRows(){
 
         ],),
  Expanded(
-                child: Padding(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 400),
+                  child:Padding(
                     padding: const EdgeInsets.all(defaultPadding),
                     child: GraphCard(
                       graph: RoadloadDashboardGraph(
@@ -75,7 +78,7 @@ _getCoastdownRows(){
                       color: widget.dataModel.colors[0],
                       title: 'Road Load',
                       subtitle: 'Speed (kph) vs Road Load (N)',
-                    ))),
+                    )))),
             
        ],)
     ];
