@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:data_handler/data_handler.dart';
 import 'package:flutter/material.dart';
 import '../brands/colors.dart';
 import '../data/chart_data.dart';
@@ -50,7 +51,7 @@ class _VehiclesPageState extends State<VehiclesPage>{
       List<PlutoRow> fetchedRows = [];
       for(var doc in event.docs){
         var row = ChartData.fromJson(doc.data());
-        fetchedRows.add(row.toPlutoRow());
+        fetchedRows.add(ChartConverter.toPlutoRow(row));
       }
 
       PlutoGridStateManager.initializeRowsAsync(

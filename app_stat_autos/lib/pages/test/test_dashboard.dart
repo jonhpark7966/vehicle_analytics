@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../data/chart_data.dart';
 import '../../data/coastdown_data.dart';
 import 'test_data_models.dart';
 import '../../settings/ui_constants.dart';
@@ -57,10 +58,10 @@ _getCoastdownRows(){
 
           TestSubtitle(title:"J2263", button: _getNavIconButton(2)),
          MultiValueCardHorizontal(title: "", color: widget.dataModel.colors[0],
-          dataList: widget.dataModel.data!.toDashboardCoastdownDataList(CoastdownType.J2263)),
+          dataList: ChartConverter.toDashboardCoastdownDataList(widget.dataModel.data!, CoastdownType.J2263)),
          TestSubtitle(title:"WLTP", button: _getNavIconButton(3)),
          MultiValueCardHorizontal(title: "", color: widget.dataModel.colors[0],
-          dataList: widget.dataModel.data!.toDashboardCoastdownDataList(CoastdownType.WLTP))
+          dataList: ChartConverter.toDashboardCoastdownDataList(widget.dataModel.data!, CoastdownType.WLTP))
 
         ],),
  Expanded(

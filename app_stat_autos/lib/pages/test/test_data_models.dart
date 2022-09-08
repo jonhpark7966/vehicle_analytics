@@ -1,3 +1,4 @@
+import 'package:data_handler/data_handler.dart';
 import 'package:flutter/material.dart';
 import '../../data/chart_data.dart';
 import '../../data/coastdown_data.dart';
