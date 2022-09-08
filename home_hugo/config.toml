@@ -10,7 +10,7 @@ fancyTitle = "Automotive Statistics"
 copyright = "John Park"
 description = 'Do not trust gut feelings, Make data-driven decisions'
 startbuttonText = "Open Stats"
-startbuttonLink = "www.naver.com"
+startbuttonLink = "app.stat.autos"
 body_is_markdown = true
 #custom_css = "foo.css"
 #images = ["path_to_social_image_for_link_previews.jpg"]
@@ -63,8 +63,8 @@ enable = true
 
 [[params.two.section]]
 img = "img/pic01.jpg"
-title = 'Coastdown Testing'
-body = 'Get road load coefficients of each vehicle by this method. Supports internatial standards such as WTLP or J2263.'
+title = 'Performance Testing'
+body = 'Test results show the Acceleration/Braking performance in real life situation. Not only simple value such as 0 to 100 kph.'
 
 [[params.two.section]]
 img = "img/pic02.jpg"
@@ -73,8 +73,8 @@ body = "Evaluate Noise/Vibration characteristics of vehicles in various situatio
 
 [[params.two.section]]
 img = "img/pic03.jpg"
-title = 'Magna primis lobortis<br />sed ullamcorper'
-body = 'Aliquam ut ex ut augue consectetur interdum. Donec hendrerit imperdiet. Mauris eleifend fringilla nullam aenean mi ligula.'
+title = 'Coastdown Testing'
+body = 'Get road load coefficients of each vehicle by this method. Supports internatial standards such as WTLP or J2263.'
 
 [params.three]
 enable = true
