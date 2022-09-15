@@ -114,6 +114,50 @@ class ChartData{
     );
     }
 
+    Map<String, dynamic> toMap(){
+      return <String,dynamic>{
+      "test id":testId,
+      "name":name,
+      "model year":modelYear,
+      "brand":brand,
+      "fuel type":fuelType,
+      "engine name":engineName,
+      "engine type":engineType,
+      "cylinder volumn":cylinderVolumn,
+      "transmission":transmission,
+      "wheel drive":wheelDrive,
+      "vin":vin,
+      "odo":odo,
+      "layout":layout,
+      "tire":tire,
+      "fgr":fgr,
+      "wltp_a":wltp_a,
+      "wltp_b":wltp_b,
+      "wltp_c":wltp_c,
+      "j2263_a":j2263_a,
+      "j2263_b":j2263_b,
+      "j2263_c":j2263_c,
+      "idle noise":idleNoise,
+      "idle vibration":idleVibraton,
+      "idle vibration source":idleVibrationSrc,
+      "wot noise coefficient":wotNoiseCoefficient,
+      "wot noise intercept":wotNoiseIntercept,
+      "wot vibration":wotVibration,
+      "road noise":roadNoise,
+      "road booming":roadBooming,
+      "tire noise":tireNoise,
+      "rumble":rumble,
+      "cruise 60 vibration":cruise60Vibration,
+      "wind noise":windNoise,
+      "cruise 120 vibration":cruise120Vibration,
+      "acceleration noise coefficient":accNoiseCoefficient,
+      "acceleration noise intercept":accNoiseIntercept,
+      "accleration vibration":accVibration,
+      "mdps Noise":mdpsNoise,
+      "details page":detailsPage,
+      };
+    }
+
 
   toPowertrainCardDataList(){
     List<List<String>> ret = [];
