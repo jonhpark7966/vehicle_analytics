@@ -53,11 +53,12 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBwCc8077k08Rf87xTKtkjzgFG7ZT2niJ8',
-    appId: '1:1043891900889:web:9fc154beb54e13274689c8',
-    messagingSenderId: '1043891900889',
-    projectId: 'fluttertest-8b3de',
-    authDomain: 'fluttertest-8b3de.firebaseapp.com',
-    storageBucket: 'fluttertest-8b3de.appspot.com',
+    apiKey: 'AIzaSyAU-Ddw3wWGjXx4xU5PIzdELjLY3C5bN9o',
+    appId: '1:969353545665:web:6127fdb7de3ab0cb98d140',
+    messagingSenderId: '969353545665',
+    projectId: 'a18s-app',
+    authDomain: 'a18s-app.firebaseapp.com',
+    storageBucket: 'a18s-app.appspot.com',
+    measurementId: 'G-QK82S2VE5D',
   );
 }

@@ -20,7 +20,6 @@ transmission: 6, j2263_c: 0.042356, wheel drive: 2WD}
 name: Palisade, model year: 2021, transmission: 8, cylinder volumn: 2199, engine type: I4, fuel type: Diesel,
 c: 0.003, engine name: R, vin: KMH1029381..}
 """
-
 */
 
 
@@ -69,7 +68,7 @@ class _MainPageState extends State<MainPage> {
     super.initState();
 
     // 1. get last test id from firestore.
-   db.collection("data").orderBy("test id").limitToLast(1).get().then((event) {
+   db.collection("chart_data").orderBy("test id").limitToLast(1).get().then((event) {
       for(var doc in event.docs){
         currentData = ChartData.fromJson(doc.data());
         currentMap = currentData.toMap();
@@ -114,7 +113,7 @@ class _MainPageState extends State<MainPage> {
                           }).toList(),
                           onChanged: (newVal) {
                             testId = newVal as int;
-                            db.collection("data").where("test id", isEqualTo: testId)
+                            db.collection("chart_data").where("test id", isEqualTo: testId)
                                 .get()
                                 .then((event) {
                               assert(event.docs.length == 1);
@@ -130,7 +129,7 @@ class _MainPageState extends State<MainPage> {
                   child: const Text("New Test"),
                   onPressed: (){
                     var dummyMap = {"test id":testId+1};
-                    db.collection("data").add(dummyMap);
+                    db.collection("chart_data").add(dummyMap);
                     testId++;
                     testCandidates.add(testId);
                     currentData = ChartData.fromJson(dummyMap);
@@ -143,7 +142,7 @@ class _MainPageState extends State<MainPage> {
                   child:const Text("Upload!"),
                     onPressed: () {
                            db
-                          .collection("data")
+                          .collection("chart_data")
                           .where("test id", isEqualTo: testId)
                           .get()
                           .then((event) {
