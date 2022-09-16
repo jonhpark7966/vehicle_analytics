@@ -37,6 +37,10 @@ dependencies:
 
   cloud_firestore: ^3.4.4
   firebase_core: ^1.22.0
+  firebase_storage: ^10.3.6
+
+
+  file_picker: ^5.1.0
 
   #data
   data_handler:
