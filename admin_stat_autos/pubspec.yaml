@@ -45,6 +45,7 @@ dependencies:
   #data
   data_handler:
      path: ../data_handler
+  excel: 2.0.0-null-safety
 
 
 

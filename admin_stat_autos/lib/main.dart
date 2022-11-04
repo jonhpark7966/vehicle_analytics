@@ -15,10 +15,11 @@ import 'package:file_picker/file_picker.dart';
 import 'test_files.dart';
 
 void main() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
+  try{
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform
+    );} catch(_){}
   runApp(const MyApp());
 }
 
@@ -53,6 +54,7 @@ class _MainPageState extends State<MainPage> {
 
   // ignore: prefer_final_fields
   CoastdownTestFiles _coastdownTestFiles = CoastdownTestFiles();
+  PerformanceTestFiles _performanceTestFiles = PerformanceTestFiles();
 
    Map<NVHTest, NVHAnalyzer> analyzers = {};
   Map<NVHTest, String> nvhFileName = {};
@@ -176,14 +178,47 @@ class _MainPageState extends State<MainPage> {
 
   _buildPerformanceButtons(){
     return <Widget>[
+      const SizedBox(height:50),
       ElevatedButton(
         onPressed: () {
-          //_pickAccelerationFile();
+          _pickAccelerationFile();
         },
         child: const Text("Pick 동력성능 결과 파일"),
       ),
-      //Text(passingAccelFileName),
+      Text(_performanceTestFiles.accelerationFile),
       const SizedBox(height: 10),
+
+      ElevatedButton(
+        onPressed: () {
+          _pickPassingAccelerationFiles();
+        },
+        child: const Text("추월 가속 결과 파일들"),
+      ),
+      (Text(_performanceTestFiles.passingAccel3070FileNames.isEmpty
+          ? ""
+          : "${_performanceTestFiles.passingAccel3070FileNames[0]}, 외 ")),
+      const SizedBox(height: 10),
+
+      ElevatedButton(
+        onPressed: () {
+          //_pickStartingAccelerationFiles();
+        },
+        child: const Text("발진 가속 결과 파일들"),
+      ),
+      (Text(_performanceTestFiles.startingAccelerationFileNames.isEmpty
+          ? ""
+          : "${_performanceTestFiles.startingAccelerationFileNames[0]}, 외 ")),
+      const SizedBox(height: 10),
+
+      ElevatedButton(
+        onPressed: () {
+          //_pickBrakingFile();
+        },
+        child: const Text("Pick 성능 결과 파일"),
+      ),
+      Text(_performanceTestFiles.accelerationFile),
+      const SizedBox(height: 10),
+
       
     ];
   }
@@ -202,7 +237,8 @@ class _MainPageState extends State<MainPage> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                   children: _buildTestPannel() +
-                      _buildCoastdownButtons()
+                      _buildCoastdownButtons() +
+                      _buildPerformanceButtons()
                   //  + _buildNVHButtons()
               )),
           const VerticalDivider(),
@@ -428,6 +464,80 @@ class _MainPageState extends State<MainPage> {
     _showPopupMessage("Success!\n");
     setState(() {});
   }
+
+  _pickAccelerationFile() async {
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.any);
+
+    if (result != null) {
+      var name = result.files.first.name;
+
+      if (!name.contains("xls")) {
+        _showPopupMessage("Selected file is not a valid xls file");
+        return;
+      }
+
+      _performanceTestFiles.accelerationFile = result.files.first.path!;
+      _performanceTestFiles.accelerationFileBytes = result.files.first.bytes;
+
+      var ret = _performanceTestFiles.parsePerformanceExcelFile();
+
+      if (false){ //(a == 0) || (b == 0) || (c == 0)) {
+        _showPopupMessage("Selected file is not a valid log file");
+        return;
+      }
+
+      // success!
+      _showPopupMessage("Success!");//\n a = $a\n b = $b\n c = $c");
+      setState(() {
+      });
+  }
+  }
+
+  _pickPassingAccelerationFiles() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['xls'],
+      allowMultiple: true,
+    );
+
+    if (result != null) {
+
+      _performanceTestFiles.clearPassingAccel();
+
+
+      for(PlatformFile file in result.files){
+        String name = file.name;
+        if (!name.contains("kph")) {
+          _showPopupMessage("Selected file is not a valid file");
+          return;
+        }
+
+        if(name.contains("30-70kph")){
+          _performanceTestFiles.passingAccel3070FileNames.add(name);
+          _performanceTestFiles.passingAccel3070FileBytes.add(file.bytes!);
+        }else if(name.contains("40-80kph")){
+          _performanceTestFiles.passingAccel4080FileNames.add(name);
+          _performanceTestFiles.passingAccel4080FileBytes.add(file.bytes!);
+        }else if(name.contains("60-100kph")){
+          _performanceTestFiles.passingAccel60100FileNames.add(name);
+          _performanceTestFiles.passingAccel60100FileBytes.add(file.bytes!);
+        }else if(name.contains("100-140kph")){
+          _performanceTestFiles.passingAccel100140FileNames.add(name);
+          _performanceTestFiles.passingAccel100140FileBytes.add(file.bytes!);
+        }
+      }
+
+      // success!
+      _showPopupMessage("Success!, files in queue");
+      setState(() {
+        //currentMap["j2263_c"] = c;
+      });
+  }
+  }
+
+
+
 
   _pickHdfFile(NVHTest test) async {
     FilePickerResult? result =

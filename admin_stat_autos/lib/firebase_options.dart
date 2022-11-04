@@ -21,20 +21,11 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -60,5 +51,33 @@ class DefaultFirebaseOptions {
     authDomain: 'a18s-app.firebaseapp.com',
     storageBucket: 'a18s-app.appspot.com',
     measurementId: 'G-QK82S2VE5D',
+  );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyCD3g9KXkdhMXPHnuCJXcxiQOmR-J-q25E',
+    appId: '1:969353545665:android:a3db7ef85b5b57f198d140',
+    messagingSenderId: '969353545665',
+    projectId: 'a18s-app',
+    storageBucket: 'a18s-app.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyCj5ekEPnhH3U4R4sjebsABRMXYtOOqcA0',
+    appId: '1:969353545665:ios:5cab5708ad62648498d140',
+    messagingSenderId: '969353545665',
+    projectId: 'a18s-app',
+    storageBucket: 'a18s-app.appspot.com',
+    iosClientId: '969353545665-78434s5sbv50kp3q848pp1aodfnvugps.apps.googleusercontent.com',
+    iosBundleId: 'com.example.adminStatAutos',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyCj5ekEPnhH3U4R4sjebsABRMXYtOOqcA0',
+    appId: '1:969353545665:ios:5cab5708ad62648498d140',
+    messagingSenderId: '969353545665',
+    projectId: 'a18s-app',
+    storageBucket: 'a18s-app.appspot.com',
+    iosClientId: '969353545665-78434s5sbv50kp3q848pp1aodfnvugps.apps.googleusercontent.com',
+    iosBundleId: 'com.example.adminStatAutos',
   );
 }
