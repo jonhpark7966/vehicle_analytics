@@ -28,6 +28,8 @@ errormsg = organizer.checkFiles()
 #brakeHtmlConverter.convert()
 
 # TEMP TEST
-hdf = HdfReader(organizer.wotHdfPathList[0])
+hdf = HdfReader(organizer.idleHdfPathList[0])
 hdf.parseSync()
-hdf.channels[0].toWavFile()
+path = "/Users/jonhpark/Desktop/auto_stat_example/outputs/IDLE"
+os.mkdir(path)
+hdf.channels[0].toMP3File(path)

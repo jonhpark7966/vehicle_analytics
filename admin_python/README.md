@@ -14,3 +14,7 @@ dependency
   
   - NVH Analysis
     - scipy : pip3 install scipy
+    - pydub : pip3 install pydub (mp3)
+    - ffmpeg 
+       - MAC: brew instlal ffmpeg 
+       - Windows: refer https://blog.gregzaal.com/how-to-install-ffmpeg-on-windows/
