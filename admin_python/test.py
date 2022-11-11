@@ -28,5 +28,6 @@ errormsg = organizer.checkFiles()
 #brakeHtmlConverter.convert()
 
 # TEMP TEST
-hdf = HdfReader(organizer.idleHdfPathList[0])
+hdf = HdfReader(organizer.wotHdfPathList[0])
 hdf.parseSync()
+hdf.channels[0].toWavFile()

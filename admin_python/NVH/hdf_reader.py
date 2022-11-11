@@ -79,7 +79,7 @@ class HdfReader :
                     break
 
             if "*" in ch:
-                frequency = int(ch[0].split("*")[0])
+                frequency = int(ch.split("*")[0])
             else:
                 frequency = 1
 
@@ -107,7 +107,7 @@ class HdfReader :
         f.seek(self.startPoint)
         while True:
             buf = f.read(blockSize)
-            if buf == 0:
+            if len(buf) == 0:
                 break
             self._parseBlock(buf)
 
