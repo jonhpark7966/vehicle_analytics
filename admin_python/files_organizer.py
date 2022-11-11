@@ -23,16 +23,16 @@ class FileOrganizer:
     #NVH
     idleHdfPathList = []
     cruiseHdfPathList = []
-    # ...
+    wotHdfPathList = []
+    accelHdfPathList = []
+    decelHdfPathList = []
+    mdpsHdfPathList = []
 
     # Constructor.
     def __init__(self, rootPath):
         self.rootPath = rootPath
 
     def parsingFiles(self):
-
-        parsingPerformanceExcels()
-
         return "parsing results"
 
 
@@ -41,7 +41,7 @@ class FileOrganizer:
         childrenList = os.listdir(self.rootPath)
         self.checkCoastdownFiles(childrenList)
         self.checkPerformanceFiles(childrenList)
-        #checkNVHFiles()
+        self.checkNVHFiles(childrenList)
 
         return self.throwEmptyFiles()
 
@@ -88,34 +88,65 @@ class FileOrganizer:
                     elif '제동성능' in filePath:
                         self.brakingRawList.append(os.path.join(self.rootPath, dirpath, filePath))
 
+    def checkNVHFiles(self, list):
+        for dirpath in list:
+            if 'NVH' in dirpath:
+                for filePath in os.listdir(os.path.join(self.rootPath, dirpath)):
+                    # IDLE
+                    if "IDLE" in filePath:
+                        self.idleHdfPathList.append(os.path.join(self.rootPath, dirpath, filePath))
+                    # WOT 
+                    if "WOT" in filePath:
+                        self.wotHdfPathList.append(os.path.join(self.rootPath, dirpath, filePath))
+                    # Cruise 
+                    if "CRUISE" in filePath:
+                        self.cruiseHdfPathList.append(os.path.join(self.rootPath, dirpath, filePath))
+                    # Accel = (HOT, SWOT)
+                    if "HOT" in filePath:
+                        self.accelHdfPathList.append(os.path.join(self.rootPath, dirpath, filePath))
+                    # DECEL 
+                    if "DECEL" in filePath:
+                        self.decelHdfPathList.append(os.path.join(self.rootPath, dirpath, filePath))
+                    # MDPS 
+                    if "MDPS" in filePath:
+                        self.mdpsHdfPathList.append(os.path.join(self.rootPath, dirpath, filePath))
+
     def throwEmptyFiles(self):
         ret = "Checking result files ..."
 
         if self.j2263LogPath == "":
             ret += "\n J2263 Log file is empty"
-
         if self.j2263RawPath == "":
             ret += "\n J2263 Raw file is empty"
-
         if self.wltpLogPath == "":
             ret += "\n WLTP Log file is empty"
-
         if self.wltpRawPath == "":
             ret += "\n WLTP Raw file is empty"
 
         if self.performanceHtmlPath == "":
             ret += "\n Accleration HTML file is empty"
-
         if len(self.performanceStartingAccelRawList) == 0:
             ret += "\n Starting Accleration Raw files are empty"
-
         if len(self.performancePassingAccelRawList) == 0:
             ret += "\n Passing Accleration Raw files are empty"
-
         if self.brakingHtmlPath == "":
             ret += "\n Braking HTML file is empty"
-
         if len(self.brakingRawList) == 0:
             ret += "\n Braking  Raw files are empty"
+
+        if len(self.idleHdfPathList) == 0:
+            ret += "\n IDLE HDF files are empty"
+        if len(self.cruiseHdfPathList) == 0:
+            ret += "\n CRUISE HDF files are empty"
+        if len(self.wotHdfPathList) == 0:
+            ret += "\n WOT HDF files are empty"
+        if len(self.accelHdfPathList) == 0:
+            ret += "\n Accel HDF files are empty"
+        if len(self.decelHdfPathList) == 0:
+            ret += "\n Decel HDF files are empty"
+        if len(self.mdpsHdfPathList) == 0:
+            ret += "\n MDPS HDF files are empty"
+
+
 
         return ret
