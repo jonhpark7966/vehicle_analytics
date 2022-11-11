@@ -2,6 +2,7 @@ import os
 import pandas as pd
 
 import csv
+import re
 
 class VMSExcelConverter:
     paths = []
@@ -11,7 +12,10 @@ class VMSExcelConverter:
     variablesToGet = ["Time(sec)", "GPSSpeed", "RunningDistance"]
 
     def _getFilePrefix(self, date, direction, runNumber):
-        return "_Run"+str(runNumber) + "_direction("+direction+")_" + date + "_"
+        if direction == "":
+            return "_Run"+str(runNumber) + "_" + date 
+        else:
+            return "_Run"+str(runNumber) + "_direction("+direction+")_" + date
 
     def _isValidExcelFile(self, filePath):
         # Open Excel
@@ -29,9 +33,45 @@ class VMSExcelConverter:
         
         return xls 
 
-    
+    def _parseTSV(self, filePath, prefix):
+        self.runNumber = self.runNumber + 1
+
+        date = re.findall('20[0-9]{6} [0-9]{6}', filePath)[0]
+        barometer = 0
+        airTemp = 0
+
+        sheet = pd.read_csv(filePath, delimiter='\t', keep_default_na=False)
+
+        rowsToWrite = []
+        distanceInit = False
+        for i, row in sheet.iterrows():
+            rowToWrite = []
+
+            if i == 0: # skip second line. 
+                continue
+
+            for var in self.variablesToGet:
+                if var == "[RunningDistance]" and not distanceInit:
+                    if row[var] == 0.0:
+                        distanceInit = True
+                    else:
+                        row[var] = 0.0
+
+                rowToWrite.append("{:.2f}".format(float(row[var])))
+            rowsToWrite.append(rowToWrite)
+
+            if i == 0:
+                barometer = "{:.2f}".format(row["[Barometer]"])
+                airTemp = "{:.2f}".format(row["[TAir]"])
+
+            f = open(os.path.join(self.outputPath, prefix + self._getFilePrefix(date,"", self.runNumber) + ".csv"), 'w')
+            writer = csv.writer(f)
+            writer.writerow(["Barometer", barometer, "Air Temperature", airTemp ])
+            writer.writerow(self.variablesToGet)
+            writer.writerows(rowsToWrite)
+            f.close() 
+
     def _parseExcel(self, xls, filePath, prefix):
-            
             self.runNumber = self.runNumber + 1
             
             test = xls.parse(nrows=1, sheet_name=0)
@@ -88,6 +128,7 @@ class PassingAccelExcelConverter(VMSExcelConverter):
         self.paths = paths 
         self.outputPath = outputPath
 
+
     def _getKphRangeFromFilePath(self, filePath):
         return filePath.split('kph')[0].split('_')[-1]
 
@@ -108,3 +149,17 @@ class PassingAccelExcelConverter(VMSExcelConverter):
                 continue
 
 
+## txt file but tsv format.
+class BrakingExcelConverter(VMSExcelConverter):
+    # Constructor.
+    def __init__(self, paths, outputPath):
+        self.paths = paths
+        self.outputPath = outputPath
+        self.variablesToGet = ["[Time]", "[GPSSpeed]"]
+
+    def convert(self):
+        for filePath in self.paths:
+            try:
+                self._parseTSV(filePath, "Braking")
+            except:
+                continue

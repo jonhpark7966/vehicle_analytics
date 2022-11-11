@@ -86,8 +86,7 @@ class FileOrganizer:
                         self.brakingHtmlPath = os.path.join(self.rootPath, dirpath, filePath)
 
                     elif '제동성능' in filePath:
-                        for path in filePaths:
-                            self.brakingRawList.append(os.path.join(self.rootPath, dirpath, subdirPath, path))
+                        self.brakingRawList.append(os.path.join(self.rootPath, dirpath, filePath))
 
     def throwEmptyFiles(self):
         ret = "Checking result files ..."

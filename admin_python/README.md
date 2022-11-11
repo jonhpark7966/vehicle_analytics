@@ -7,3 +7,7 @@ dependency
   - Excel Pasring
     - pandas : pip3 install pandas 
     - openpyxl : pip3 install openpyxl
+  
+  - Html Parsing
+    - Beautifulsoup : pip3 install beautifulsoup4
+    - lxml : pip3 install lxml
