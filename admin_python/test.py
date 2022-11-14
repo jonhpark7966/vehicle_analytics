@@ -1,9 +1,13 @@
+from NVH.nvh_analyzer import *
+from NVH.analyzer.nvh_test_type import NVHTestType
 from files_organizer import FileOrganizer
 
 from vms_file_handler.vms_excel_converter import *
 from vms_file_handler.vms_html_converter import *
 
 from NVH.hdf_reader import *
+
+from pathlib import Path
 
 
 
@@ -31,5 +35,8 @@ errormsg = organizer.checkFiles()
 hdf = HdfReader(organizer.idleHdfPathList[0])
 hdf.parseSync()
 path = "/Users/jonhpark/Desktop/auto_stat_example/outputs/IDLE"
-os.mkdir(path)
+Path(path).mkdir(parents=True, exist_ok=True)
 hdf.channels[0].toMP3File(path)
+
+analyzer = NVHAnalyzer(hdf.channels, NVHTestType.Idle)
+analyzer.analyze()

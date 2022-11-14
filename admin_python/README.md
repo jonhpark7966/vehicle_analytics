@@ -18,3 +18,5 @@ dependency
     - ffmpeg 
        - MAC: brew instlal ffmpeg 
        - Windows: refer https://blog.gregzaal.com/how-to-install-ffmpeg-on-windows/
+
+    - matplotlib : pip3 install matplotlib (view colormap & graph for dev)
