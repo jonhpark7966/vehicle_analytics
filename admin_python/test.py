@@ -38,5 +38,5 @@ path = "/Users/jonhpark/Desktop/auto_stat_example/outputs/IDLE"
 Path(path).mkdir(parents=True, exist_ok=True)
 hdf.channels[0].toMP3File(path)
 
-analyzer = NVHAnalyzer(hdf.channels, NVHTestType.Idle)
+analyzer = NVHAnalyzer(hdf.channels, NVHTestType.Idle, path)
 analyzer.analyze()

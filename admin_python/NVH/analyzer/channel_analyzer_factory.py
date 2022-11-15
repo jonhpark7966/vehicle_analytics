@@ -7,7 +7,7 @@ from NVH.channel_data_model import SignalType
 
 # Factory Method
 def createChannelAnalyzer(channelDataModel, testType, tachoChannels):
-
+        
     if testType == NVHTestType.Idle:
         if channelDataModel.getType() == SignalType.Noise:
             return IdleNoiseAnalyzer(channelDataModel, tachoChannels)
@@ -22,5 +22,6 @@ def createChannelAnalyzer(channelDataModel, testType, tachoChannels):
 
 
     #assert False # TODO handle for not nvh channel.
+
     return None
 

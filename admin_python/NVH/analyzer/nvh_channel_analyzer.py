@@ -3,14 +3,6 @@ from NVH.analyzer.analyze_options import AnalyzeOptions
 
 
 class NVHChannelAnalyzer:
-    dataDict1D = {}
-    dataDict2D = {}
-    dataDict3D = {}
-    
-    signalChannel = None
-    tachoChannels = []
-    analyzeOptions = None
-
     def __init__(self, signalChannel, tachoChannels):
         self.dataDict1D = {}
         self.dataDict2D = {}
@@ -33,6 +25,11 @@ class NVHChannelAnalyzer:
 
     def analyze2to1():
         return
+
+    def export(self, outputPath):
+        for k,value in self.dataDict3D.items():
+            value.export(k, outputPath, self.signalChannel.name)
+
 
 class NoiseChannelAnalyzer(NVHChannelAnalyzer):
     def __init__(self, signalChannel, tachoChannels):

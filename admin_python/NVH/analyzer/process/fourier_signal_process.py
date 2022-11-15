@@ -27,25 +27,19 @@ class FourierSignalProcess():
             window = [datum/frequency for datum in data[offset:offset+windowSize]]
             fft_abs = 20 * np.log10(
             (np.abs(scipy.fft.fft(window * options.getWindow(windowSize)))
-             * options.energyCorrectionFactor) / options.referenceValue)
+             * options.energyCorrectionFactor) / options.referenceValue).astype("float32")
 
             offset = offset + int(windowSize * (1-overlap))
 
             ret.data.append(fft_abs[0:int(frequency/2)])
 
-        self._showColormap(ret.data)
+        ret.showColormap()
         
-        return ret.data
+        return ret
 
     def orderFFT():
         return
 
 
-    def _showColormap(self, data):
-        # DEBUG FLAG to show colormap
-        if False:
-            plt.imshow(data, origin='lower', aspect='auto', vmin=30, vmax=80, cmap="jet")
-            plt.colorbar() 
-            plt.show()
 
 
