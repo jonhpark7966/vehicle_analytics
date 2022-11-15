@@ -2,13 +2,6 @@ import json
 import os
 
 class DataModel3D:
-    unit = ""
-    xAxisunit = ""
-    xAxisDelta = 0
-    yAxisunit = ""
-    yAxisDelta = 0
-    data = None # 2d array after fft.
-
     def __init__(self, unit, xAxisunit, xAxisDelta, yAxisunit, yAxisDelta):
         self.unit = unit
         self.xAxisunit = xAxisunit
@@ -29,7 +22,7 @@ class DataModel3D:
         plt.imshow(self.data, origin='lower', aspect='auto', vmin=30, vmax=80, cmap="jet")
         plt.colorbar() 
         plt.show()
-
+    
     def export(self, dataName, outputPath, channelName):
         if len(self.data) == 0:
             print(" Not analyzed yet. ")

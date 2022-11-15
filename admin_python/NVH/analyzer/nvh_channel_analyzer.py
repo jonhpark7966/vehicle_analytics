@@ -12,11 +12,6 @@ class NVHChannelAnalyzer:
         self.signalChannel = signalChannel
         self.tachoChannels = tachoChannels
 
-    def analyzer(self):
-        self.analyzeSignalTo3()
-        self.analyze3to2()
-        self.analyze2to1()
-
     def analyzeSignalTo3():
         return
 

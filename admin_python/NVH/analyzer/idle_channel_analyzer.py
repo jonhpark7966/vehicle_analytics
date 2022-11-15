@@ -1,4 +1,5 @@
-from NVH.analyzer.nvh_channel_analyzer import NoiseChannelAnalyzer, VibrationChannelAnalyzer 
+from NVH.analyzer.nvh_channel_analyzer import NoiseChannelAnalyzer, VibrationChannelAnalyzer
+from .process.project_process import ProjectProcess 
 from .process.fourier_signal_process import FourierSignalProcess
 
 class IdleNoiseAnalyzer(NoiseChannelAnalyzer):
@@ -9,7 +10,14 @@ class IdleNoiseAnalyzer(NoiseChannelAnalyzer):
         processor = FourierSignalProcess()
         self.dataDict3D["Time Colormap"] = processor.timeFFT(self.signalChannel, self.analyzeOptions)
 
-    def analyze3to2():
+    def analyze3to2(self):
+
+        processor = ProjectProcess()
+        self.dataDict2D["Frequency Graph"] = processor.projectX(self.dataDict3D["Time Colormap"], self.analyzeOptions)
+
+        # dbA, dBC
+        # dbA, dBC
+
         return 
 
     def analyze2to1():
@@ -24,6 +32,7 @@ class IdleVibrationAnalyzer(VibrationChannelAnalyzer):
         self.dataDict3D["Time Colormap"] = processor.timeFFT(self.signalChannel, self.analyzeOptions)
 
     def analyze3to2(self):
+        # graph
         return 
 
     def analyze2to1():

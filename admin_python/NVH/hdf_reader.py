@@ -3,19 +3,18 @@ import struct
 from NVH.channel_data_model import ChannelDataModel
 
 
-class HdfReader :
-    hdfFilePath = ""
+class HdfReader:
     baseBlockFrequency = 1000; # assume 1kHz, should be parsed from delta value
-    dataLength = 0
-    startPoint = 65536 # first candidate
-    numberOfChannel = 0
-    nbrBlock = 0
-
-    channels = []
-
+    
     # Constructor.
     def __init__(self, path):
         self.hdfFilePath = path
+        self.dataLength = 0
+        self.startPoint = 65536 # first candidate
+        self.numberOfChannel = 0
+        self.nbrBlock = 0
+        self.channels = []
+
 
     def parseSync(self):
         self._parseHeader()
