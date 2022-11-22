@@ -19,6 +19,6 @@ class NVHAnalyzer:
     def analyze(self):
         for channelAnalyzer in self.channelAnalyzers:
             channelAnalyzer.analyzeSignalTo3()
-            channelAnalyzer.export(self.outputPath)
             channelAnalyzer.analyze3to2()
+            channelAnalyzer.export(self.outputPath)
 

@@ -24,6 +24,9 @@ class NVHChannelAnalyzer:
     def export(self, outputPath):
         for k,value in self.dataDict3D.items():
             value.export(k, outputPath, self.signalChannel.name)
+        for k,value in self.dataDict2D.items():
+            value.export(k, outputPath, self.signalChannel.name)
+
 
 
 class NoiseChannelAnalyzer(NVHChannelAnalyzer):

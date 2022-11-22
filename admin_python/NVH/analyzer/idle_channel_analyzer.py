@@ -11,17 +11,12 @@ class IdleNoiseAnalyzer(NoiseChannelAnalyzer):
         self.dataDict3D["Time Colormap"] = processor.timeFFT(self.signalChannel, self.analyzeOptions)
 
     def analyze3to2(self):
-
         processor = ProjectProcess()
         self.dataDict2D["Frequency Graph"] = processor.projectX(self.dataDict3D["Time Colormap"], self.analyzeOptions)
 
-        # dbA, dBC
-        # dbA, dBC
-
-        return 
-
-    def analyze2to1():
-        return
+    def analyze2to1(self):
+        #get rms
+        self.dataDict2D["Frequency Graph"] 
 
 class IdleVibrationAnalyzer(VibrationChannelAnalyzer):
     def __init__(self, signalChannel, tachoChannels):
@@ -32,8 +27,8 @@ class IdleVibrationAnalyzer(VibrationChannelAnalyzer):
         self.dataDict3D["Time Colormap"] = processor.timeFFT(self.signalChannel, self.analyzeOptions)
 
     def analyze3to2(self):
-        # graph
-        return 
+        processor = ProjectProcess()
+        self.dataDict2D["Frequency Graph"] = processor.projectX(self.dataDict3D["Time Colormap"], self.analyzeOptions)
 
     def analyze2to1():
         return
