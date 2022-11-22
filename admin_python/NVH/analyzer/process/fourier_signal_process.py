@@ -9,12 +9,11 @@ import scipy.fft
 
 class FourierSignalProcess():
 
-    def timeFFT(self, signal, options):
+    def timeFFT(self, signal, referenceValue, freqRes):
 
         data = signal.data
         frequency = signal.frequency
-        freqRes = options.frequencyResolution
-        overlap = options.overlap
+        overlap =  AnalyzeOptions.overlap
         windowSize = int(frequency / freqRes)
 
         ret = DataModel3D("dB", "Hz", freqRes, "s", (1-overlap)/freqRes)
@@ -26,8 +25,8 @@ class FourierSignalProcess():
 
             window = [datum/frequency for datum in data[offset:offset+windowSize]]
             fft_abs = 20 * np.log10(
-            (np.abs(scipy.fft.fft(window * options.getWindow(windowSize)))
-             * options.energyCorrectionFactor) / options.referenceValue).astype("float32")
+            (np.abs(scipy.fft.fft(window * AnalyzeOptions().getWindow(windowSize)))
+             * AnalyzeOptions.amplitudeCorrectionFactor * AnalyzeOptions.peakRmsCorrectionFactor) / referenceValue).astype("float32")
 
             offset = offset + int(windowSize * (1-overlap))
 

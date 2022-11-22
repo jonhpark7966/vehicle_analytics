@@ -1,9 +1,11 @@
 import os
 import json
+from ..process.weighting_process import WeightingProcessor
 
 class DataModel2D:
     def __init__(self, unit, xAxisunit, xAxisDelta):
         self.unit = unit
+        self.xAxisStart = 0.0
         self.xAxisunit = xAxisunit
         self.xAxisDelta = xAxisDelta        
         self.data = []
@@ -21,4 +23,30 @@ class DataModel2D:
                 jsonDict[str(i)] = str(round(datum, 2))
 
             json.dump(jsonDict, f)
+
+    def getAWeighted(self):
+        ret = DataModel2D(self.unit, self.xAxisunit, self.xAxisDelta)
+        ret.data = self._weights().processAweighting(self.data)
+        return ret
+    
+    def getCWeighted(self):
+        ret = DataModel2D(self.unit, self.xAxisunit, self.xAxisDelta)
+        ret.data = self._weights().processCweighting(self.data)
+        return ret
+
+    def _weights(self):
+        if self.xAxisunit is not "Hz":
+            assert False
+        endFreq = int(len(self.data) / self.xAxisDelta - self.xAxisStart/self.xAxisDelta)
+        weights = WeightingProcessor(endFreq, self.xAxisDelta)  
+        return weights
+
+
+
+
+
+
+        
+
+
 

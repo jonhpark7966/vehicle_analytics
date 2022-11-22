@@ -1,3 +1,4 @@
+import json
 from NVH.channel_data_model import *
 from NVH.analyzer.analyze_options import AnalyzeOptions
 
@@ -22,23 +23,37 @@ class NVHChannelAnalyzer:
         return
 
     def export(self, outputPath):
-        for k,value in self.dataDict3D.items():
-            value.export(k, outputPath, self.signalChannel.name)
+        return
+
+    def export1D(self, outputPath):
+        with open(os.path.join(outputPath, self.signalChannel.name+".json"), "w") as f:
+            jsonDict = {}
+            for k,v in self.dataDict1D.items():
+                jsonDict[k] = v.getString()
+
+            json.dump(jsonDict, f)
+    
+    def export2D(self, outputPath):
         for k,value in self.dataDict2D.items():
             value.export(k, outputPath, self.signalChannel.name)
+
+
+
 
 
 
 class NoiseChannelAnalyzer(NVHChannelAnalyzer):
     def __init__(self, signalChannel, tachoChannels):
         super().__init__(signalChannel, tachoChannels)
-        self.analyzeOptions.frequencyResolution =1.0 
+        self.analyzeOptions.frequencyResolution = 1.0 
         self.analyzeOptions.referenceValue = 0.00002
+        self.startFrequency = 20
 
 class VibrationChannelAnalyzer(NVHChannelAnalyzer):
     def __init__(self, signalChannel, tachoChannels):
         super().__init__(signalChannel, tachoChannels)
         self.analyzeOptions.frequencyResolution = 0.5
         self.analyzeOptions.referenceValue = 0.000001
+        self.startFrequency = 2
 
 

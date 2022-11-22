@@ -23,7 +23,7 @@ class DataModel3D:
         plt.colorbar() 
         plt.show()
     
-    def export(self, dataName, outputPath, channelName):
+    def export(self, dataName, outputPath, channelName, endFreq):
         if len(self.data) == 0:
             print(" Not analyzed yet. ")
             return
@@ -36,12 +36,13 @@ class DataModel3D:
             json.dump(jsonDict, f)
 
         with open(os.path.join(outputPath, channelName+"_"+dataName+".bin"), "wb") as f:
-            f.write(self._zipData())
+            f.write(self._zipData(endFreq))
             
-    def _zipData(self):
+    def _zipData(self, endFreq):
+        endIndex = int(endFreq/self.xAxisDelta)
         ret = bytes()
         for row in (self.data):
-            ret = ret + row.tobytes()
+            ret = ret + row[0:endIndex].tobytes()
         return ret
 
 

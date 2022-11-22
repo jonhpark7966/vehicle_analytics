@@ -7,7 +7,7 @@ import numpy as np
 
 class ProjectProcess():
 
-    def projectX(self, data3D, options):
+    def projectX(self, data3D, referenceValue):
 
         ret = DataModel2D(
             "dB", data3D.xAxisunit, data3D.xAxisDelta)
@@ -22,7 +22,7 @@ class ProjectProcess():
 
         # get RMS 
         for column in columns: 
-            ret.data.append(UtilsProcessor().getRMS(column, options))
+            ret.data.append(UtilsProcessor().getRMS(column, referenceValue, True))
 
         return ret
 

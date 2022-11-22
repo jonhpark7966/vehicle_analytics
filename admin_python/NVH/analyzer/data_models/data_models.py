@@ -1,9 +1,10 @@
 
 
 class DataModel1D:
-    unit = ""
-    data = 0.0
-
-    def __init__(self, unit):
+    def __init__(self, unit, data):
         self.unit = unit
+        self.data = data
+    
+    def getString(self):
+        return str(self.data) + " " + self.unit
 
