@@ -27,6 +27,7 @@ class FileOrganizer:
     accelHdfPathList = []
     decelHdfPathList = []
     mdpsHdfPathList = []
+    vehicleJsonPath = ""
 
     # Constructor.
     def __init__(self, rootPath):
@@ -110,6 +111,10 @@ class FileOrganizer:
                     # MDPS 
                     if "MDPS" in filePath:
                         self.mdpsHdfPathList.append(os.path.join(self.rootPath, dirpath, filePath))
+                    #vehicle.json
+                    if "vehicle" in filePath:
+                        self.vehicleJsonPath = (os.path.join(self.rootPath, dirpath, filePath))
+
 
     def throwEmptyFiles(self):
         ret = "Checking result files ..."

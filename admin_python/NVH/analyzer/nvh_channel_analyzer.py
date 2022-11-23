@@ -4,7 +4,7 @@ from NVH.analyzer.analyze_options import AnalyzeOptions
 
 
 class NVHChannelAnalyzer:
-    def __init__(self, signalChannel, tachoChannels):
+    def __init__(self, signalChannel, tachoChannels, vehicleMap):
         self.dataDict1D = {}
         self.dataDict2D = {}
         self.dataDict3D = {}
@@ -12,6 +12,7 @@ class NVHChannelAnalyzer:
         self.analyzeOptions = AnalyzeOptions()
         self.signalChannel = signalChannel
         self.tachoChannels = tachoChannels
+        self.vehicleMap = vehicleMap
 
     def analyzeSignalTo3():
         return
@@ -43,17 +44,17 @@ class NVHChannelAnalyzer:
 
 
 class NoiseChannelAnalyzer(NVHChannelAnalyzer):
-    def __init__(self, signalChannel, tachoChannels):
-        super().__init__(signalChannel, tachoChannels)
+    def __init__(self, signalChannel, tachoChannels, vehicleMap):
+        super().__init__(signalChannel, tachoChannels, vehicleMap)
         self.analyzeOptions.frequencyResolution = 1.0 
         self.analyzeOptions.referenceValue = 0.00002
-        self.startFrequency = 20
+        self.analyzeOptions.startFrequency = 20
 
 class VibrationChannelAnalyzer(NVHChannelAnalyzer):
-    def __init__(self, signalChannel, tachoChannels):
-        super().__init__(signalChannel, tachoChannels)
+    def __init__(self, signalChannel, tachoChannels, vehicleMap):
+        super().__init__(signalChannel, tachoChannels, vehicleMap)
         self.analyzeOptions.frequencyResolution = 0.5
         self.analyzeOptions.referenceValue = 0.000001
-        self.startFrequency = 2
+        self.analyzeOptions.startFrequency = 2
 
 

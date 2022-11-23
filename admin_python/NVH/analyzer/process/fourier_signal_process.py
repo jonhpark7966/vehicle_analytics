@@ -23,7 +23,7 @@ class FourierSignalProcess():
             if (offset + windowSize) > len(data) :
                 break
 
-            window = [datum/frequency for datum in data[offset:offset+windowSize]]
+            window = [datum/windowSize for datum in data[offset:offset+windowSize]]
             fft_abs = 20 * np.log10(
             (np.abs(scipy.fft.fft(window * AnalyzeOptions().getWindow(windowSize)))
              * AnalyzeOptions.amplitudeCorrectionFactor * AnalyzeOptions.peakRmsCorrectionFactor) / referenceValue).astype("float32")

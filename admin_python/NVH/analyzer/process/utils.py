@@ -3,19 +3,34 @@ import math
 class UtilsProcessor:
 
     def getRMSFreq(self, dataModel2D, startFreq, endFreq, referenceValue):
+
+        endIndex = len(dataModel2D.data)
+        if endFreq != 0.0:
+            endIndex = (endFreq - dataModel2D.xAxisStart)/dataModel2D.xAxisDelta
+        assert (len(dataModel2D.data) > (endIndex-1))
+
         startIndex = (startFreq - dataModel2D.xAxisStart)/dataModel2D.xAxisDelta
-        endIndex = (endFreq - dataModel2D.xAxisStart)/dataModel2D.xAxisDelta
+        assert (startIndex +1 < endIndex)
 
-        if not startIndex.is_integer():
-            assert False # TODO, handle this case. 
-        if not endIndex.is_integer():
-            assert False # TODO, handle this case. 
+        dataToRMS = dataModel2D.data[round(startIndex):round(endIndex)]
+        linear = [10**(datum/20) * referenceValue for datum in dataToRMS]
 
-        dataToRMS = dataModel2D.data[int(startIndex):int(endIndex)]
+        rms = 0.0
+        for i in range(1, len(linear) -1):
+            rms = rms + linear[i] * linear[i]
 
-        return self.getRMS(dataToRMS, referenceValue)
+        ratio = 0.5 + round(startIndex) - startIndex
+        rms =  rms + linear[0] * linear[0] * ratio
 
-    def getRMS(self, data, referenceValue, divideByLength=False):
+        ratio = 0.5 + endIndex - round(endIndex)
+        rms =  rms + linear[-1] * linear[-1] * ratio
+        
+        rms = math.sqrt(rms)
+        rms = 20 * math.log10(rms / referenceValue)
+
+        return rms
+
+    def getRMS(self, data, referenceValue, divideByLength=True):
         ret = 0.0
         for datum in data:
             # log to linear
@@ -29,8 +44,6 @@ class UtilsProcessor:
         ret = 20 * math.log10(ret / referenceValue)
 
         return ret
-
-    
 
 
 

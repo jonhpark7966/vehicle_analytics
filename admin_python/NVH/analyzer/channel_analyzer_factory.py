@@ -6,19 +6,19 @@ from NVH.channel_data_model import SignalType
 
 
 # Factory Method
-def createChannelAnalyzer(channelDataModel, testType, tachoChannels):
+def createChannelAnalyzer(channelDataModel, testType, tachoChannels, vehicleMap):
         
     if testType == NVHTestType.Idle:
         if channelDataModel.getType() == SignalType.Noise:
-            return IdleNoiseAnalyzer(channelDataModel, tachoChannels)
+            return IdleNoiseAnalyzer(channelDataModel, tachoChannels, vehicleMap)
         elif channelDataModel.getType() == SignalType.Vibration:
-            return IdleVibrationAnalyzer(channelDataModel, tachoChannels)
+            return IdleVibrationAnalyzer(channelDataModel, tachoChannels, vehicleMap)
 
     elif testType == NVHTestType.Accel:
         if channelDataModel.getType() == SignalType.Noise:
-            return AccelNoiseAnalyzer(channelDataModel, tachoChannels)
+            return AccelNoiseAnalyzer(channelDataModel, tachoChannels, vehicleMap)
         elif channelDataModel.getType() == SignalType.Vibration:
-            return AccelVibrationAnalyzer(channelDataModel, tachoChannels)
+            return AccelVibrationAnalyzer(channelDataModel, tachoChannels, vehicleMap)
 
 
     #assert False # TODO handle for not nvh channel.
