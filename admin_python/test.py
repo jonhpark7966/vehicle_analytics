@@ -31,13 +31,22 @@ errormsg = organizer.checkFiles()
 #brakeHtmlConverter = BrakeHtmlConverter([organizer.brakingHtmlPath], "/Users/jonhpark/Desktop/auto_stat_example/outputs")
 #brakeHtmlConverter.convert()
 
-# TEMP TEST
-hdf = HdfReader(organizer.idleHdfPathList[0])
+# TEMP TEST Idle
+#hdf = HdfReader(organizer.idleHdfPathList[0])
+#hdf.parseSync()
+#path = "/Users/jonhpark/Desktop/auto_stat_example/outputs/IDLE"
+#Path(path).mkdir(parents=True, exist_ok=True)
+#hdf.channels[0].toMP3File(path)
+#
+#analyzer = NVHAnalyzer(hdf.channels, NVHTestType.Idle, path, organizer.vehicleJsonPath)
+#analyzer.analyze()
+
+# TEMP TEST Accel 
+hdf = HdfReader(organizer.accelHdfPathList[0])
 hdf.parseSync()
-path = "/Users/jonhpark/Desktop/auto_stat_example/outputs/IDLE"
+path = "/Users/jonhpark/Desktop/auto_stat_example/outputs/Accel"
 Path(path).mkdir(parents=True, exist_ok=True)
 hdf.channels[0].toMP3File(path)
 
-analyzer = NVHAnalyzer(hdf.channels, NVHTestType.Idle, path, organizer.vehicleJsonPath)
+analyzer = NVHAnalyzer(hdf.channels, NVHTestType.Accel, path, organizer.vehicleJsonPath)
 analyzer.analyze()
-

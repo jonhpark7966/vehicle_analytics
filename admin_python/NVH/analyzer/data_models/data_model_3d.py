@@ -1,5 +1,6 @@
 import json
 import os
+import matplotlib.pyplot as plt
 
 class DataModel3D:
     def __init__(self, unit, xAxisunit, xAxisDelta, yAxisunit, yAxisDelta):
@@ -16,7 +17,7 @@ class DataModel3D:
             return
 
         # DEBUG FLAG to show colormap
-        if True:
+        if False:#True:
             return
 
         plt.imshow(self.data, origin='lower', aspect='auto', vmin=30, vmax=80, cmap="jet")

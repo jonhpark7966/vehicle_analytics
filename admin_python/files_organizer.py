@@ -102,8 +102,8 @@ class FileOrganizer:
                     # Cruise 
                     if "CRUISE" in filePath:
                         self.cruiseHdfPathList.append(os.path.join(self.rootPath, dirpath, filePath))
-                    # Accel = (HOT, SWOT)
-                    if "HOT" in filePath:
+                    # Accel = (SWOT, LTI)
+                    if "SWOT" in filePath:
                         self.accelHdfPathList.append(os.path.join(self.rootPath, dirpath, filePath))
                     # DECEL 
                     if "DECEL" in filePath:
