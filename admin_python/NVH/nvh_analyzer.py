@@ -22,7 +22,6 @@ class NVHAnalyzer:
             if channelAnalyzer is not None:
                 self.channelAnalyzers.append(channelAnalyzer)
         
-        
 
     def analyze(self):
         for channelAnalyzer in self.channelAnalyzers:

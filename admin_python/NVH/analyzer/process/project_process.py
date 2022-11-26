@@ -8,7 +8,6 @@ import numpy as np
 class ProjectProcess():
 
     def projectX(self, data3D, referenceValue):
-
         ret = DataModel2D(
             "dB", data3D.xAxisunit, data3D.xAxisDelta)
 
@@ -27,5 +26,29 @@ class ProjectProcess():
         return ret
 
 
-    def projectY(self, data3D, oa, order):
-        return 
+    def projectYOA(self, data3D, referenceValue, startFreq, endFreq):
+        ret = DataModel2D(
+            "dB", data3D.yAxisunit, data3D.yAxisDelta)
+
+        # get RMS 
+        for row in data3D.data: 
+            ret.data.append(UtilsProcessor().getRMSFreq(row, startFreq, endFreq, referenceValue))
+
+        return ret
+
+
+    def projectYOrder(self, data3D, referenceValue, order, transTacho=1.0):
+        ret = DataModel2D(
+            "dB", data3D.yAxisunit, data3D.yAxisDelta)
+
+        # get RMS 
+        for i, row in enumerate(data3D.data): 
+            startFreq, endFreq = self._getFreqRangeFromOrder(data3D.yAxisDelta*i*transTacho, order)
+            ret.data.append(UtilsProcessor().getRMSFreq(row, startFreq, endFreq, referenceValue))
+
+        return ret 
+
+    def _getFreqRangeFromOrder(self, tacho, order):
+        orderWidth = 0.25
+        return tacho*(order - orderWidth), tacho*(order + orderWidth)
+

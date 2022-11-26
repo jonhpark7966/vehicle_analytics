@@ -1,6 +1,7 @@
 import json
 import os
 import matplotlib.pyplot as plt
+from .data_model_2d import DataModel2D
 
 class DataModel3D:
     def __init__(self, unit, xAxisunit, xAxisDelta, yAxisunit, yAxisDelta):
@@ -17,12 +18,21 @@ class DataModel3D:
             return
 
         # DEBUG FLAG to show colormap
-        if False:#True:
+        if True:
             return
 
         plt.imshow(self.data, origin='lower', aspect='auto', vmin=30, vmax=80, cmap="jet")
         plt.colorbar() 
         plt.show()
+
+    def getAWeighted(self):
+        ret = DataModel3D(self.unit, self.xAxisunit, self.xAxisDelta, self.yAxisunit, self.yAxisDelta)
+        for row in self.data:
+            dataModel2D = DataModel2D(self.unit, self.xAxisunit, self.xAxisDelta)
+            dataModel2D.data = row
+            self.data.append(dataModel2D.getAWeighted().data)
+        return ret
+
     
     def export(self, dataName, outputPath, channelName, endFreq):
         if len(self.data) == 0:

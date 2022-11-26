@@ -3,9 +3,9 @@ import json
 from ..process.weighting_process import WeightingProcessor
 
 class DataModel2D:
-    def __init__(self, unit, xAxisunit, xAxisDelta):
+    def __init__(self, unit, xAxisunit, xAxisDelta, xAxisStart=0.0):
         self.unit = unit
-        self.xAxisStart = 0.0
+        self.xAxisStart = xAxisStart
         self.xAxisunit = xAxisunit
         self.xAxisDelta = xAxisDelta        
         self.data = []

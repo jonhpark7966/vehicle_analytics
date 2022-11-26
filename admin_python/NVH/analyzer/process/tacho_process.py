@@ -72,7 +72,7 @@ class TachoProcessor:
         return sum(engineSpeedChannel.data) / len(engineSpeedChannel.data)
 
     def _findFromTachos(self, key):
-        matches = [channel for channel in self.tachoChannels if channel.name == "Engine Speed"]
+        matches = [channel for channel in self.tachoChannels if channel.name == key]
         assert (len(matches) == 1)
 
         return matches[0]
