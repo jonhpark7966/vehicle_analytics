@@ -21,7 +21,7 @@ class AccelNoiseAnalyzer(NoiseChannelAnalyzer):
                 self.signalChannel, self.analyzeOptions.referenceValue, self.highFreqRes)
 
         self.rpmFFT()
-        self.speedFFT() 
+        self.speedFFT()
         
     def analyze3to2(self):
         processor = ProjectProcess()
