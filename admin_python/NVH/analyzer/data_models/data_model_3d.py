@@ -26,13 +26,13 @@ class DataModel3D:
         plt.show()
 
     def getAWeighted(self):
-        ret = DataModel3D(self.unit, self.xAxisunit, self.xAxisDelta, self.yAxisunit, self.yAxisDelta)
+        ret = DataModel3D(self.unit, "dBA", self.xAxisDelta, self.yAxisunit, self.yAxisDelta)
         for row in self.data:
             dataModel2D = DataModel2D(self.unit, self.xAxisunit, self.xAxisDelta)
             dataModel2D.data = row
-            self.data.append(dataModel2D.getAWeighted().data)
+            ret.data.append(dataModel2D.getAWeighted().data)
         return ret
-
+    
     
     def export(self, dataName, outputPath, channelName, endFreq):
         if len(self.data) == 0:
@@ -48,6 +48,7 @@ class DataModel3D:
 
         with open(os.path.join(outputPath, channelName+"_"+dataName+".bin"), "wb") as f:
             f.write(self._zipData(endFreq))
+
             
     def _zipData(self, endFreq):
         endIndex = int(endFreq/self.xAxisDelta)

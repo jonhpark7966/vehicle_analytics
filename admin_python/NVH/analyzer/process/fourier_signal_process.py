@@ -36,12 +36,12 @@ class FourierSignalProcess():
         
         return ret
 
-    def orderFFT(self, signal, referenceValue, freqRes, indices):
+    def orderFFT(self, signal, referenceValue, freqRes, indices, xAxisUnit, xAxisDelta):
         data = signal.data
         frequency = signal.frequency
         windowSize = int(frequency / freqRes)
 
-        ret = DataModel3D("dB", "Hz", freqRes, "s", len(indices))
+        ret = DataModel3D("dB", "Hz", freqRes, xAxisUnit, xAxisDelta)
 
         for i in indices:
             if i == -1:

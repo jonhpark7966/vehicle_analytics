@@ -1,6 +1,7 @@
 import json
 from NVH.channel_data_model import *
 from NVH.analyzer.analyze_options import AnalyzeOptions
+from .process.vehicle_process import VehicleProcessor
 
 
 class NVHChannelAnalyzer:
@@ -12,7 +13,7 @@ class NVHChannelAnalyzer:
         self.analyzeOptions = AnalyzeOptions()
         self.signalChannel = signalChannel
         self.tachoChannels = tachoChannels
-        self.vehicleMap = vehicleMap
+        self.vehicleProcessor = VehicleProcessor(vehicleMap)
 
     def analyzeSignalTo3():
         return

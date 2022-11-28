@@ -17,14 +17,6 @@ class VehicleProcessor:
         circumference = math.pi(2*tireWidth*aspectRatio + tireRim)
         return (1000/60) / circumference
     
-    def getSpeedToTireRatio(self):
-        tireWidth = float(self.vehicleMap["front tire width"])/1000
-        aspectRatio = float(self.vehicleMap["front tire aspect ratio"])/100
-        tireRim = float(self.vehicleMap["front tire rim"])*0.0254
-
-        circumference = math.pi(2*tireWidth*aspectRatio + tireRim)
-        return (1000/60) / circumference
-    
     def getSpeedToPropellerShaftRatio(self):
         if not self.isPropellerExist():
             return 0.0 # no propeller

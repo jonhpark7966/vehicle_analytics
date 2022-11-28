@@ -15,6 +15,17 @@ class AnalyzeOptions:
     energyCorrectionFactor = 1.63
     peakRmsCorrectionFactor = 1.41 #1/0.707
 
+    engineRpmStart = 1000
+    engineRpmEnd = 6000
+    engineRpmDelta = 20
+
+    speedStart = 0
+    speedEnd = 140
+    speedDelta = 1
+
+    speedRegressionStart = 20
+    speedRegressionEnd = 120
+
     def __init__(self):
         self.referenceValue = 0.00002
         self.frequencyResolution = 1

@@ -34,14 +34,23 @@ class DataModel2D:
         ret.data = self._weights().processCweighting(self.data)
         return ret
 
+    # return (Y, X) at max Y
+    def getMaxValueAt(self):
+        maxIndex = 0
+        maxValue = 0
+        for i, datum in enumerate(self.data):
+            if datum > maxValue:
+                maxValue = datum
+                maxIndex = i
+        xMax = self.xAxisStart + self.xAxisDelta * maxIndex
+        return maxValue, xMax
+
     def _weights(self):
-        if self.xAxisunit is not "Hz":
+        if self.xAxisunit != "Hz":
             assert False
         endFreq = int(len(self.data) / self.xAxisDelta - self.xAxisStart/self.xAxisDelta)
         weights = WeightingProcessor(endFreq, self.xAxisDelta)  
         return weights
-
-
 
 
 

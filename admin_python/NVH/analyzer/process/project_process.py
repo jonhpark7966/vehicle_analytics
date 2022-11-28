@@ -31,8 +31,11 @@ class ProjectProcess():
             "dB", data3D.yAxisunit, data3D.yAxisDelta)
 
         # get RMS 
-        for row in data3D.data: 
-            ret.data.append(UtilsProcessor().getRMSFreq(row, startFreq, endFreq, referenceValue))
+        for row in data3D.data:
+            row2D =  DataModel2D(
+                "dB", data3D.yAxisunit, data3D.yAxisDelta)
+            row2D.data = row
+            ret.data.append(UtilsProcessor().getRMSFreq(row2D, startFreq, endFreq, referenceValue))
 
         return ret
 

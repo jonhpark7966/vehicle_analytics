@@ -1,4 +1,6 @@
 import math
+import numpy as np
+import matplotlib.pyplot as plt
 
 class UtilsProcessor:
 
@@ -45,5 +47,20 @@ class UtilsProcessor:
 
         return ret
 
+    # return slope & intercept
+    def getLinearRegression(self, dataModel2D, startX, endX):
+        startIndex = int((startX - dataModel2D.xAxisStart)/dataModel2D.xAxisDelta)
+        endIndex = int((endX - dataModel2D.xAxisStart)/dataModel2D.xAxisDelta)
 
+        x = np.array(range(startX, endX, dataModel2D.xAxisDelta))
+        A = np.vstack([x, np.ones(len(x))]).T
+        y = np.array(dataModel2D.data[startIndex:endIndex])
+        m, c = np.linalg.lstsq(A, y, rcond=None)[0]
+
+        _ = plt.plot(x, y, 'o', label='Original data', markersize=10)
+        _ = plt.plot(x, m*x + c, 'r', label='Fitted line')
+        _ = plt.legend()
+        plt.show()
+
+        return m, c
 

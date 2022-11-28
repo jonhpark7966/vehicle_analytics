@@ -4,7 +4,6 @@ from .process.project_process import ProjectProcess
 from .process.fourier_signal_process import FourierSignalProcess
 from .process.utils import UtilsProcessor
 from .process.tacho_process import TachoProcessor
-from .process.vehicle_process import VehicleProcessor
 
 
 
@@ -68,7 +67,7 @@ class IdleVibrationAnalyzer(VibrationChannelAnalyzer):
         # ICE & Hybrid 
         # idle main order 
         rpmAverage = TachoProcessor(self.tachoChannels).getAvergeEngineRPM()
-        mainOrder = VehicleProcessor(self.vehicleMap).getMainOrder()
+        mainOrder = self.vehicleProcessor.getMainOrder()
         mainOrderFreq = (rpmAverage/60) * mainOrder
         mainOrderValue = UtilsProcessor().getRMSFreq(
             self.dataDict2D["Frequency Graph"],
