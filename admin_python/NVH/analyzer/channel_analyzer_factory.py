@@ -1,6 +1,6 @@
 from NVH.analyzer.nvh_test_type import NVHTestType
-from NVH.analyzer.accel_channel_analyzer import *
-from NVH.analyzer.idle_channel_analyzer import *
+from .test.accel_channel_analyzer import *
+from .test.idle_channel_analyzer import *
 from NVH.channel_data_model import SignalType
 
 

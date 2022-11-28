@@ -36,4 +36,11 @@ class VehicleProcessor:
             return False
         return True
     
+    def isEV(self):
+        if self.vehicleMap["fuel type"] == "EV":
+            return True
+        else:
+            return False
+
+    
 

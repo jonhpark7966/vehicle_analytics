@@ -19,6 +19,9 @@ class AnalyzeOptions:
     engineRpmEnd = 6000
     engineRpmDelta = 20
 
+    engineRpmRegressionStart = 1500
+    engineRpmRegressionEnd = 4000
+
     speedStart = 0
     speedEnd = 140
     speedDelta = 1

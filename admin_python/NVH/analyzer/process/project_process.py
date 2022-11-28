@@ -53,5 +53,5 @@ class ProjectProcess():
 
     def _getFreqRangeFromOrder(self, tacho, order):
         orderWidth = 0.25
-        return tacho*(order - orderWidth), tacho*(order + orderWidth)
+        return tacho/60*(order - orderWidth), tacho/60*(order + orderWidth)
 
