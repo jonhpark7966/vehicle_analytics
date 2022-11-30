@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:data_handler/src/NVH/channel_data_model.dart';
+import './channel_data_model.dart';
 
 import 'hdf_reader.dart';
 

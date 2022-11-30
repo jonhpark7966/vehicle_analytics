@@ -12,7 +12,6 @@ root.geometry("300x300")
 
 organizer = None
 
-
 def checkFilesCallback():
     rootDirectory = fd.askdirectory() 
     print(rootDirectory)
@@ -39,4 +38,4 @@ parseButton = Button(root, text='Parsing files',
 openFolderButton.pack()
 parseButton.pack()
 
-root.mainloop()  
+root.mainloop()

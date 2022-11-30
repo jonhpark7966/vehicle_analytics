@@ -20,3 +20,6 @@ dependency
        - Windows: refer https://blog.gregzaal.com/how-to-install-ffmpeg-on-windows/
 
     - matplotlib : pip3 install matplotlib (view colormap & graph for dev)
+
+  - Firebase
+    - firebase admin : pip3 install fireabase-admin

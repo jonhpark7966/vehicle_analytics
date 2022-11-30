@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:data_handler/src/channel_data_model.dart';
+import './channel_data_model.dart';
 
 class HdfReader {
   int baseBlockFrequency = 1000; // assume 1kHz, should be parsed from delta value

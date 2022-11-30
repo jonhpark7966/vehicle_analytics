@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:admin_stat_autos/provider/results_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
 
 import 'package:data_handler/data_handler.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,6 +16,8 @@ import 'firebase_options.dart';
 import 'package:file_picker/file_picker.dart';
 
 import 'test_files.dart';
+import 'widgets/database_widget.dart';
+import 'widgets/source_widget.dart';
 
 void main() async {
   try{
@@ -34,7 +39,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MainPage(),
+      home: ChangeNotifierProvider(
+          create: (_) => ResultsProvider(),
+          child: const MainPage(),
+        )
     );
   }
 }
@@ -47,232 +55,36 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int testId = 0;
-  ChartData currentData = ChartData.fromJson({});
-  Map<String, dynamic> currentMap = {};
-  List<int> testCandidates = [];
-
-  // ignore: prefer_final_fields
-  CoastdownTestFiles _coastdownTestFiles = CoastdownTestFiles();
-  PerformanceTestFiles _performanceTestFiles = PerformanceTestFiles();
-
-   Map<NVHTest, NVHAnalyzer> analyzers = {};
-  Map<NVHTest, String> nvhFileName = {};
-
-  var db = FirebaseFirestore.instance;
-
+  
   @override
   void initState() {
     super.initState();
-
-    // 1. get last test id from firestore.
-    db
-        .collection("chart_data")
-        .orderBy("test id")
-        .limitToLast(1)
-        .get()
-        .then((event) {
-      for (var doc in event.docs) {
-        currentData = ChartData.fromJson(doc.data());
-        currentMap = currentData.toMap();
-        testId = currentData.testId;
-        for (var i = 1; i <= testId; ++i) {
-          testCandidates.add(i);
-        }
-      }
-
-      setState(() {});
-    });
-  }
-
-  _buildTestPannel() {
-    return <Widget>[
-      Row(
-        children: [
-          const Text("Current Test Id "),
-          DropdownButton<int>(
-              value: testId,
-              items: testCandidates.map((int value) {
-                return DropdownMenuItem<int>(
-                  value: value,
-                  child: Text(value.toString()),
-                );
-              }).toList(),
-              onChanged: (newVal) {
-                testId = newVal as int;
-                db
-                    .collection("chart_data")
-                    .where("test id", isEqualTo: testId)
-                    .get()
-                    .then((event) {
-                  assert(event.docs.length == 1);
-                  currentData = ChartData.fromJson(event.docs.first.data());
-                  currentMap = currentData.toMap();
-                  setState(() {});
-                });
-              })
-        ],
-      ),
-      const SizedBox(height: 10),
-      ElevatedButton(
-        child: const Text("New Test"),
-        onPressed: () {
-          var dummyMap = {"test id": testId + 1};
-          db.collection("chart_data").add(dummyMap);
-          testId++;
-          testCandidates.add(testId);
-          currentData = ChartData.fromJson(dummyMap);
-          currentMap = currentData.toMap();
-          setState(() {});
-        },
-      ),
-      const SizedBox(height: 10),
-      ElevatedButton(
-        child: const Text("Upload!"),
-        onPressed: () {
-          // TODO async progressbar.
-          _upload();
-        },
-      ),
-      const SizedBox(height: 20),
-      const Divider(),
-      const SizedBox(height: 20),
-    ];
-  }
-
-  _buildCoastdownButtons() {
-    return <Widget>[
-      ElevatedButton(
-        onPressed: () {
-          _pickJ2263LogFile();
-        },
-        child: const Text("Pick J2263 Log File"),
-      ),
-      Text(_coastdownTestFiles.j2263LogFileName),
-      const SizedBox(height: 10),
-      ElevatedButton(
-        onPressed: () {
-          _pickJ2263RawFile();
-        },
-        child: const Text("Pick J2263 Raw File"),
-      ),
-      Text(_coastdownTestFiles.j2263RawFileName),
-      const SizedBox(height: 10),
-      ElevatedButton(
-        onPressed: () {
-          _pickWLTPLogFile();
-        },
-        child: const Text("Pick WLTP Log File"),
-      ),
-      Text(_coastdownTestFiles.wltpLogFileName),
-      const SizedBox(height: 10),
-      ElevatedButton(
-        onPressed: () {
-          _pickWLTPRawFile();
-        },
-        child: const Text("Pick WLTP Raw File"),
-      ),
-      Text(_coastdownTestFiles.wltpRawFileName),
-    ];
-  }
-
-  _buildPerformanceButtons(){
-    return <Widget>[
-      const SizedBox(height:50),
-      ElevatedButton(
-        onPressed: () {
-          _pickAccelerationFile();
-        },
-        child: const Text("Pick 동력성능 결과 파일"),
-      ),
-      Text(_performanceTestFiles.accelerationFile),
-      const SizedBox(height: 10),
-
-      ElevatedButton(
-        onPressed: () {
-          _pickPassingAccelerationFiles();
-        },
-        child: const Text("추월 가속 결과 파일들"),
-      ),
-      (Text(_performanceTestFiles.passingAccel3070FileNames.isEmpty
-          ? ""
-          : "${_performanceTestFiles.passingAccel3070FileNames[0]}, 외 ")),
-      const SizedBox(height: 10),
-
-      ElevatedButton(
-        onPressed: () {
-          //_pickStartingAccelerationFiles();
-        },
-        child: const Text("발진 가속 결과 파일들"),
-      ),
-      (Text(_performanceTestFiles.startingAccelerationFileNames.isEmpty
-          ? ""
-          : "${_performanceTestFiles.startingAccelerationFileNames[0]}, 외 ")),
-      const SizedBox(height: 10),
-
-      ElevatedButton(
-        onPressed: () {
-          //_pickBrakingFile();
-        },
-        child: const Text("Pick 성능 결과 파일"),
-      ),
-      Text(_performanceTestFiles.accelerationFile),
-      const SizedBox(height: 10),
-
-      
-    ];
-  }
-
+ }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Data Uploader"),
-      ),
-      body: Center(
-          child: Row(
-        children: [
-          /* Control Panel */
-          Container(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                  children: _buildTestPannel() +
-                      _buildCoastdownButtons() +
-                      _buildPerformanceButtons()
-                  //  + _buildNVHButtons()
-              )),
-          const VerticalDivider(),
-
-          /* List View */
-          Expanded(
-              child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListView.builder(
-                    itemCount: currentMap.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      String key = currentMap.keys.elementAt(index);
-                      return Column(
-                        children: <Widget>[
-                          ListTile(
-                              tileColor: Colors.white,
-                              title: Text(key),
-                              subtitle: Text("${currentMap[key]}"),
-                              onTap: () async {
-                                await _showPopup(key);
-                                setState(() {});
-                              }),
-                          const Divider(
-                            height: 2.0,
-                          ),
-                        ],
-                      );
-                    },
-                  )))
-        ],
-      )),
-    );
+        appBar: AppBar(
+          title: const Text("Data Uploader"),
+        ),
+        body: Consumer<ResultsProvider>(
+            builder: (context, value, child) => Center(
+                    child: Row(
+                  children: [
+                    /* Control Panel */
+                    Container(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SourceWidget()),
+                    const VerticalDivider(),
+                    /* Database Widget. */
+                    Expanded(child:Container(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DatabaseWidget()),)
+                  ],
+                ))));
   }
 
+  /*
   _buildNVHButtons(){
     var ret = <Widget>[];
 
@@ -294,47 +106,7 @@ class _MainPageState extends State<MainPage> {
 
   }
 
-  Future<void> _showPopup(String key) async {
-    final controller = TextEditingController(text: currentMap[key].toString());
-
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Change Value'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(key),
-                const Divider(),
-                TextField(
-                  controller: controller,
-                )
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Approve'),
-              onPressed: () {
-                if (currentMap[key].runtimeType == int) {
-                  currentMap[key] = int.parse(controller.text);
-                } else if (currentMap[key].runtimeType == double) {
-                  currentMap[key] = double.parse(controller.text);
-                } else {
-                  currentMap[key] = controller.text;
-                }
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  _pickJ2263LogFile() async {
+   _pickJ2263LogFile() async {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(type: FileType.any);
 
@@ -610,4 +382,5 @@ class _MainPageState extends State<MainPage> {
       },
     );
   }
+  */
 }
