@@ -13,11 +13,11 @@ import 'package:data_handler/data_handler.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
 
-import 'package:file_picker/file_picker.dart';
 
 import 'test_files.dart';
 import 'widgets/database_widget.dart';
 import 'widgets/source_widget.dart';
+import 'widgets/storage_widget.dart';
 
 void main() async {
   try{
@@ -79,7 +79,13 @@ class _MainPageState extends State<MainPage> {
                     /* Database Widget. */
                     Expanded(child:Container(
                         padding: const EdgeInsets.all(8.0),
-                        child: DatabaseWidget()),)
+                        child: DatabaseWidget()),),
+                    const VerticalDivider(),
+                    /* Storage Widget. */
+                    Expanded(child:Container(
+                        padding: const EdgeInsets.all(8.0),
+                        child: StorageWidget()),)
+
                   ],
                 ))));
   }

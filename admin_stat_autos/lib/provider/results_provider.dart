@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:data_handler/data_handler.dart';
@@ -13,6 +12,7 @@ class ResultsProvider extends ChangeNotifier {
   List<int> testCandidates = [];
   ChartData currentData = ChartData.fromJson({});
   Map<String, dynamic> currentMap = {};
+  Map<String, String> currentFiles = {};
 
   // Result Files
   ResultsCollection results = ResultsCollection(); 
@@ -21,11 +21,7 @@ class ResultsProvider extends ChangeNotifier {
   int filesToAnalyze = 0;
   int filesAnalyzed = 0;
 
-  // Firebase.
-  var db = FirebaseFirestore.instance;
-
   ResultsProvider():super(){
-
     _getTest(0).then((json) { // 0 is last test.
       currentData = ChartData.fromJson(json);
       currentMap = currentData.toMap();
@@ -36,6 +32,8 @@ class ResultsProvider extends ChangeNotifier {
       notifyListeners();
     });
   }
+
+  List<String> get msgLogs => results.getMsgLogs(); 
 
 
   loadResults(inputPath){
@@ -48,6 +46,11 @@ class ResultsProvider extends ChangeNotifier {
       filesAnalyzed++;
       notifyListeners();
     });
+  }
+
+  updateResults(){
+    results.update(currentMap); // TODO, add files for storage.
+    notifyListeners();
   }
 
   loadFromFirebaseDatabase(int pTestId) {
@@ -63,12 +66,18 @@ class ResultsProvider extends ChangeNotifier {
     testCandidates.sort();
     testId = testCandidates.last;
     var dummyMap = {"test id": testId + 1};
-          db.collection("chart_data").add(dummyMap);
-          testId++;
-          testCandidates.add(testId);
-          currentData = ChartData.fromJson(dummyMap);
-          currentMap = currentData.toMap();
-          notifyListeners();
+    //TODO, handle failed to upload
+    _setTest(jsonEncode(dummyMap));
+    testId++;
+    testCandidates.add(testId);
+    currentData = ChartData.fromJson(dummyMap);
+    currentMap = currentData.toMap();
+    notifyListeners();
+  }
+
+  upload(){
+    _setTest(jsonEncode(currentMap));
+    notifyListeners();
   }
 
   _getTest(id) async {
@@ -77,8 +86,20 @@ class ResultsProvider extends ChangeNotifier {
        ['firebase.py', '--test_id', id.toString()],
      workingDirectory: "../admin_python/firebase");
 
-    return jsonDecode((result.stdout.replaceAll("'", '"')));
+    try{
+      var ret  =  jsonDecode((result.stdout.replaceAll("'", '"')));
+      return ret;
+    }catch(_){
+      return <String, dynamic>{};
+    }
   }
 
+
+  _setTest(data) async {
+    Process.run(
+      'python3',
+       ['firebase.py', '--set', data],
+     workingDirectory: "../admin_python/firebase");
+  }
 }
 
