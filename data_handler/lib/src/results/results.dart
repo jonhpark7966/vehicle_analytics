@@ -6,7 +6,13 @@ class ResultsCollection{
 
   List<Results> results = [];
 
-  getStatus(){}
+  getMsgLogs(){
+    var ret = <String>[];
+    for(var result in results){
+      ret.add(result.getMsgLogs());
+    }
+    return ret;
+  }
 
   checkInputFiles(inputPath){
     // create results.
@@ -27,25 +33,33 @@ class ResultsCollection{
     }
   }
 
-  upload(){}
+  update(currentMap){
+    for (var result in results) {
+      result.dbResults.forEach((k, v) {
+        currentMap[k] = v;
+      });
+    }
+  }
 
+  upload(){}
 }
 
 
 
 class Results{
   String inputPath;
+  String msgLogs = "";
 
   // data for database not storage.
   Map<String, double> dbResults = {};
 
   Results(this.inputPath);
 
-  getStatus(){}
+  getMsgLogs(){ return msgLogs;}
 
   int checkInputFiles(){ return 0;}
 
-  analyzeFiles(Function callback){}
+  analyzeFiles(Function callback) async{}
 
   upload(){}
 

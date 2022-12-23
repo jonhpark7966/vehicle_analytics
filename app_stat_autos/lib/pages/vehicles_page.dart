@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_handler/data_handler.dart';
 import 'package:flutter/material.dart';
 import '../brands/colors.dart';
@@ -45,9 +44,9 @@ class _VehiclesPageState extends State<VehiclesPage>{
     var cGroups = ColumnGroups.fromJson(jsonDecode(columnGroupJson));
     _buildColumns(cGroups);
 
+/*
     var db = FirebaseFirestore.instance;
-
-    db.collection("data").get().then((event) {
+    db.collection("chart_data").get().then((event) {
       List<PlutoRow> fetchedRows = [];
       for(var doc in event.docs){
         var row = ChartData.fromJson(doc.data());
@@ -65,7 +64,7 @@ class _VehiclesPageState extends State<VehiclesPage>{
           }
           stateManager.notifyResizingListeners();
         });
-    });
+    });*/
   }
 
   _hideToggle() {
@@ -125,7 +124,7 @@ class _VehiclesPageState extends State<VehiclesPage>{
                 end: Alignment.bottomRight,
                 colors: [Color.fromARGB(255, 170, 124, 178), Color.fromARGB(255, 155, 215, 243)])),
         child: Scaffold(
-          appBar: AppBarFactory.getColoredAppBar(),
+          appBar: AutoStatAppBar(),
           backgroundColor: Colors.transparent,
           body:
           Column(children: [

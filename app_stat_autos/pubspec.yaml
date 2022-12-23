@@ -38,11 +38,6 @@ dependencies:
   #graph
   fl_chart: ^0.55.1
 
-  #firebase
-  firebase_core: ^1.20.1
-  cloud_firestore: ^3.4.4
-  firebase_storage: ^10.3.6
-
   # sidebar (drawer)
   sidebarx: ^0.10.0
 
@@ -59,6 +54,7 @@ dependencies:
   #data
   data_handler:
      path: ../data_handler
+  flutter_login: ^4.1.1
 
 
 dev_dependencies:

@@ -19,22 +19,26 @@ class CoastdownResults extends Results{
     var rootDirectory = Directory(inputPath);
     for(var subDir in rootDirectory.listSync()){
       if(subDir.path.contains("J2263")){
-        for(var file in rootDirectory.listSync()){
+        for(var file in (subDir as Directory).listSync()){
           if(file.path.contains("log")){
             _j2263LogPath = file.path;
+            msgLogs += ("J2263 Log file found, ${file.path}\n");
           }
           if(file.path.contains("raw")){
             _j2263RawPath = file.path;
+            msgLogs += ("J2263 Raw file found, ${file.path}\n");
           }
         }
       }
       if(subDir.path.contains("WLTP")){
-        for(var file in rootDirectory.listSync()){
+        for(var file in (subDir as Directory).listSync()){
           if(file.path.contains("log")){
             _wltpLogPath = file.path;
+            msgLogs += ("WLTP Log file found, ${file.path}\n");
           }
           if(file.path.contains("raw")){
             _wltpRawPath = file.path;
+            msgLogs += ("WLTP Raw file found, ${file.path}\n");
           }
         }
       }
@@ -56,11 +60,12 @@ class CoastdownResults extends Results{
     dbResults["j2263_a"] = a;
     dbResults["j2263_b"] = b;
     dbResults["j2263_c"] = c;
+    msgLogs += ("J2263 a,b,c found, a: $a, b, $b, c, $c \n");
     callback();
 
     abc = _parseLogFile(
       File(_wltpLogPath).readAsBytesSync(),
-      "Final Result");
+      "Final result");
     a = abc[0];
     b = abc[1];
     c = abc[2];
@@ -70,7 +75,10 @@ class CoastdownResults extends Results{
     dbResults["wltp_a"] = a;
     dbResults["wltp_b"] = b;
     dbResults["wltp_c"] = c;
+    msgLogs += ("WLTP a,b,c found, a: $a, b, $b, c, $c \n");
     callback();
+
+    return;
   }
 
   @override

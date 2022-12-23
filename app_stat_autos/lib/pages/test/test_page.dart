@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_handler/data_handler.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -46,9 +44,9 @@ class _TestPageState extends State<TestPage> {
 
     spinkit =  SpinKitCubeGrid(color: dataModel.colors[0]);
 
-    
+   /* 
     var db = FirebaseFirestore.instance;
-    db.collection("data").where("test id", isEqualTo: widget.testId).get().then((event) {
+    db.collection("chart_data").where("test id", isEqualTo: widget.testId).get().then((event) {
       // parse data and pass to pages.
       assert(event.docs.length == 1);
       dataModel.data = ChartData.fromJson(event.docs.first.data());
@@ -63,6 +61,7 @@ class _TestPageState extends State<TestPage> {
         onLoading = false;
       });
     });
+    */
 
   }
 
@@ -90,7 +89,7 @@ class _TestPageState extends State<TestPage> {
                 colors: dataModel.colors,
                ),),
         child: Scaffold(
-            appBar: AppBarFactory.getColoredAppBar(color: dataModel.colors.first),
+            appBar: AutoStatAppBar(bgColor: dataModel.colors.first),
             backgroundColor: Colors.transparent,
             body: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
