@@ -1,11 +1,9 @@
+import 'package:data_handler/data_handler.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'pages/test/test_page.dart';
 import 'pages/vehicles_page.dart';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'settings/route.dart';
-import 'firebase_options.dart';
 
 class CustomScrollBehavior extends MaterialScrollBehavior {
   @override
@@ -17,12 +15,8 @@ class CustomScrollBehavior extends MaterialScrollBehavior {
 
 
 void main() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
+  initDataHandler();
   FRouter.setupRouter();
-
   runApp(const MyApp());
 }
 

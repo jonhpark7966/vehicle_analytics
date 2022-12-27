@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:firebase_storage/firebase_storage.dart';
 
 
 class PerformanceTestFiles{
@@ -60,7 +59,7 @@ class CoastdownTestFiles{
   CoastdownTestFiles();
 
   upload(testId){
-    final storageRef =
+    /*final storageRef =
         FirebaseStorage.instance.refFromURL("gs://a18s-app.appspot.com");
     try {
       if (j2263LogFileBytes != null) {
@@ -96,6 +95,7 @@ class CoastdownTestFiles{
       // Handle any errors.
       assert(false);
     }
+    */
   }
 
 List<double> parseLogFile(bytes, finalKey){

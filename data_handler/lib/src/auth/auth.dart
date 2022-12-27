@@ -52,6 +52,12 @@ class AuthManage{
     final user = FirebaseAuth.instance.currentUser;
     await user?.delete();
   }
+
+  Future<String?> getJWT() async {
+    User? user = getUser();
+    String? token = await user?.getIdToken();
+    return token;
+  }
   
   /// 현재 유저 정보 조회
   User? getUser(){

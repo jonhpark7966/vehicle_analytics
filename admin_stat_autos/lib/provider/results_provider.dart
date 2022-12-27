@@ -7,6 +7,10 @@ import 'package:data_handler/data_handler.dart';
 import 'dart:io';
 
 class ResultsProvider extends ChangeNotifier {
+  // Auth
+  AuthManage auth = AuthManage();
+
+
   // TESTs
   int testId = 0;
   List<int> testCandidates = [];
@@ -34,6 +38,10 @@ class ResultsProvider extends ChangeNotifier {
   }
 
   List<String> get msgLogs => results.getMsgLogs(); 
+
+  reload(){
+    notifyListeners();
+  }
 
 
   loadResults(inputPath){

@@ -1,19 +1,14 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:admin_stat_autos/provider/results_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
 import 'package:data_handler/data_handler.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
 
 
+import 'loginPage.dart';
 import 'test_files.dart';
 import 'widgets/database_widget.dart';
 import 'widgets/source_widget.dart';
@@ -41,53 +36,54 @@ class MyApp extends StatelessWidget {
       ),
       home: ChangeNotifierProvider(
           create: (_) => ResultsProvider(),
-          child: const MainPage(),
+          child: MainPage(),
         )
     );
   }
 }
 
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+class MainPage extends StatelessWidget {
+  MainPage({Key? key}) : super(key: key);
 
-  @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-  
-  @override
-  void initState() {
-    super.initState();
- }
-  
+  late ResultsProvider _resultsProvider;
+    
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Data Uploader"),
-        ),
-        body: Consumer<ResultsProvider>(
-            builder: (context, value, child) => Center(
-                    child: Row(
-                  children: [
-                    /* Control Panel */
-                    Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SourceWidget()),
-                    const VerticalDivider(),
-                    /* Database Widget. */
-                    Expanded(child:Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DatabaseWidget()),),
-                    const VerticalDivider(),
-                    /* Storage Widget. */
-                    Expanded(child:Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: StorageWidget()),)
+    _resultsProvider = Provider.of<ResultsProvider>(context);
+    var user = _resultsProvider.auth.getUser();
 
-                  ],
-                ))));
+    if(user ==null) {
+      return LoginWidget();
+    } else{
+      return Scaffold(
+          appBar: AppBar(
+            title: const Text("Data Uploader"),
+          ),
+          body: Consumer<ResultsProvider>(
+              builder: (context, value, child) => Center(
+                      child: Row(
+                    children: [
+                      /* Control Panel */
+                      Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SourceWidget()),
+                      const VerticalDivider(),
+                      /* Database Widget. */
+                      Expanded(
+                        child: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            child: DatabaseWidget()),
+                      ),
+                      const VerticalDivider(),
+                      /* Storage Widget. */
+                      Expanded(
+                        child: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            child: StorageWidget()),
+                      )
+                    ],
+                  ))));
+    }
   }
 
   /*
