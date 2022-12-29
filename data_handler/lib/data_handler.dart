@@ -11,13 +11,11 @@ export 'src/firestore_data.dart' show ChartRows;
 export 'src/results/results.dart' show ResultsCollection;
 export 'src/auth/auth.dart' show AuthManage;
 
+export 'src/database/query_database.dart' show QueryDatabase;
+
+
 
 // init firebase
 // WARNING: works only for web.
 initDataHandler() async {
-try{
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform
-    );} catch(_){}
 }

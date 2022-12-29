@@ -89,6 +89,16 @@ class ResultsProvider extends ChangeNotifier {
   }
 
   _getTest(id) async {
+
+    var jwt = await auth.getJWT();
+    var query =  QueryDatabase();
+    query.jwt = jwt!;
+    var ret = await query.getChartData(0);
+    return ret;
+
+}
+
+/*
     var result = await Process.run(
       'python3',
        ['firebase.py', '--test_id', id.toString()],
@@ -100,7 +110,9 @@ class ResultsProvider extends ChangeNotifier {
     }catch(_){
       return <String, dynamic>{};
     }
-  }
+
+
+  }*/
 
 
   _setTest(data) async {

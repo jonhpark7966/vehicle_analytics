@@ -12,7 +12,11 @@ dependencies:
   firebase_auth: ^4.2.1
   flutter:
     sdk: flutter
-  graphql: ^5.1.1
+
+  # USE REST API 
+  http: ^0.13.5
+  # USE GraphQL API
+  #graphql: ^5.1.1
 
 dev_dependencies:
   flutter_test:
