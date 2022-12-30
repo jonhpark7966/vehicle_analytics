@@ -10,7 +10,6 @@ class ResultsProvider extends ChangeNotifier {
   // Auth
   AuthManage auth = AuthManage();
 
-
   // TESTs
   int testId = 0;
   List<int> testCandidates = [];
@@ -26,7 +25,15 @@ class ResultsProvider extends ChangeNotifier {
   int filesAnalyzed = 0;
 
   ResultsProvider():super(){
-    _getTest(0).then((json) { // 0 is last test.
+    if(auth.getUser() != null){
+      reloadAndGetLatest();
+    }
+  }
+
+  List<String> get msgLogs => results.getMsgLogs(); 
+
+  reloadAndGetLatest(){
+     _getTest(0).then((json) {// 0 is last test.
       currentData = ChartData.fromJson(json);
       currentMap = currentData.toMap();
       testId = currentData.testId;
@@ -35,11 +42,6 @@ class ResultsProvider extends ChangeNotifier {
       }
       notifyListeners();
     });
-  }
-
-  List<String> get msgLogs => results.getMsgLogs(); 
-
-  reload(){
     notifyListeners();
   }
 
@@ -61,7 +63,7 @@ class ResultsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  loadFromFirebaseDatabase(int pTestId) {
+  loadFromHasura(int pTestId) {
     _getTest(pTestId).then((json) { // 0 is last test.
       testId = pTestId;
       currentData = ChartData.fromJson(json);
@@ -75,7 +77,7 @@ class ResultsProvider extends ChangeNotifier {
     testId = testCandidates.last;
     var dummyMap = {"test id": testId + 1};
     //TODO, handle failed to upload
-    _setTest(jsonEncode(dummyMap));
+    _insertTest(jsonEncode(dummyMap));
     testId++;
     testCandidates.add(testId);
     currentData = ChartData.fromJson(dummyMap);
@@ -84,42 +86,37 @@ class ResultsProvider extends ChangeNotifier {
   }
 
   upload(){
-    _setTest(jsonEncode(currentMap));
+    var ret = _updateTest(jsonEncode(currentMap), testId);
+    ret.then((body){
+      print(body);
+    });
     notifyListeners();
   }
 
   _getTest(id) async {
-
     var jwt = await auth.getJWT();
-    var query =  QueryDatabase();
+    var query = QueryDatabase();
     query.jwt = jwt!;
-    var ret = await query.getChartData(0);
-    return ret;
-
-}
-
-/*
-    var result = await Process.run(
-      'python3',
-       ['firebase.py', '--test_id', id.toString()],
-     workingDirectory: "../admin_python/firebase");
-
-    try{
-      var ret  =  jsonDecode((result.stdout.replaceAll("'", '"')));
-      return ret;
-    }catch(_){
-      return <String, dynamic>{};
-    }
-
-
-  }*/
-
-
-  _setTest(data) async {
-    Process.run(
-      'python3',
-       ['firebase.py', '--set', data],
-     workingDirectory: "../admin_python/firebase");
+    var ret = await query.getChartData(id);
+    assert(ret.length == 1);
+    return ret[0];
   }
+
+  _updateTest(String data, int id) async {
+    var jwt = await auth.getJWT();
+    var query = QueryDatabase();
+    query.jwt = jwt!;
+    var ret = await query.updateChartData(data, id);
+    return ret.body;
+  }
+
+  _insertTest(String data) async {
+    var jwt = await auth.getJWT();
+    var query = QueryDatabase();
+    query.jwt = jwt!;
+    var ret = await query.insertChartData(data);
+    return ret.body;
+  }
+
 }
 

@@ -14,7 +14,7 @@ class SourceWidget extends StatelessWidget{
 
   _changeTest(newId){
     int testId = newId as int;
-    _resultsProvider.loadFromFirebaseDatabase(testId);
+    _resultsProvider.loadFromHasura(testId);
   }
 
   _newTest(){

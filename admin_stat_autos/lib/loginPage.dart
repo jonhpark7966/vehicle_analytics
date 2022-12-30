@@ -39,7 +39,7 @@ class LoginWidget extends StatelessWidget {
       onLogin: _authUser,
       onSignup: _signupUser,
       onSubmitAnimationCompleted: () {
-        _resultsProvider.reload();
+        _resultsProvider.reloadAndGetLatest();
       },
       onRecoverPassword: _recoverPassword,
     );
