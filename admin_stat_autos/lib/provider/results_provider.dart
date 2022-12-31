@@ -15,6 +15,8 @@ class ResultsProvider extends ChangeNotifier {
   List<int> testCandidates = [];
   ChartData currentData = ChartData.fromJson({});
   Map<String, dynamic> currentMap = {};
+
+  // files to upload, key = destination & value = files path
   Map<String, String> currentFiles = {};
 
   // Result Files
@@ -23,6 +25,10 @@ class ResultsProvider extends ChangeNotifier {
   // Analyzing Status
   int filesToAnalyze = 0;
   int filesAnalyzed = 0;
+
+  // Uploading Status
+  int filesToUpload = 0;
+  int filesUploaded = 0;
 
   ResultsProvider():super(){
     if(auth.getUser() != null){
@@ -52,14 +58,20 @@ class ResultsProvider extends ChangeNotifier {
   }
 
   analyzeResults() async {
-    results.analyzeFiles((){
+    results.analyzeFiles((Map<String, String> filesToUpload){
       filesAnalyzed++;
+      currentFiles.addAll(filesToUpload);
       notifyListeners();
     });
   }
 
-  updateResults(){
-    results.update(currentMap); // TODO, add files for storage.
+  updateResults(){ 
+    // 1. update results to databse
+    results.update(currentMap);
+
+    // 2. upload results to storage
+
+
     notifyListeners();
   }
 
@@ -85,11 +97,16 @@ class ResultsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  upload(){
+  uploadDataBase(){
     var ret = _updateTest(jsonEncode(currentMap), testId);
     ret.then((body){
       print(body);
     });
+    notifyListeners();
+  }
+
+  uploadStorage(){
+    var ret = _uploadTestStorage(currentFiles, testId);
     notifyListeners();
   }
 
@@ -118,5 +135,20 @@ class ResultsProvider extends ChangeNotifier {
     return ret.body;
   }
 
+  _uploadTestStorage(Map<String, String> currentFiles, int testId) async{
+    filesToUpload = 0;
+    filesToUpload = 0;
+
+    currentFiles.forEach((key, value){
+      filesToUpload++;
+      notifyListeners();
+      FBStorage().uploadLocalFile("test/$testId/$key", value).then((result){
+        assert(result); // failed to upload.
+        // upload ended
+        filesUploaded++;
+        notifyListeners();
+      });
+    });
+  }
 }
 

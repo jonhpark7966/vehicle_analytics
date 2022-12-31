@@ -61,7 +61,11 @@ class CoastdownResults extends Results{
     dbResults["j2263_b"] = b;
     dbResults["j2263_c"] = c;
     msgLogs += ("J2263 a,b,c found, a: $a, b, $b, c, $c \n");
-    callback();
+
+    Map<String, String> uploadFiles = {};
+    uploadFiles["j2263/log.txt"] = _j2263LogPath;
+    uploadFiles["j2263/raw.txt"] = _j2263RawPath;
+    callback(uploadFiles);
 
     abc = _parseLogFile(
       File(_wltpLogPath).readAsBytesSync(),
@@ -76,7 +80,11 @@ class CoastdownResults extends Results{
     dbResults["wltp_b"] = b;
     dbResults["wltp_c"] = c;
     msgLogs += ("WLTP a,b,c found, a: $a, b, $b, c, $c \n");
-    callback();
+
+    uploadFiles = {};
+    uploadFiles["wltp/log.txt"] = _wltpLogPath;
+    uploadFiles["wltp/raw.txt"] = _wltpRawPath;
+    callback(uploadFiles);
 
     return;
   }
@@ -116,5 +124,4 @@ class CoastdownResults extends Results{
 
       return [a,b,c];
     }
-
 }

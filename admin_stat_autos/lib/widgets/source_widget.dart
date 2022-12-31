@@ -21,8 +21,12 @@ class SourceWidget extends StatelessWidget{
      _resultsProvider.newTest();
   }
 
-  _upload(){
-    _resultsProvider.upload();
+  _uploadDataBase(){
+    _resultsProvider.uploadDataBase();
+  }
+
+  _uploadStorage(){
+    _resultsProvider.uploadStorage();
   }
 
   _pickFolder() async {
@@ -65,13 +69,7 @@ class SourceWidget extends StatelessWidget{
         child: const Text("New Test"),
         onPressed: () => _newTest(),
       ),
-      const SizedBox(height: 10),
-      ElevatedButton(
-        child: const Text("Upload!"),
-        onPressed: () => _upload() ,
-      ),
-      const SizedBox(height: 20),
-      const Divider(),
+            const Divider(),
       const SizedBox(height: 20),
       ElevatedButton(
         onPressed: () => _pickFolder(),
@@ -84,13 +82,26 @@ class SourceWidget extends StatelessWidget{
         onPressed: () => _analyze(),
         child: const Text("Analyze!"),
       ),
-      Text("Analyze Status \n ${_resultsProvider.filesToAnalyze} / ${_resultsProvider.filesToAnalyze}"),
+      Text("Analyze Status \n ${_resultsProvider.filesAnalyzed} / ${_resultsProvider.filesToAnalyze}"),
       const Divider(),
       const SizedBox(height: 20),
       ElevatedButton(
         onPressed: () => _updateResults(),
         child: const Text("Update Analyzed Results!"),
       ),
+      const SizedBox(height: 10),
+      ElevatedButton(
+        child: const Text("Upload Database!"),
+        onPressed: () => _uploadDataBase() ,
+      ),
+      const SizedBox(height: 10),
+      ElevatedButton(
+        child: const Text("Upload Storage!"),
+        onPressed: () => _uploadStorage() ,
+      ),
+      const SizedBox(height: 20),
+      Text("Upload Status \n ${_resultsProvider.filesUploaded} / ${_resultsProvider.filesToUpload}"),
+      const SizedBox(height: 10),
 
     ] + getOutputBoxes(context)
     );

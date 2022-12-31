@@ -12,6 +12,7 @@ export 'src/results/results.dart' show ResultsCollection;
 export 'src/auth/auth.dart' show AuthManage;
 
 export 'src/database/query_database.dart' show QueryDatabase;
+export 'src/storage/fb_storage.dart' show FBStorage;
 
 
 
