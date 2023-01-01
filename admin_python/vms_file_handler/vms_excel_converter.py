@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import sys
 
 import csv
 import re
@@ -22,13 +23,13 @@ class VMSExcelConverter:
         try:
             xls = pd.ExcelFile(filePath)
         except:
-            print(filePath, " - Excel Open Failed!")
+            sys.stderr.write(filePath, " - Excel Open Failed!"+"\n")
             raise
 
         # Test Sheet
         sheets = xls.sheet_names
         if len(sheets) != 1 or sheets[0] != 'Sheet1':
-            print(filePath, " - Not a appropriate File!")
+            sys.stderr.write(filePath, " - Not a appropriate File!"+"\n")
             raise
         
         return xls 
@@ -64,12 +65,13 @@ class VMSExcelConverter:
                 barometer = "{:.2f}".format(row["[Barometer]"])
                 airTemp = "{:.2f}".format(row["[TAir]"])
 
-            f = open(os.path.join(self.outputPath, prefix + self._getFilePrefix(date,"", self.runNumber) + ".csv"), 'w')
-            writer = csv.writer(f)
-            writer.writerow(["Barometer", barometer, "Air Temperature", airTemp ])
-            writer.writerow(self.variablesToGet)
-            writer.writerows(rowsToWrite)
-            f.close() 
+        f = open(os.path.join(self.outputPath, prefix + self._getFilePrefix(date,"", self.runNumber) + ".csv"), 'w')
+        writer = csv.writer(f)
+        writer.writerow(["Barometer", barometer, "Air Temperature", airTemp ])
+        writer.writerow(self.variablesToGet)
+        writer.writerows(rowsToWrite)
+        f.close() 
+        sys.stdout.write("Success! :" + f.name+"\n")
 
     def _parseExcel(self, xls, filePath, prefix):
             self.runNumber = self.runNumber + 1
@@ -105,7 +107,8 @@ class VMSExcelConverter:
             writer.writerow(["Barometer", barometer, "Air Temperature", airTemp ])
             writer.writerow(self.variablesToGet)
             writer.writerows(rowsToWrite)
-            f.close() 
+            f.close()
+            sys.stdout.write("Success! :" + f.name+"\n")
 
 
 class StartingAccelExcelConverter(VMSExcelConverter):

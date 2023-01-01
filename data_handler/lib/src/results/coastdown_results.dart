@@ -89,12 +89,6 @@ class CoastdownResults extends Results{
     return;
   }
 
-  @override
-  upload(){
-    //TODO
-    assert(false);
-  }
-
   List<double> _parseLogFile(bytes, finalKey){
       var a = 0.0;
       var b = 0.0;

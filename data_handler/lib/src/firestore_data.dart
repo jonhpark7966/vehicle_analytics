@@ -51,6 +51,17 @@ class ChartData{
   final double accNoiseIntercept;
   final double accVibration;
   final double mdpsNoise;
+  final double passing_3070kph;
+  final double passing_4080kph;
+  final double passing_60100kph;
+  final double passing_100140kph;
+  final double starting_60kph;
+  final double starting_100kph;
+  final double starting_140kph;
+  final double starting_100m;
+  final double starting_400m;
+  final double braking_distance;
+  final double braking_maxDecel;
   final String detailsPage;
 
   ChartData({
@@ -66,6 +77,9 @@ class ChartData{
    required this.windNoise, required this.cruise120Vibration,
    required this.accNoiseCoefficient, required this.accNoiseIntercept, required this.accVibration,
    required this.mdpsNoise,
+   required this.passing_3070kph, required this.passing_4080kph, required this.passing_60100kph, required this.passing_100140kph,
+   required this.starting_60kph, required this.starting_100kph, required this.starting_140kph, required this.starting_100m, required this.starting_400m,
+   required this.braking_maxDecel,required this.braking_distance,
    required this.detailsPage,
    });
 
@@ -114,7 +128,18 @@ class ChartData{
       accNoiseIntercept: nullToDouble(json["acceleration_noise_intercept"]),
       accVibration: nullToDouble(json["acceleration_vibration"]),
       mdpsNoise: nullToDouble(json["mdps_noise"]),
-      detailsPage: json["details_page"]??"",
+      passing_3070kph: nullToDouble(json["passing_3070kph"]),
+      passing_4080kph: nullToDouble(json["passing_4080kph"]),
+      passing_60100kph: nullToDouble(json["passing_60100kph"]),
+      passing_100140kph: nullToDouble(json["passing_100140kph"]),
+      starting_60kph: nullToDouble(json["starting_60kph"]),
+      starting_100kph: nullToDouble(json["starting_100kph"]),
+      starting_140kph: nullToDouble(json["starting_140kph"]),
+      starting_100m: nullToDouble(json["starting_100m"]),
+      starting_400m: nullToDouble(json["starting_400m"]),
+      braking_distance: nullToDouble(json["braking_distance"]),
+      braking_maxDecel: nullToDouble(json["braking_maxDecel"]),
+       detailsPage: json["details_page"]??"",
     );
     }
 
@@ -156,9 +181,20 @@ class ChartData{
       "cruise_120_vibration":cruise120Vibration,
       "acceleration_noise_coefficient":accNoiseCoefficient,
       "acceleration_noise_intercept":accNoiseIntercept,
-      "acceleration_vibration":accVibration,
-      "mdps_noise":mdpsNoise,
-      "details_page":detailsPage,
+      "acceleration_vibration": accVibration,
+      "mdps_noise": mdpsNoise,
+      "passing_3070kph": passing_3070kph,
+      "passing_4080kph": passing_4080kph,
+      "passing_60100kph": passing_60100kph,
+      "passing_100140kph": passing_100140kph,
+      "starting_60kph": starting_60kph,
+      "starting_100kph": starting_100kph,
+      "starting_140kph": starting_140kph,
+      "starting_100m": starting_100m,
+      "starting_400m": starting_400m,
+      "braking_distance": braking_distance,
+      "braking_maxDecel": braking_maxDecel,
+      "details_page": detailsPage,
       };
     }
 

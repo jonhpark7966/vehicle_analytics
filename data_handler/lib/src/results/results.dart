@@ -1,4 +1,6 @@
 
+import 'package:data_handler/src/results/performance_results.dart';
+
 import 'coastdown_results.dart';
 
 class ResultsCollection{
@@ -17,7 +19,7 @@ class ResultsCollection{
   checkInputFiles(inputPath){
     // create results.
     results.add(CoastdownResults(inputPath));
-    //results.add(PerformanceResults(inputPath));
+    results.add(PerformanceResults(inputPath));
     //results.add(NVHResults(inputPath));
 
     int ret = 0; // files to analyze.
@@ -41,7 +43,6 @@ class ResultsCollection{
     }
   }
 
-  upload(){}
 }
 
 
@@ -61,6 +62,5 @@ class Results{
 
   analyzeFiles(Function callback) async{}
 
-  upload(){}
 
 }

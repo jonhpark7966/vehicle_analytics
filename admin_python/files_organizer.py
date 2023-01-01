@@ -36,8 +36,6 @@ class FileOrganizer:
     def parsingFiles(self):
         return "parsing results"
 
-
-
     def checkFiles(self):
         childrenList = os.listdir(self.rootPath)
         self.checkCoastdownFiles(childrenList)

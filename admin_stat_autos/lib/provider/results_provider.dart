@@ -87,7 +87,7 @@ class ResultsProvider extends ChangeNotifier {
   newTest(){
     testCandidates.sort();
     testId = testCandidates.last;
-    var dummyMap = {"test id": testId + 1};
+    var dummyMap = {"test_id": testId + 1};
     //TODO, handle failed to upload
     _insertTest(jsonEncode(dummyMap));
     testId++;
@@ -151,4 +151,5 @@ class ResultsProvider extends ChangeNotifier {
     });
   }
 }
+
 
