@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 from ..process.weighting_process import WeightingProcessor
 
@@ -23,6 +24,8 @@ class DataModel2D:
                 jsonDict[str(i)] = str(round(datum, 2))
 
             json.dump(jsonDict, f)
+            sys.stdout.write("Success! :" + f.name + "\n")
+
 
     def getAWeighted(self):
         ret = DataModel2D(self.unit, self.xAxisunit, self.xAxisDelta)

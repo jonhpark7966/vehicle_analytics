@@ -4,6 +4,7 @@ from NVH.analyzer.analyze_options import AnalyzeOptions
 from ..process.fourier_signal_process import FourierSignalProcess
 from ..process.tacho_process import TachoProcessor
 from ..process.vehicle_process import VehicleProcessor
+import sys
 
 
 class NVHChannelAnalyzer:
@@ -36,6 +37,7 @@ class NVHChannelAnalyzer:
                 jsonDict[k] = v.getString()
 
             json.dump(jsonDict, f)
+            sys.stdout.write("Success! :"+f.name+"\n")
     
     def export2D(self, outputPath):
         for k,value in self.dataDict2D.items():

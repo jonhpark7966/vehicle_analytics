@@ -2,6 +2,7 @@ from scipy.io.wavfile import write
 import numpy as np
 import pydub
 import os
+import sys
 
 from enum import Enum
 
@@ -46,7 +47,9 @@ class ChannelDataModel:
         self.toWavFile(outputPath)
 
     sound = pydub.AudioSegment.from_wav(self.wavFilePath)
-    sound.export(os.path.join(outputPath, self.name + ".mp3"), format="mp3")
+    mp3path = os.path.join(outputPath, self.name + ".mp3")
+    sound.export(mp3path, format="mp3")
+    sys.stdout.write("Success! :"+mp3path+"\n")
 
 
   def getType(self):

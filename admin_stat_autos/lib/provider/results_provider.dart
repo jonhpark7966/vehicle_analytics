@@ -66,11 +66,7 @@ class ResultsProvider extends ChangeNotifier {
   }
 
   updateResults(){ 
-    // 1. update results to databse
     results.update(currentMap);
-
-    // 2. upload results to storage
-
 
     notifyListeners();
   }

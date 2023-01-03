@@ -3,6 +3,8 @@ import os
 import matplotlib.pyplot as plt
 from .data_model_2d import DataModel2D
 
+import sys
+
 class DataModel3D:
     def __init__(self, unit, xAxisunit, xAxisDelta, yAxisunit, yAxisDelta):
         self.unit = unit
@@ -14,7 +16,7 @@ class DataModel3D:
 
     def showColormap(self):
         if len(self.data) == 0:
-            print(" Not anlayzed yet. ")
+            sys.stderr.write(" Not anlayzed yet. ")
             return
 
         # DEBUG FLAG to show colormap
@@ -36,7 +38,7 @@ class DataModel3D:
     
     def export(self, dataName, outputPath, channelName, endFreq):
         if len(self.data) == 0:
-            print(" Not analyzed yet. ")
+            sys.stderr.write(" Not analyzed yet. ")
             return
 
         with open(os.path.join(outputPath, channelName+"_"+dataName+".json"), "w") as f:
@@ -45,9 +47,11 @@ class DataModel3D:
              "yAxisunit": self.yAxisunit, "yAxisDelata":self.yAxisDelta,
              }
             json.dump(jsonDict, f)
+            sys.stdout.write("Success! :" + f.name + "\n")
 
         with open(os.path.join(outputPath, channelName+"_"+dataName+".bin"), "wb") as f:
             f.write(self._zipData(endFreq))
+            sys.stdout.write("Success! :" + f.name + "\n")
 
             
     def _zipData(self, endFreq):
