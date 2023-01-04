@@ -58,7 +58,7 @@ class NVHResults extends Results{
 
     // analyze
     // TODO test all types of NVH
-    for(var type in ["cruise"]){//,"idle" "cruise", "wot","accel", "decel", "mdps"]){
+    for(var type in ["accel"]){//,"idle" "cruise", "wot","accel", "decel", "mdps"]){
 
     var task = Process.run(
       'python3',
@@ -209,8 +209,19 @@ Map<String, double> _parseWOTResultValues(List<NVHValue> values){
 
 Map<String, double> _parseAccelResultValues(List<NVHValue> values){
   Map<String, double> ret = {};
-  assert(false);
+  Map<String, int> num = {};
+  for(var nvhValue in values){
+      // representative channels
+      if(nvhValue.channel.contains("MIC:Front") 
+      || nvhValue.channel.contains("VIB:Floor Z")){
+         _addToMap(ret, num, nvhValue.key, nvhValue.value);
+     }
+  }
+  ret.forEach((key, value) {
+    ret[key] = ret[key]! / num[key]!;
+   });
   return ret;
+
 }
 
 Map<String, double> _parseDecelResultValues(List<NVHValue> values){
@@ -254,7 +265,7 @@ class NVHValue{
   static List<NVHValue> createFromJson(filename, channel, json){
     List<NVHValue> ret = [];
     json.forEach((k, v){
-      var value = double.parse(v.split(" ").first);
+      var value = double.parse(v.split(" ").first.split("@").first);
       var unit = v.split(" ").last;
 
       ret.add(

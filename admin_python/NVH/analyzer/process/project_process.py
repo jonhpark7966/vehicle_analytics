@@ -26,16 +26,25 @@ class ProjectProcess():
         return ret
 
 
-    def projectYOA(self, data3D, referenceValue, startFreq, endFreq):
+    def projectYOA(self, data3D, referenceValue, startFreq, endFreq, AWeighting = False):
+
+        unit = "dB"
+        if AWeighting == True:
+            unit = "dBA"
+
         ret = DataModel2D(
-            "dB", data3D.yAxisunit, data3D.yAxisDelta)
+            unit, data3D.yAxisunit, data3D.yAxisDelta)
 
         # get RMS 
         for row in data3D.data:
             row2D =  DataModel2D(
-                "dB", data3D.yAxisunit, data3D.yAxisDelta)
+                unit, data3D.xAxisunit, data3D.xAxisDelta)
             row2D.data = row
-            ret.data.append(UtilsProcessor().getRMSFreq(row2D, startFreq, endFreq, referenceValue))
+
+            if AWeighting == True:
+                ret.data.append(UtilsProcessor().getRMSFreq(row2D.getAWeighted(), startFreq, endFreq, referenceValue))
+            else:
+                ret.data.append(UtilsProcessor().getRMSFreq(row2D, startFreq, endFreq, referenceValue))
 
         return ret
 
@@ -47,7 +56,11 @@ class ProjectProcess():
         # get RMS 
         for i, row in enumerate(data3D.data): 
             startFreq, endFreq = self._getFreqRangeFromOrder(data3D.yAxisDelta*i*transTacho, order)
-            ret.data.append(UtilsProcessor().getRMSFreq(row, startFreq, endFreq, referenceValue))
+
+            row2D =  DataModel2D(
+                "dB", data3D.xAxisunit, data3D.xAxisDelta)
+            row2D.data = row
+            ret.data.append(UtilsProcessor().getRMSFreq(row2D, startFreq, endFreq, referenceValue))
 
         return ret 
 

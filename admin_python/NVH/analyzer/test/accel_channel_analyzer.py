@@ -28,12 +28,11 @@ class AccelNoiseAnalyzer(NoiseChannelAnalyzer):
         self.dataDict2D["Speed Overall Graph"] = processor.projectYOA(
             self.dataDict3D["Speed Colormap"],
             self.analyzeOptions.referenceValue,
-            20,20000
-            )
+            20,20000, True)
         self.dataDict2D["RPM Overall Graph"] = processor.projectYOA(
             self.dataDict3D["Engine RPM Colormap"],
             self.analyzeOptions.referenceValue,
-            20, 20000)
+            20, 20000, True)
 
     def analyze2to1(self):
         noiseSlope, noiseIntercept = UtilsProcessor().getLinearRegression(
@@ -66,10 +65,11 @@ class AccelVibrationAnalyzer(VibrationChannelAnalyzer):
         self.dataDict3D["Time Colormap"] = processor.timeFFT(self.signalChannel, self.analyzeOptions.referenceValue, self.analyzeOptions.frequencyResolution)
 
         self.rpmFFT()
-        self.speedFFT
+        self.speedFFT()
         
     def analyze3to2(self):
         processor = ProjectProcess()
+        self.endFreq = 2000
 
         tireTransTacho = self.vehicleProcessor.getSpeedToTireRatio()
         self.dataDict2D["Tire Graph"] = processor.projectYOrder(

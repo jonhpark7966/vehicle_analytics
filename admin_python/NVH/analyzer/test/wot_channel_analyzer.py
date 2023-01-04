@@ -29,7 +29,7 @@ class WOTNoiseAnalyzer(NoiseChannelAnalyzer):
         self.dataDict2D["RPM Overall Graph"] = processor.projectYOA(
             self.dataDict3D["Engine RPM Colormap"],
             self.analyzeOptions.referenceValue,
-            20, 20000)
+            20, 20000, True)
 
 
     def analyze2to1(self):

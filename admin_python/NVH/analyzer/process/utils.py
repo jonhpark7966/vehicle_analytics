@@ -6,13 +6,18 @@ class UtilsProcessor:
 
     def getRMSFreq(self, dataModel2D, startFreq, endFreq, referenceValue):
 
+        if(startFreq == 0) and (endFreq == 0):
+            return -100 #-100 for non value.
+
         endIndex = len(dataModel2D.data)
         if endFreq != 0.0:
             endIndex = (endFreq - dataModel2D.xAxisStart)/dataModel2D.xAxisDelta
         assert (len(dataModel2D.data) > (endIndex-1))
 
         startIndex = (startFreq - dataModel2D.xAxisStart)/dataModel2D.xAxisDelta
-        assert (startIndex +1 < endIndex)
+
+        if not (startIndex +1 < endIndex):
+            return -100 #-100 for non value.
 
         dataToRMS = dataModel2D.data[round(startIndex):round(endIndex)]
         linear = [10**(datum/20) * referenceValue for datum in dataToRMS]
@@ -57,10 +62,10 @@ class UtilsProcessor:
         y = np.array(dataModel2D.data[startIndex:endIndex])
         m, c = np.linalg.lstsq(A, y, rcond=None)[0]
 
-        _ = plt.plot(x, y, 'o', label='Original data', markersize=10)
-        _ = plt.plot(x, m*x + c, 'r', label='Fitted line')
-        _ = plt.legend()
-        plt.show()
+        #_ = plt.plot(x, y, 'o', label='Original data', markersize=10)
+        #_ = plt.plot(x, m*x + c, 'r', label='Fitted line')
+        #_ = plt.legend()
+        #plt.show()
 
         return m, c
 

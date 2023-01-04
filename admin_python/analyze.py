@@ -66,6 +66,7 @@ if __name__ == '__main__':
             nvhAnalyze(organizer.wotHdfPathList, NVHTestType.WOT, "WOT")
         elif args.type == "accel":
             nvhAnalyze(organizer.accelHdfPathList, NVHTestType.Accel, "Accel")
+            print(organizer.accelHdfPathList)
         elif args.type == "decel":  
             nvhAnalyze(organizer.decelHdfPathList, NVHTestType.Decel, "Decel")
         elif args.type == "mdps":

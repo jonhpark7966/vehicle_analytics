@@ -14,7 +14,7 @@ class VehicleProcessor:
         aspectRatio = float(self.vehicleMap["front tire aspect ratio"])/100
         tireRim = float(self.vehicleMap["front tire rim"])*0.0254
 
-        circumference = math.pi(2*tireWidth*aspectRatio + tireRim)
+        circumference = math.pi*(2*tireWidth*aspectRatio + tireRim)
         return (1000/60) / circumference
     
     def getSpeedToPropellerShaftRatio(self):
