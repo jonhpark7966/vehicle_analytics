@@ -1,6 +1,8 @@
 from NVH.analyzer.nvh_test_type import NVHTestType
 from .test.accel_channel_analyzer import *
 from .test.idle_channel_analyzer import *
+from .test.cruise_channel_analyzer import *
+
 from NVH.channel_data_model import SignalType
 
 
@@ -19,6 +21,14 @@ def createChannelAnalyzer(channelDataModel, testType, tachoChannels, vehicleMap)
             return AccelNoiseAnalyzer(channelDataModel, tachoChannels, vehicleMap)
         elif channelDataModel.getType() == SignalType.Vibration:
             return AccelVibrationAnalyzer(channelDataModel, tachoChannels, vehicleMap)
+
+    elif testType == NVHTestType.Cruise:
+        if channelDataModel.getType() == SignalType.Noise:
+            return CruiseNoiseAnalyzer(channelDataModel, tachoChannels, vehicleMap)
+        elif channelDataModel.getType() == SignalType.Vibration:
+            return CruiseVibrationAnalyzer(channelDataModel, tachoChannels, vehicleMap)
+
+
 
 
     #assert False # TODO handle for not nvh channel.

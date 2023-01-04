@@ -3,14 +3,12 @@ from NVH.analyzer.channel_analyzer_factory import createChannelAnalyzer
 import json
 
 class NVHAnalyzer:
-    tachoChannels = [] # RPMs & speed
-    channelAnalyzers = [] 
-    outputPath = ""
 
     def __init__(self, channelsDataModel, testType, outputPath, vehicleJsonPath):
         # extract tacho channels
         self.tachoChannels = [channel for channel in channelsDataModel if channel.unit == "km/h" or channel.unit == "rpm"]
         self.outputPath = outputPath
+        self.channelAnalyzers = [] 
 
         # vehicle Infos
         with open(vehicleJsonPath, 'r') as file:

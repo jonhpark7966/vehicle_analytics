@@ -49,7 +49,9 @@ class SourceWidget extends StatelessWidget{
   Widget build(BuildContext context) {
     _resultsProvider = Provider.of<ResultsProvider>(context);
 
-    return Column(children:<Widget>[
+    return SingleChildScrollView(child:Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children:<Widget>[
       Row(
         children: [
           const Text("Current Test Id "),
@@ -104,7 +106,7 @@ class SourceWidget extends StatelessWidget{
       const SizedBox(height: 10),
 
     ] + getOutputBoxes(context)
-    );
+    ));
   }
 
    List<Widget> getOutputBoxes(context){

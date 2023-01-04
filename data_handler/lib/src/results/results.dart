@@ -1,7 +1,7 @@
 
-import 'package:data_handler/src/results/performance_results.dart';
-
+import 'performance_results.dart';
 import 'coastdown_results.dart';
+import 'nvh_results.dart';
 
 class ResultsCollection{
   String inputPath = "";
@@ -20,7 +20,7 @@ class ResultsCollection{
     // create results.
     results.add(CoastdownResults(inputPath));
     results.add(PerformanceResults(inputPath));
-    //results.add(NVHResults(inputPath));
+    results.add(NVHResults(inputPath));
 
     int ret = 0; // files to analyze.
     for(var result in results){

@@ -33,6 +33,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Analyze')
     parser.add_argument('--path', type=str, default=".")
     parser.add_argument('--test', type=str, default="performance")
+    parser.add_argument('--type', type=str, default="idle")
 
     args = parser.parse_args()
 
@@ -57,11 +58,17 @@ if __name__ == '__main__':
         brakeHtmlConverter.convert()
 
     elif args.test == "nvh":
-        nvhAnalyze(organizer.idleHdfPathList, NVHTestType.Idle, "Idle")
-        nvhAnalyze(organizer.cruiseHdfPathList, NVHTestType.Cruise , "Cruise")
-        nvhAnalyze(organizer.wotHdfPathList, NVHTestType.WOT, "WOT")
-        nvhAnalyze(organizer.accelHdfPathList, NVHTestType.Accel, "Accel")
-        nvhAnalyze(organizer.decelHdfPathList, NVHTestType.Decel, "Decel")
-        nvhAnalyze(organizer.mdpsHdfPathList, NVHTestType.MDPS, "MDPS")
+        if args.type == "idle":
+            nvhAnalyze(organizer.idleHdfPathList, NVHTestType.Idle, "Idle")
+        elif args.type == "cruise":
+            nvhAnalyze(organizer.cruiseHdfPathList, NVHTestType.Cruise , "Cruise")
+        elif args.type == "wot":
+            nvhAnalyze(organizer.wotHdfPathList, NVHTestType.WOT, "WOT")
+        elif args.type == "accel":
+            nvhAnalyze(organizer.accelHdfPathList, NVHTestType.Accel, "Accel")
+        elif args.type == "decel":  
+            nvhAnalyze(organizer.decelHdfPathList, NVHTestType.Decel, "Decel")
+        elif args.type == "mdps":
+            nvhAnalyze(organizer.mdpsHdfPathList, NVHTestType.MDPS, "MDPS")
 
         
