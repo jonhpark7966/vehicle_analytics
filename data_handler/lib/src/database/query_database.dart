@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 class QueryDatabase{
 
   String jwt = "";
+  String table = "test_ChartData";
 
   getChartData(int? id) async {
     http.Response res;
@@ -30,7 +31,7 @@ class QueryDatabase{
       );
     }
     var decoded = jsonDecode(res.body); 
-    return decoded["ChartData"];
+    return decoded[table];
   }
 
   updateChartData(String dataJson, int id){

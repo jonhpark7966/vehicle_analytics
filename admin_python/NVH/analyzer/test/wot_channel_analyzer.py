@@ -10,7 +10,7 @@ from ..process.tacho_process import TachoProcessor
 class WOTNoiseAnalyzer(NoiseChannelAnalyzer):
     def __init__(self, signalChannel, tachoChannels, vehicleMap):
         super().__init__(signalChannel, tachoChannels, vehicleMap)
-        self.endFreq = 2000
+        self.lowEndFreq = 2000
         self.highFreqRes = 20
         self.highEndFreq = 20000
 
@@ -30,16 +30,29 @@ class WOTNoiseAnalyzer(NoiseChannelAnalyzer):
             self.dataDict3D["Engine RPM Colormap"],
             self.analyzeOptions.referenceValue,
             20, 20000, True)
+        self.dataDict2D["Speed Overall Graph"] = processor.projectYOA(
+            self.dataDict3D["Speed Colormap"],
+            self.analyzeOptions.referenceValue,
+            20,20000, True)
+
 
 
     def analyze2to1(self):
-        noiseSlope, noiseIntercept = UtilsProcessor().getLinearRegression(
+        noiseSlopeRPM, noiseInterceptRPM = UtilsProcessor().getLinearRegression(
             self.dataDict2D["RPM Overall Graph"],
             self.analyzeOptions.engineRpmRegressionStart,
             self.analyzeOptions.engineRpmRegressionEnd)
+        noiseSlopeSpeed, noiseInterceptSpeed = UtilsProcessor().getLinearRegression(
+            self.dataDict2D["Speed Overall Graph"],
+            self.analyzeOptions.speedRegressionStart,
+            self.analyzeOptions.speedRegressionEnd)
 
-        self.dataDict1D["WOT Noise Slope"] = DataModel1D("dBA/rpm", noiseSlope)
-        self.dataDict1D["WOT Noise Intercept"] = DataModel1D("dBA", noiseIntercept)
+
+        self.dataDict1D["WOT Noise Slope Speed"] = DataModel1D("dBA/kph", noiseSlopeSpeed)
+        self.dataDict1D["WOT Noise Intercept Speed"] = DataModel1D("dBA", noiseInterceptSpeed)
+        self.dataDict1D["WOT Noise Slope RPM"] = DataModel1D("dBA/rpm", noiseSlopeRPM)
+        self.dataDict1D["WOT Noise Intercept RPM"] = DataModel1D("dBA", noiseInterceptRPM)
+
        
     
     def export(self, outputPath):

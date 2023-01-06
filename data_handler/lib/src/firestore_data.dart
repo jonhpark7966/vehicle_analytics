@@ -35,21 +35,25 @@ class ChartData{
   final double j2263_b;
   final double j2263_c;
   final double idleNoise;
+  final double idleBoomingNoise;
   final double idleVibraton;
   final double idleVibrationSrc;
-  final double wotNoiseCoefficient;
+  final double wotNoiseSlope;
   final double wotNoiseIntercept;
-  final double wotVibration;
+  final double wotEngineVibrationBody;
+  final double wotEngineVibrationSource;
   final double roadNoise;
   final double roadBooming;
   final double tireNoise;
   final double rumble;
-  final double cruise60Vibration;
   final double windNoise;
+  final double cruise65Vibration;
+  final double cruise80Vibration;
+  final double cruise100Vibration;
   final double cruise120Vibration;
-  final double accNoiseCoefficient;
+  final double accNoiseSlope;
   final double accNoiseIntercept;
-  final double accVibration;
+  final double accTireVibration;
   final double mdpsNoise;
   final double passing_3070kph;
   final double passing_4080kph;
@@ -71,11 +75,11 @@ class ChartData{
    required this.engineName, required this.engineType,  required this.cylinderVolumn, required this.transmission, required this.wheelDrive,
    required this.wltp_a, required this.wltp_b, required this.wltp_c,
    required this.j2263_a, required this.j2263_b, required this.j2263_c,
-   required this.idleNoise, required this.idleVibraton, required this.idleVibrationSrc,
-   required this.wotNoiseCoefficient, required this.wotNoiseIntercept, required this.wotVibration,
-   required this.roadNoise, required this.roadBooming, required this.tireNoise, required this.rumble, required this.cruise60Vibration,
-   required this.windNoise, required this.cruise120Vibration,
-   required this.accNoiseCoefficient, required this.accNoiseIntercept, required this.accVibration,
+   required this.idleNoise, required this.idleBoomingNoise, required this.idleVibraton, required this.idleVibrationSrc,
+   required this.wotNoiseSlope, required this.wotNoiseIntercept, required this.wotEngineVibrationBody, required this.wotEngineVibrationSource,
+   required this.roadNoise, required this.roadBooming, required this.tireNoise, required this.rumble, required this.windNoise,
+   required this.cruise65Vibration,  required this.cruise80Vibration, required this.cruise100Vibration, required this.cruise120Vibration,
+   required this.accNoiseSlope, required this.accNoiseIntercept, required this.accTireVibration,
    required this.mdpsNoise,
    required this.passing_3070kph, required this.passing_4080kph, required this.passing_60100kph, required this.passing_100140kph,
    required this.starting_60kph, required this.starting_100kph, required this.starting_140kph, required this.starting_100m, required this.starting_400m,
@@ -112,21 +116,25 @@ class ChartData{
       j2263_b: nullToDouble(json["j2263_b"]),
       j2263_c: nullToDouble(json["j2263_c"]),
       idleNoise: nullToDouble(json["idle_noise"]),
+      idleBoomingNoise: nullToDouble(json["idle_booming_noise"]),
       idleVibraton: nullToDouble(json["idle_vibration"]),
       idleVibrationSrc: nullToDouble(json["idle_vibration_source"]),
-      wotNoiseCoefficient: nullToDouble(json["wot_noise_coefficient"]),
+      wotNoiseSlope: nullToDouble(json["wot_noise_slope"]),
       wotNoiseIntercept: nullToDouble(json["wot_noise_intercept"]),
-      wotVibration: nullToDouble(json["wot_vibration"]),
+      wotEngineVibrationBody: nullToDouble(json["wot_engine_vibration_body"]),
+      wotEngineVibrationSource: nullToDouble(json["wot_engine_vibration_source"]),
       roadNoise: nullToDouble(json["road_noise"]),
       roadBooming: nullToDouble(json["road_booming"]),
       tireNoise: nullToDouble(json["tire_noise"]),
       rumble: nullToDouble(json["rumble"]),
-      cruise60Vibration: nullToDouble(json["cruise_60_vibration"]),
       windNoise: nullToDouble(json["wind_noise"]),
+      cruise65Vibration: nullToDouble(json["cruise_65_vibration"]),
+      cruise80Vibration: nullToDouble(json["cruise_80_vibration"]),
+      cruise100Vibration: nullToDouble(json["cruise_100_vibration"]),
       cruise120Vibration: nullToDouble(json["cruise_120_vibration"]),
-      accNoiseCoefficient: nullToDouble(json["acceleration_noise_coefficient"]),
+      accNoiseSlope: nullToDouble(json["acceleration_noise_slope"]),
       accNoiseIntercept: nullToDouble(json["acceleration_noise_intercept"]),
-      accVibration: nullToDouble(json["acceleration_vibration"]),
+      accTireVibration: nullToDouble(json["acceleration_tire_vibration"]),
       mdpsNoise: nullToDouble(json["mdps_noise"]),
       passing_3070kph: nullToDouble(json["passing_3070kph"]),
       passing_4080kph: nullToDouble(json["passing_4080kph"]),
@@ -139,7 +147,7 @@ class ChartData{
       starting_400m: nullToDouble(json["starting_400m"]),
       braking_distance: nullToDouble(json["braking_distance"]),
       braking_maxDecel: nullToDouble(json["braking_maxDecel"]),
-       detailsPage: json["details_page"]??"",
+      detailsPage: json["details_page"]??"",
     );
     }
 
@@ -167,21 +175,25 @@ class ChartData{
       "j2263_b":j2263_b,
       "j2263_c":j2263_c,
       "idle_noise":idleNoise,
+      "idle_booming_noise":idleBoomingNoise,
       "idle_vibration":idleVibraton,
       "idle_vibration_source":idleVibrationSrc,
-      "wot_noise_coefficient":wotNoiseCoefficient,
+      "wot_noise_slope":wotNoiseSlope,
       "wot_noise_intercept":wotNoiseIntercept,
-      "wot_vibration":wotVibration,
+      "wot_engine_vibration_body":wotEngineVibrationBody,
+      "wot_engine_vibration_source":wotEngineVibrationSource,
       "road_noise":roadNoise,
       "road_booming":roadBooming,
       "tire_noise":tireNoise,
       "rumble":rumble,
-      "cruise_60_vibration":cruise60Vibration,
       "wind_noise":windNoise,
+      "cruise_65_vibration":cruise65Vibration,
+      "cruise_80_vibration":cruise80Vibration,
+      "cruise_100_vibration":cruise100Vibration,
       "cruise_120_vibration":cruise120Vibration,
-      "acceleration_noise_coefficient":accNoiseCoefficient,
+      "acceleration_noise_slope":accNoiseSlope,
       "acceleration_noise_intercept":accNoiseIntercept,
-      "acceleration_vibration": accVibration,
+      "acceleration_tire_vibration": accTireVibration,
       "mdps_noise": mdpsNoise,
       "passing_3070kph": passing_3070kph,
       "passing_4080kph": passing_4080kph,
