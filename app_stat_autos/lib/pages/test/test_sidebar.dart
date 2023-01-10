@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:transparent_image/transparent_image.dart';
+
+import 'test_data_models.dart';
 
 
 enum SidebarIndex{
@@ -27,13 +30,11 @@ class TestSidebarX extends StatelessWidget {
     Key? key,
     required SidebarXController controller,
     required String? imageUrl,
-    required setState,
-  })  : _controller = controller, _imageUrl = imageUrl, _setState = setState,
+  })  : _controller = controller, _imageUrl = imageUrl,
         super(key: key);
 
   final SidebarXController _controller;
   String? _imageUrl;
-  var _setState;
 
   @override
   Widget build(BuildContext context) {
@@ -99,30 +100,24 @@ class TestSidebarX extends StatelessWidget {
                   )),
         );
       },
-      items: [
+      items: const [
         SidebarXItem(
           icon: Icons.dashboard ,
           label: 'Dashboard',
-          onTap: () {
-            _setState((){});
-          },
         ),
         SidebarXItem(
           icon: Icons.car_crash,
           label: 'Vehicle',
-          onTap: (){ _setState((){}); }
         ),
         SidebarXItem(
           icon: Icons.multiline_chart,
           label: 'CoastDown-J2263',
-          onTap: (){ _setState((){}); }
         ),
         SidebarXItem(
           icon: Icons.multiline_chart,
           label: 'CoastDown-WLTP',
-          onTap: (){ _setState((){}); }
         ),
-        const SidebarXItem(
+        SidebarXItem(
           icon: Icons.mic,
           label: 'Idle NVH',
         ),

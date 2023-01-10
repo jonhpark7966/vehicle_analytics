@@ -10,7 +10,6 @@ import '../pages/vehicles_page.dart';
 class FRouter {
   static FluroRouter router = FluroRouter();
 
-
   static void setupRouter() {
     router.define(vehiclesPageRouteName, handler: vehiclesPageHandler, transitionType: TransitionType.fadeIn);
     router.define(testPageRouteName, handler: testPageHandler, transitionType: TransitionType.inFromTop);
@@ -28,9 +27,8 @@ class FRouter {
 
       SidebarIndex? indexArg = context?.settings?.arguments as SidebarIndex?;
       indexArg = indexArg??SidebarIndex.Dashboard;
-      //return ChangeNotifierProvider(
-      //    create: (_) => TestDataModels(),
-      //    child: TestPage(int.parse(params['id'][0]), selectedIndex:indexArg));
-      return TestPage(int.parse(params['id'][0]), selectedIndex:indexArg);
+      return ChangeNotifierProvider(
+          create: (_) => TestDataModels(), // TODO, add cache to reduce request
+          child: TestPage(int.parse(params['id'][0]), selectedIndex:indexArg));
     });
 }

@@ -41,7 +41,7 @@ _getVehicleRows(){
      TestTitle(title:"Vehicle Info", subtitle:"", color:widget.dataModel.colors[0],
        leftButton:_getNavIconButton(1),),
        MultiValueCardHorizontal(title: "", color: widget.dataModel.colors[0],
-        dataList: widget.dataModel.data!.toDashboardVehicleDataList())
+        dataList: widget.dataModel.chartData!.toDashboardVehicleDataList())
     ];
 }
 
@@ -58,10 +58,10 @@ _getCoastdownRows(){
 
           TestSubtitle(title:"J2263", button: _getNavIconButton(2)),
          MultiValueCardHorizontal(title: "", color: widget.dataModel.colors[0],
-          dataList: ChartConverter.toDashboardCoastdownDataList(widget.dataModel.data!, CoastdownType.J2263)),
+          dataList: ChartConverter.toDashboardCoastdownDataList(widget.dataModel.chartData!, CoastdownType.J2263)),
          TestSubtitle(title:"WLTP", button: _getNavIconButton(3)),
          MultiValueCardHorizontal(title: "", color: widget.dataModel.colors[0],
-          dataList: ChartConverter.toDashboardCoastdownDataList(widget.dataModel.data!, CoastdownType.WLTP))
+          dataList: ChartConverter.toDashboardCoastdownDataList(widget.dataModel.chartData!, CoastdownType.WLTP))
 
         ],),
  Expanded(
@@ -72,8 +72,8 @@ _getCoastdownRows(){
                     child: GraphCard(
                       graph: RoadloadDashboardGraph(
                         data: 
-                          [RoadloadDashboardGraphData(widget.dataModel.data!.j2263_a,widget.dataModel.data!.j2263_b,widget.dataModel.data!.j2263_c),
-                          RoadloadDashboardGraphData(widget.dataModel.data!.wltp_a,widget.dataModel.data!.wltp_b,widget.dataModel.data!.wltp_c)],
+                          [RoadloadDashboardGraphData(widget.dataModel.chartData!.j2263_a,widget.dataModel.chartData!.j2263_b,widget.dataModel.chartData!.j2263_c),
+                          RoadloadDashboardGraphData(widget.dataModel.chartData!.wltp_a,widget.dataModel.chartData!.wltp_b,widget.dataModel.chartData!.wltp_c)],
                         color: widget.dataModel.colors[0],
                       ),
                       color: widget.dataModel.colors[0],

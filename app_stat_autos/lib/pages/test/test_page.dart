@@ -2,6 +2,7 @@ import 'package:data_handler/data_handler.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 import '../../brands/colors.dart';
 import '../../brands/manufacturers.dart';
 import '../../data/chart_data.dart';
@@ -16,71 +17,36 @@ import '../../widgets/appbar.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 
-class TestPage extends StatefulWidget{
+class TestPage extends StatelessWidget{
   final int? testId;
   SidebarIndex? selectedIndex;
-  TestPage(this.testId, {Key? key, this.selectedIndex}) : super(key:key){
-    selectedIndex=selectedIndex??SidebarIndex.Dashboard;
-  }
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _TestPageState createState() => _TestPageState();
-}
-
-class _TestPageState extends State<TestPage> {
   late SidebarXController _controller;
   final _key = GlobalKey<ScaffoldState>();
 
-  bool onLoading = true;
-  late Widget spinkit;
-  TestDataModels dataModel = TestDataModels();
+  late TestDataModels dataModel;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = SidebarXController(selectedIndex: widget.selectedIndex!.index, extended: true);
-    _controller.addListener(() {setState(() {});});
-
-    spinkit =  SpinKitCubeGrid(color: dataModel.colors[0]);
-
-   /* 
-    var db = FirebaseFirestore.instance;
-    db.collection("chart_data").where("test id", isEqualTo: widget.testId).get().then((event) {
-      // parse data and pass to pages.
-      assert(event.docs.length == 1);
-      dataModel.data = ChartData.fromJson(event.docs.first.data());
-      dataModel.colors = _getBackgroundColorPalette(Manufactureres.fromString(dataModel.data!.brand));
-
-      // (ex) "vehicles/2021palisade.jpg"
-      String vehicleImagePath = "vehicles/${dataModel.data!.modelYear}${dataModel.data!.name.toLowerCase()}.jpg";
-      Loader.storageRef.child(vehicleImagePath).getDownloadURL().then((loc) => setState(() => dataModel.imageUrl = loc));
-      //TODO, if no image, get it default.
-
-      setState(() {
-        onLoading = false;
-      });
-    });
-    */
-
-  }
-
-  List<Color> _getBackgroundColorPalette(Manufactureres brand){
-     return brandPalettes[brand] ?? defaultColors;
+  TestPage(this.testId, {Key? key, this.selectedIndex}) : super(key:key){
+    selectedIndex=selectedIndex??SidebarIndex.Dashboard;
+    _controller = SidebarXController(selectedIndex: selectedIndex!.index, extended: true);
+    _controller.addListener((){ dataModel.notifyListeners(); });
   }
 
   Widget _getBodyWidget(int index){
     switch(index){
       case 0: return TestDashboardPage(dataModel, _controller);
       case 1: return TestVehiclePage(dataModel, key:UniqueKey());
-      case 2: return TestCoastdownPage(dataModel, spinkit, CoastdownType.J2263, key:UniqueKey());
-      case 3: return TestCoastdownPage(dataModel, spinkit, CoastdownType.WLTP, key:UniqueKey());
+      case 2: return TestCoastdownPage(CoastdownType.J2263, key:UniqueKey());
+      case 3: return TestCoastdownPage(CoastdownType.WLTP, key:UniqueKey());
     }
     return TestDashboardPage(dataModel, _controller);
   }
 
   @override
   Widget build(BuildContext context) {
+    dataModel = Provider.of<TestDataModels>(context);
+    dataModel.loadChartData(testId);
+    Widget spinkit = SpinKitCubeGrid(color: dataModel.colors[0]);
+
     return Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -94,10 +60,10 @@ class _TestPageState extends State<TestPage> {
             body: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TestSidebarX(controller: _controller, imageUrl:dataModel.imageUrl, setState: setState,),
+                TestSidebarX(controller: _controller, imageUrl:dataModel.imageUrl),
                 Expanded(child:Container(
                     padding: const EdgeInsets.all(15),
-                    child: onLoading
+                    child: (dataModel.chartData==null)
                         ? Center(child: spinkit)
                         : _getBodyWidget(_controller.selectedIndex))
                         ,)

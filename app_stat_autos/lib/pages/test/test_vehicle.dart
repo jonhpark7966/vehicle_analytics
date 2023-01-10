@@ -32,8 +32,8 @@ class _TestVehiclePageState extends State<TestVehiclePage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TestTitle(title:"Vehicle Info", subtitle:widget.dataModel.data!.vin, color:widget.dataModel.colors[0],
-                rightButton: TestExternalLinkButton(color:widget.dataModel.colors[0], externalLink: widget.dataModel.data!.detailsPage,),),
+                TestTitle(title:"Vehicle Info", subtitle:widget.dataModel.chartData!.vin, color:widget.dataModel.colors[0],
+                rightButton: TestExternalLinkButton(color:widget.dataModel.colors[0], externalLink: widget.dataModel.chartData!.detailsPage,),),
                 SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -42,25 +42,25 @@ class _TestVehiclePageState extends State<TestVehiclePage> {
                       ValueCard(
                           title: "Manufacturer",
                           color: widget.dataModel.colors[0],
-                          value: "${widget.dataModel.data!.brand}",
+                          value: "${widget.dataModel.chartData!.brand}",
                           unit: "",
                           icon: Icons.factory_outlined),
                       ValueCard(
                           title: "Name",
                           color: widget.dataModel.colors[0],
-                          value: widget.dataModel.data!.name,
+                          value: widget.dataModel.chartData!.name,
                           unit: "",
                           icon: Icons.article_outlined),
                       ValueCard(
                           title: "Model Year",
                           color: widget.dataModel.colors[0],
-                          value: widget.dataModel.data!.modelYear.toString(),
+                          value: widget.dataModel.chartData!.modelYear.toString(),
                           unit: "",
                           icon: Icons.numbers),
                      ValueCard(
                           title: "ODO",
                           color: widget.dataModel.colors[0],
-                          value: widget.dataModel.data!.odo.toString(),
+                          value: widget.dataModel.chartData!.odo.toString(),
                           unit: "km",
                         icon: Icons.car_repair_outlined),
                   ]),
@@ -73,14 +73,14 @@ class _TestVehiclePageState extends State<TestVehiclePage> {
               child: MultiValueCard(
                 title: "Powertrain",
                 color: widget.dataModel.colors[0],
-                dataList: widget.dataModel.data!.toPowertrainCardDataList(),
+                dataList: widget.dataModel.chartData!.toPowertrainCardDataList(),
               ),
             ),
             Expanded(
               child: MultiValueCard(
                 title: "Others",
                 color: widget.dataModel.colors[0],
-                dataList: widget.dataModel.data!.toOthersCardDataList(),
+                dataList: widget.dataModel.chartData!.toOthersCardDataList(),
               ),
             ),
  

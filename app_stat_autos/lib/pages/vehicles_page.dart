@@ -75,7 +75,7 @@ class _VehiclesPageState extends State<VehiclesPage>{
     if (jwt != null) {
       query.jwt = jwt;
     }
-    var ret = await query.getChartDataAll(); // null represent
+    var ret = await query.getChartDataAll();
     return ret;
   }
 
