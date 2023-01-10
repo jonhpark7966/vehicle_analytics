@@ -5,7 +5,7 @@ String columnGroupJson  = """
      "name": "Vehicle",
      "columns":[
       {
-      "id" : "test id",
+      "id" : "test_id",
       "title": "Test #",
       "type": "dashboard",
       "hide": false 
@@ -17,7 +17,7 @@ String columnGroupJson  = """
       "hide": false 
       },
       {
-      "id" : "model year",
+      "id" : "model_year",
       "title": "MY",
       "type": "number",
       "hide": false 
@@ -29,25 +29,25 @@ String columnGroupJson  = """
       "hide": false 
       },
       {
-      "id" : "fuel type",
+      "id" : "fuel_type",
       "title": "Fuel",
       "type": "text",
       "hide": false 
       },
       {
-      "id" : "engine type",
+      "id" : "engine_type",
       "title": "Eng. Type",
       "type": "text",
       "hide": true 
       },
       {
-      "id" : "engine name",
+      "id" : "engine_name",
       "title": "Eng. Name",
       "type": "text",
       "hide": true 
       },
       {
-       "id" : "cylinder volumn",
+       "id" : "cylinder_volumn",
       "title": "Cyl Vol (cc)",
       "type": "number",
       "hide": true 
@@ -84,7 +84,7 @@ String columnGroupJson  = """
       "hide": true 
       },
       {
-      "id" : "wheel drive",
+      "id" : "wheel_drive",
       "title": "WD",
       "type": "String",
       "hide": true 
@@ -94,8 +94,113 @@ String columnGroupJson  = """
       "title": "FGR",
       "type": "double",
       "hide": true 
+      },
+      {
+      "id" : "details_page",
+      "title": "Details",
+      "type": "nav_to_test",
+      "hide": true 
       }
      ]
+},
+{
+     "name": "Passing Performance",
+     "columns":[
+      {
+      "id" : "passing_3070kph",
+      "title": "Low Spd (30-70kph)",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "passing_4080kph",
+      "title": "City Spd (40-80kph)",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "passing_60100kph",
+      "title": "Mid Spd (60-100kph)",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "passing_100140kph",
+      "title": "High Spd (100-140kph)",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "nav_to_test_passing",
+      "title": "...",
+      "type": "nav_to_test",
+      "hide": false 
+      }
+    ]
+},
+{
+     "name": "Starting Performance",
+     "columns":[
+      {
+      "id" : "starting_60kph",
+      "title": "0-60kph",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "starting_100kph",
+      "title": "0-100kph",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "starting_140kph",
+      "title": "0-140kph",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "starting_100m",
+      "title": "0-100m",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "starting_400m",
+      "title": "0-400m",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "nav_to_test_starting",
+      "title": "...",
+      "type": "nav_to_test",
+      "hide": false 
+      }
+    ]
+},
+{
+     "name": "Braking Performance",
+     "columns":[
+      {
+      "id" : "braking_distance",
+      "title": "Distance",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "braking_maxDecel",
+      "title": "Deceleration",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "nav_to_test_braking",
+      "title": "...",
+      "type": "nav_to_test",
+      "hide": false 
+      }
+    ]
 },
 {
      "name": "Coastdown (J2263)",
@@ -159,19 +264,19 @@ String columnGroupJson  = """
      "name": "Idle NVH",
      "columns":[
       {
-      "id" : "idle noise",
+      "id" : "idle_noise",
       "title": "Noise",
       "type": "double",
       "hide": false 
       },
       {
-      "id" : "idle vibration",
+      "id" : "idle_vibration",
       "title": "Vib",
       "type": "double",
       "hide": false 
       },
       {
-      "id" : "idle vibration source",
+      "id" : "idle_vibration_source",
       "title": "Vib (Src)",
       "type": "double",
       "hide": false 
@@ -182,20 +287,26 @@ String columnGroupJson  = """
      "name": "Wide Open Throttle NVH",
      "columns":[
       {
-      "id" : "wot noise coefficient",
-      "title": "Noise Coeff",
+      "id" : "wot_noise_slope",
+      "title": "Noise Slope",
       "type": "double",
       "hide": false 
       },
       {
-      "id" : "wot noise intercept",
+      "id" : "wot_noise_intercept",
       "title": "Noise Intrcpt",
       "type": "double",
       "hide": false 
       },
       {
-      "id" : "wot vibration",
-      "title": "Vib",
+      "id" : "wot_engine_vibration_body",
+      "title": "Eng Vib (Bdy)",
+      "type": "double",
+      "hide": false 
+      },
+      { 
+      "id" : "wot_engine_vibration_source",
+      "title": "Eng Vib (Src)",
       "type": "double",
       "hide": false 
       }
@@ -205,19 +316,19 @@ String columnGroupJson  = """
      "name": "Cruise NVH (Road Noise)",
      "columns":[
       {
-      "id" : "road noise",
+      "id" : "road_noise",
       "title": "Road Noise",
       "type": "double",
       "hide": false 
       },
       {
-      "id" : "road booming",
+      "id" : "road_booming",
       "title": "Road Boom",
       "type": "double",
       "hide": false 
       },
       {
-      "id" : "tire noise",
+      "id" : "tire_noise",
       "title": "Tire Noise",
       "type": "double",
       "hide": false 
@@ -229,19 +340,31 @@ String columnGroupJson  = """
       "hide": false 
       },
       {
-      "id" : "cruise 60 vibration",
-      "title": "Vib (60kph)",
-      "type": "double",
-      "hide": false 
-      },
-      {
-      "id" : "wind noise",
+      "id" : "wind_noise",
       "title": "Wind Noise",
       "type": "double",
       "hide": false 
       },
       {
-      "id" : "cruise 120 vibration",
+      "id" : "cruise_65_vibration",
+      "title": "Vib (65kph)",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "cruise_80_vibration",
+      "title": "Vib (80kph)",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "cruise_100_vibration",
+      "title": "Vib (100kph)",
+      "type": "double",
+      "hide": false 
+      },
+      {
+      "id" : "cruise_120_vibration",
       "title": "Vib (120kph)",
       "type": "double",
       "hide": false 
@@ -252,20 +375,20 @@ String columnGroupJson  = """
      "name": "Acceleration NVH",
      "columns":[
       {
-      "id" : "acceleration noise coefficient",
-      "title": "Noise Coeff",
+      "id" : "acceleration_noise_slope",
+      "title": "Noise Slope",
       "type": "double",
       "hide": false 
       },
       {
-      "id" : "acceleration noise intercept",
+      "id" : "acceleration_noise_intercept",
       "title": "Noise Intrcpt",
       "type": "double",
       "hide": false 
       },
       {
-      "id" : "acceleration vibration",
-      "title": "Vib",
+      "id" : "acceleration_tire_vibration",
+      "title": "Tire Vib",
       "type": "double",
       "hide": false 
       }
@@ -275,7 +398,7 @@ String columnGroupJson  = """
      "name": "MDPS NVH",
      "columns":[
       {
-      "id" : "mdps noise",
+      "id" : "mdps_noise",
       "title": "Noise",
       "type": "double",
       "hide": false 

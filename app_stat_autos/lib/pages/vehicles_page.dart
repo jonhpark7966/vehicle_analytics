@@ -37,6 +37,7 @@ class _VehiclesPageState extends State<VehiclesPage>{
 
   bool _isHide = true;
 
+  
   @override
   void initState(){
     super.initState();
@@ -44,13 +45,13 @@ class _VehiclesPageState extends State<VehiclesPage>{
     var cGroups = ColumnGroups.fromJson(jsonDecode(columnGroupJson));
     _buildColumns(cGroups);
 
-/*
-    var db = FirebaseFirestore.instance;
-    db.collection("chart_data").get().then((event) {
-      List<PlutoRow> fetchedRows = [];
-      for(var doc in event.docs){
-        var row = ChartData.fromJson(doc.data());
-        fetchedRows.add(ChartConverter.toPlutoRow(row));
+    // Get Tests
+    // TODO: data model should be seperated from Widget.
+    _getTestsFromDataBase().then((jsons) { 
+      List<PlutoRow> fetchedRows = <PlutoRow>[];
+      for(var json in jsons){
+          var row = ChartData.fromJson(json);
+          fetchedRows.add(ChartConverter.toPlutoRow(row));
       }
 
       PlutoGridStateManager.initializeRowsAsync(
@@ -59,13 +60,25 @@ class _VehiclesPageState extends State<VehiclesPage>{
       ).then((value) {
         stateManager.refRows.addAll(FilteredList(initialList: value));
         stateManager.setShowLoading(false);
-          for(var column in columns){
-            stateManager.resizeColumn(column, -80);
-          }
-          stateManager.notifyResizingListeners();
-        });
-    });*/
+        for (var column in columns) {
+          stateManager.resizeColumn(column, -80);
+        }
+        stateManager.notifyResizingListeners();
+      });
+    });
   }
+
+  _getTestsFromDataBase() async {
+    var auth = AuthManage();
+    var jwt = await auth.getJWT();
+    var query = QueryDatabase();
+    if (jwt != null) {
+      query.jwt = jwt;
+    }
+    var ret = await query.getChartDataAll(); // null represent
+    return ret;
+  }
+
 
   _hideToggle() {
     if (!_isHide) {
@@ -110,7 +123,12 @@ class _VehiclesPageState extends State<VehiclesPage>{
         rows: rows,
         configuration: PlutoGridConfiguration(
           style: gridStyle,
-          scrollbar: const PlutoGridScrollbarConfig(isAlwaysShown: true),
+          scrollbar: const PlutoGridScrollbarConfig(
+            isAlwaysShown: true,
+            hoverWidth: 15,
+            scrollbarThickness:12,
+            scrollbarThicknessWhileDragging: 15, 
+            ),
         ),
         onLoaded: (event) {
           stateManager = event.stateManager;
@@ -185,7 +203,7 @@ class _VehiclesPageState extends State<VehiclesPage>{
         color: Colors.lightBlueAccent,
         onPressed: (){
         String testId = rendererContext
-            .row.cells["test id"]!.value
+            .row.cells["test_id"]!.value
             .toString();
           FRouter.router.navigateTo(
             context, FRouter.testPageRouteName.replaceAll(":id", testId),

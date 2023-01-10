@@ -5,7 +5,7 @@ import '../../data/coastdown_data.dart';
 import '../../loader/loader.dart';
 import '../../loader/models.dart';
 
-class TestDataModels{
+class TestDataModels extends ChangeNotifier{
 
   String? imageUrl;
   ChartData? data;
@@ -29,6 +29,8 @@ class TestDataModels{
     var log = await Loader.loadFromCoastdownLog("test/${testId}/$testPath/log.txt");
     data.log = log;
     data.loaded = true;
+
+    notifyListeners();
 
     return;
   }

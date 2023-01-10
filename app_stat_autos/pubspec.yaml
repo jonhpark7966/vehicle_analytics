@@ -33,7 +33,7 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # chart table
-  pluto_grid: ^5.0.4
+  pluto_grid: ^5.4.9
 
   #graph
   fl_chart: ^0.55.1
@@ -57,6 +57,12 @@ dependencies:
   flutter_login: ^4.1.1
 
   firebase_core: ^2.4.0
+  firebase_storage: ^11.0.10
+
+  # Provider. State Manager.
+  provider: ^6.0.4
+
+
 
 dev_dependencies:
   flutter_test:

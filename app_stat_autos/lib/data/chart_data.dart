@@ -13,16 +13,16 @@ class ChartConverter{
 
   static toPlutoRow(ChartData data){
     Map<String, PlutoCell> cells = {};
-    cells["test id"] = PlutoCell(value:data.testId);
+    cells["test_id"] = PlutoCell(value:data.testId);
     cells["name"] = PlutoCell(value:data.name);
-    cells["model year"] = PlutoCell(value:data.modelYear);
+    cells["model_year"] = PlutoCell(value:data.modelYear);
     cells["brand"] = PlutoCell(value:data.brand);
-    cells["fuel type"] = PlutoCell(value:data.fuelType);
-    cells["engine name"] = PlutoCell(value:data.engineName);
-    cells["engine type"] = PlutoCell(value:data.engineType);
-    cells["cylinder volumn"] = PlutoCell(value:data.cylinderVolumn);
+    cells["fuel_type"] = PlutoCell(value:data.fuelType);
+    cells["engine_name"] = PlutoCell(value:data.engineName);
+    cells["engine_type"] = PlutoCell(value:data.engineType);
+    cells["cylinder_volumn"] = PlutoCell(value:data.cylinderVolumn);
     cells["transmission"] = PlutoCell(value:data.transmission);
-    cells["wheel drive"] = PlutoCell(value:data.wheelDrive);
+    cells["wheel_drive"] = PlutoCell(value:data.wheelDrive);
     cells["vin"] = PlutoCell(value:data.vin);
     cells["odo"] = PlutoCell(value:data.odo);
     cells["layout"] = PlutoCell(value:data.layout);
@@ -36,26 +36,48 @@ class ChartConverter{
     cells["j2263_b"] = PlutoCell(value:data.j2263_b);
     cells["j2263_c"] = PlutoCell(value:data.j2263_c);
     cells["nav_to_test_j2263"] = PlutoCell(value:"");
-    cells["idle noise"] = PlutoCell(value:data.idleNoise);
-    cells["idle vibration"] = PlutoCell(value:data.idleVibraton);
-    cells["idle vibration source"] = PlutoCell(value:data.idleVibrationSrc);
-    cells["wot noise coefficient"] = PlutoCell(value:data.wotNoiseCoefficient);
-    cells["wot noise intercept"] = PlutoCell(value:data.wotNoiseIntercept);
-    cells["wot vibration"] = PlutoCell(value:data.wotVibration);
-    cells["road noise"] = PlutoCell(value:data.roadNoise);
-    cells["road booming"] = PlutoCell(value:data.roadBooming);
-    cells["tire noise"] = PlutoCell(value:data.tireNoise);
+
+    cells["idle_noise"] = PlutoCell(value:data.idleNoise);
+    cells["idle_vibration"] = PlutoCell(value:data.idleVibraton);
+    cells["idle_vibration_source"] = PlutoCell(value:data.idleVibrationSrc);
+    cells["wot_noise_slope"] = PlutoCell(value:data.wotNoiseSlope);
+    cells["wot_noise_intercept"] = PlutoCell(value:data.wotNoiseIntercept);
+    cells["wot_engine_vibration_body"] = PlutoCell(value:data.wotEngineVibrationBody);
+    cells["wot_engine_vibration_source"] = PlutoCell(value:data.wotEngineVibrationSource);
+    cells["road_noise"] = PlutoCell(value:data.roadNoise);
+    cells["road_booming"] = PlutoCell(value:data.roadBooming);
+    cells["tire_noise"] = PlutoCell(value:data.tireNoise);
     cells["rumble"] = PlutoCell(value:data.rumble);
-    cells["cruise 60 vibration"] = PlutoCell(value:data.cruise60Vibration);
-    cells["wind noise"] = PlutoCell(value:data.windNoise);
-    cells["cruise 120 vibration"] = PlutoCell(value:data.cruise120Vibration);
-    cells["acceleration noise coefficient"] = PlutoCell(value:data.accNoiseCoefficient);
-    cells["acceleration noise intercept"] = PlutoCell(value:data.accNoiseIntercept);
-    cells["acceleration vibration"] = PlutoCell(value:data.accVibration);
-    cells["mdps noise"] = PlutoCell(value:data.mdpsNoise);
+    cells["wind_noise"] = PlutoCell(value:data.windNoise);
+    cells["cruise_65_vibration"] = PlutoCell(value:data.cruise65Vibration);
+    cells["cruise_80_vibration"] = PlutoCell(value:data.cruise80Vibration);
+    cells["cruise_100_vibration"] = PlutoCell(value:data.cruise100Vibration);
+    cells["cruise_120_vibration"] = PlutoCell(value:data.cruise120Vibration);
+    cells["acceleration_noise_slope"] = PlutoCell(value:data.accNoiseSlope);
+    cells["acceleration_noise_intercept"] = PlutoCell(value:data.accNoiseIntercept);
+    cells["acceleration_tire_vibration"] = PlutoCell(value:data.accTireVibration);
+    cells["mdps_noise"] = PlutoCell(value: data.mdpsNoise);
+
+    cells["passing_3070kph"] = PlutoCell(value: data.passing_3070kph);
+    cells["passing_4080kph"] = PlutoCell(value: data.passing_4080kph);
+    cells["passing_60100kph"] = PlutoCell(value: data.passing_60100kph);
+    cells["passing_100140kph"] = PlutoCell(value: data.passing_100140kph);
+    cells["nav_to_test_passing"] = PlutoCell(value:"");
+
+    cells["starting_60kph"] = PlutoCell(value: data.starting_60kph);
+    cells["starting_100kph"] = PlutoCell(value: data.starting_100kph);
+    cells["starting_140kph"] = PlutoCell(value: data.starting_140kph);
+    cells["starting_100m"] = PlutoCell(value: data.starting_100m);
+    cells["starting_400m"] = PlutoCell(value: data.starting_400m);
+    cells["nav_to_test_starting"] = PlutoCell(value:"");
+
+    cells["braking_distance"] = PlutoCell(value: data.braking_distance);
+    cells["braking_maxDecel"] = PlutoCell(value: data.braking_maxDecel);
+    cells["nav_to_test_braking"] = PlutoCell(value:"");
+
+    cells["details_page"] = PlutoCell(value: data.detailsPage);
 
     return PlutoRow(cells: cells);
- 
   }
 
   static toDashboardCoastdownDataList(ChartData data, CoastdownType type){

@@ -1,5 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../pages/test/test_data_models.dart';
 import '../pages/test/test_page.dart';
 import '../pages/test/test_sidebar.dart';
 import '../pages/vehicles_page.dart';
@@ -26,7 +28,9 @@ class FRouter {
 
       SidebarIndex? indexArg = context?.settings?.arguments as SidebarIndex?;
       indexArg = indexArg??SidebarIndex.Dashboard;
-
+      //return ChangeNotifierProvider(
+      //    create: (_) => TestDataModels(),
+      //    child: TestPage(int.parse(params['id'][0]), selectedIndex:indexArg));
       return TestPage(int.parse(params['id'][0]), selectedIndex:indexArg);
     });
 }
