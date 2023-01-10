@@ -163,7 +163,7 @@ class _VehiclesPageState extends State<VehiclesPage>{
         columns.add(PlutoColumn(
           title: column.title,
           field: column.id,
-          type: _typeStringToPlutoType(column.type),
+          type: _typeStringToPlutoType(column.type, column.unit),
           enableEditingMode: false,
           renderer: _typeStringToRenderer(column.type, group),
           hide:column.hide,
@@ -178,8 +178,13 @@ class _VehiclesPageState extends State<VehiclesPage>{
     }
  }
 
- PlutoColumnType _typeStringToPlutoType(String type){
-  return PlutoColumnType.text();
+ PlutoColumnType _typeStringToPlutoType(String type, String unit){
+  if(type == "double"){
+    return PlutoColumnType.number(format:'###.## $unit');
+
+  }else{
+    return PlutoColumnType.text();
+  }
  }
 
  PlutoColumnRenderer? _typeStringToRenderer(String type, ColumnGroup group){

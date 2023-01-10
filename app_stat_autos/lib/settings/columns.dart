@@ -33,16 +33,18 @@ class GridColumn{
   final String id;
   final String title;
   final String type;
-  final bool hide; 
+  final bool hide;
+  final String unit; 
 
-  GridColumn({required this.id, required this.title, required this.type, required this.hide});
+  GridColumn({required this.id, required this.title, required this.type, required this.hide, required this.unit});
 
   factory GridColumn.fromJson(Map<String, dynamic> json){
     return GridColumn(
       id:json["id"],
       title:json["title"],
       type: json["type"],
-      hide: json["hide"]
+      hide: json["hide"],
+      unit: json["unit"],
     );
   }
 }
