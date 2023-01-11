@@ -19,6 +19,9 @@ dependencies:
   # USE GraphQL API
   #graphql: ^5.1.1
 
+  # Archiving (tar, gz)
+  archive: ^3.3.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

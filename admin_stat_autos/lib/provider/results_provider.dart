@@ -133,7 +133,6 @@ class ResultsProvider extends ChangeNotifier {
 
   _uploadTestStorage(Map<String, String> currentFiles, int testId) async{
     filesToUpload = 0;
-    filesToUpload = 0;
 
     currentFiles.forEach((key, value){
       filesToUpload++;
@@ -147,5 +146,3 @@ class ResultsProvider extends ChangeNotifier {
     });
   }
 }
-
-

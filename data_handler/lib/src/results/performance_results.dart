@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:data_handler/src/results/results.dart';
 
+import '../storage/archive_handler.dart';
+
 
 
 class PerformanceResults extends Results{
@@ -55,11 +57,19 @@ class PerformanceResults extends Results{
      stdoutEncoding: const SystemEncoding());
 
      task.then((value){
+
+      Map<String, List<String>> inputFiles = {
+        "StartingAccel":[],
+        "PassingAccel":[],
+        "Braking":[]
+      };
+      // input files -> zip to uploadfiles
       Map<String,String> uploadFiles = {};
       String accelJsonPath = "";
       String brakeJsonPath = "";
 
 
+      // list up input files
       var stdout = value.stdout;
       var splited = stdout.split("\n");
       for(var line in splited){
@@ -67,15 +77,31 @@ class PerformanceResults extends Results{
 
         var localPath = line.split("! :")[1];
         var fileName = localPath.split("/").last;
-        uploadFiles["performance/$fileName"] = localPath;
+        inputFiles.forEach((key, value) {
+          if(fileName.contains(key)){
+            value.add(localPath); 
+          }
+        });
 
         if(localPath.contains("Acceleration.json")){
           accelJsonPath = localPath;
+          uploadFiles["performance/Acceleration.json"] = localPath;
         }
         if(localPath.contains("Braking.json")){
           brakeJsonPath = localPath;
+          uploadFiles["performance/Braking.json"] = localPath;
         }
       }
+
+      String targetPath = accelJsonPath.replaceFirst("Acceleration.json", "");
+      // tar gz files
+      inputFiles.forEach((key, value) {
+        var outputPath = "$targetPath$key.zip";
+        ArchiveHandler.compressLocal(value, outputPath);
+        uploadFiles["performance/$key.zip"] = outputPath;
+      });
+
+
       callback(uploadFiles);
 
       dbResults.addAll(

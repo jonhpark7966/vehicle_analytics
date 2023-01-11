@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:data_handler/src/results/results.dart';
+import 'package:data_handler/src/storage/archive_handler.dart';
 
 
 
@@ -83,13 +84,24 @@ class NVHResults extends Results{
         //      Cruise/nvds_221018_101128_12s_LX2_CRUISE_65kph.hdf/MIC:Front.json
         var fileName = pathSplits[pathSplits.length-3] + "/" +
          pathSplits[pathSplits.length-2] + "/" + pathSplits[pathSplits.length -1];
-        uploadFiles["nvh/$fileName"] = localPath;
+uploadFiles["nvh/$fileName"] = localPath;
 
         if(localPath.contains(".json")  && !fileName.split("/").last.contains("_")){
             // 1D json
             oneDimensionJsonList.add(localPath);
         }
       }
+
+      // TODO, nvh files to zip & filter?
+      //var pathSplits = oneDimensionJsonList.first.split("/"); 
+      //var hdfName = "${pathSplits[pathSplits.length-2]}/${pathSplits[pathSplits.length -1]}";
+      //var directoryPath = oneDimensionJsonList.first.replaceFirst("/$hdfName", "");
+      //var directoryName = directoryPath.split("/").last;
+      //assert(directoryName.toLowerCase() == type);
+      //var outputPath = "$directoryPath.zip";
+      //ArchiveHandler.compressLocalDirectory(directoryPath, outputPath);
+
+      //uploadFiles["nvh/$directoryName.zip"] = outputPath;
       callback(uploadFiles);
 
       dbResults.addAll(
