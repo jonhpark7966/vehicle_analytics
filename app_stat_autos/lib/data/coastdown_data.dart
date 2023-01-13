@@ -18,10 +18,10 @@ class CoastdownRawData{
     run.add(datum);
   }
 
-  toFlGraphData(){
+  toFlGraphDataSpeed(){
     var ret = <FlSpot>[];
     for(var data in run){
-      ret.add(data.toFlGraphData());
+      ret.add(data.toFlGraphDataSpeed());
     }
     return ret;
   }
@@ -38,7 +38,7 @@ class CoastdownRawDatum{
 
   CoastdownRawDatum(this.speed, this.time, this.degree, this.speedR, this.distance, this.temp, this.baroPressure);
 
-  toFlGraphData(){
+  toFlGraphDataSpeed(){
     return FlSpot(time, speed);
   }
 

@@ -13,6 +13,7 @@ export 'src/auth/auth.dart' show AuthManage;
 
 export 'src/database/query_database.dart' show QueryDatabase;
 export 'src/storage/fb_storage.dart' show FBStorage;
+export 'src/storage/archive_handler.dart' show ArchiveHandler, FileOnMemory;
 
 
 

@@ -8,9 +8,11 @@ class GraphCard extends StatefulWidget {
   final Color color;
   final String title;
   final String subtitle;
+  final String help;
 
   const GraphCard({Key? key,
-   required this.graph, required this.color, required this.title, required this.subtitle})
+   required this.graph, required this.color, required this.title, required this.subtitle,
+   this.help=""})
     : super(key: key);
 
   @override
@@ -43,7 +45,11 @@ class GraphCardState extends State<GraphCard> {
                 const SizedBox(
                   height: defaultPadding,
                 ),
-               Text(
+                Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(width:(widget.help == "")?1:30),
+                Text(
                   widget.title,
                   style: TextStyle(
                     color: widget.color,
@@ -51,13 +57,24 @@ class GraphCardState extends State<GraphCard> {
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
-            ),
-            const SizedBox(
+                ),
+                (widget.help == "")
+                    ? const SizedBox(width: 1)
+                    : Container(
+                      padding: const EdgeInsets.only(right: 10),
+                      child:Tooltip(
+                        padding: const EdgeInsets.all(defaultPadding),
+                        message: widget.help,
+                        child: const Icon(Icons.help_outline_outlined,
+                            color: Colors.blueGrey))),
+              ],
+           ),
+           const SizedBox(
               height: 5,
             ),
             Text(
               widget.subtitle,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.blueGrey,
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
@@ -69,7 +86,7 @@ class GraphCardState extends State<GraphCard> {
             ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(right: 16.0, left: 6.0),
+                    padding: const EdgeInsets.only(right: 16.0, left: 6.0),
                     child: widget.graph,
                   ),
                 ),

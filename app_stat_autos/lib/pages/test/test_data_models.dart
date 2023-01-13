@@ -4,6 +4,7 @@ import '../../brands/colors.dart';
 import '../../brands/manufacturers.dart';
 import '../../data/chart_data.dart';
 import '../../data/coastdown_data.dart';
+import '../../data/performance_data.dart';
 import '../../loader/loader.dart';
 import '../../loader/models.dart';
 
@@ -15,6 +16,11 @@ class TestDataModels extends ChangeNotifier{
   Map coastdownDataMap = {
      CoastdownType.WLTP: CoastdownRawLoadedDataModel(),
      CoastdownType.J2263: CoastdownRawLoadedDataModel()
+  };
+  Map performanceDataMap = {
+     PerformanceType.Starting : PerformanceRawLoadedDataModel(),
+     PerformanceType.Passing : PerformanceRawLoadedDataModel(),
+     PerformanceType.Braking : PerformanceRawLoadedDataModel(),
   };
 
   loadChartData(int? testId)async{
@@ -64,6 +70,28 @@ class TestDataModels extends ChangeNotifier{
     notifyListeners();
     return;
   }
+
+  loadPerformanceData(int testId, PerformanceType testType) async {
+   String testPath = testType.toLowerString;
+
+   PerformanceRawLoadedDataModel data = performanceDataMap[testType];
+   if(data.loaded){
+    return ;
+   }
+
+    var runs = await Loader.loadFromPerformanceRaw("test/${testId}/performance", testType);
+    data.runs = runs;
+
+    // TODO: Create Table.
+    //var runs = await Loader.loadFromPerformanceTable("test/${testId}/$testPath/raw.txt");
+    //data.runs = runs;
+
+    data.loaded = true;
+
+    notifyListeners();
+    return;
+  }
+
 
 
   List<Color> _getBackgroundColorPalette(Manufactureres brand){

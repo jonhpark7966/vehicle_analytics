@@ -9,8 +9,11 @@ class FlGraph extends StatelessWidget {
   double minY;
   double maxX;
   double maxY;
+  double intervalX;
+  double intervalY;
   
-  FlGraph({Key? key, required this.data, required this.color, this.minX=0, this.minY=0, this.maxX=100, this.maxY=100}) : super(key: key){
+  FlGraph({Key? key, required this.data, required this.color, this.minX=0, this.minY=0,
+   this.maxX=100, this.maxY=100, this.intervalX=10, this.intervalY=20}) : super(key: key){
     initMinMaxFromData();
   }
 
@@ -107,7 +110,7 @@ class FlGraph extends StatelessWidget {
   SideTitles leftTitles() => SideTitles(
         getTitlesWidget: leftTitleWidgets,
         showTitles: true,
-        interval: 20,
+        interval: intervalY,
         reservedSize: 80
       );
 
@@ -129,7 +132,7 @@ class FlGraph extends StatelessWidget {
   SideTitles get bottomTitles => SideTitles(
         showTitles: true,
         reservedSize: 32,
-        interval: 10,
+        interval: intervalX,
         getTitlesWidget: bottomTitleWidgets,
       );
 

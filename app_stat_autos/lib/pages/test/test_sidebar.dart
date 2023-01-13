@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -9,24 +10,36 @@ import 'test_data_models.dart';
 enum SidebarIndex{
   Dashboard,
   Vehicle,
+  PerformanceStarting,
+  PerformancePassing,
+  PerformanceBraking,
   J2263,
   WLTP,
   IdleNVH;
 
+  // create index from column group (refer colums.dart's json)
   static fromName(String name){
-    if(name.contains("Vehicle")){
+    if(name.contains("Dashboard")){
       return SidebarIndex.Dashboard;
+    }else if(name.contains("Vehicle")){
+      return SidebarIndex.Vehicle;
     }else if(name.contains("J2263")){
       return SidebarIndex.J2263;
     }else if(name.contains("WLTP")){
       return SidebarIndex.WLTP;
+    }else if(name.contains("Starting Performance")){
+      return SidebarIndex.PerformanceStarting;
+    }else if(name.contains("Passing Performance")){
+      return SidebarIndex.PerformancePassing;
+    }else if(name.contains("Braking Performance")){
+      return SidebarIndex.PerformanceBraking;
     }
     return SidebarIndex.Dashboard;
   }
 }
 
 class TestSidebarX extends StatelessWidget {
-  TestSidebarX({
+  const TestSidebarX({
     Key? key,
     required SidebarXController controller,
     required String? imageUrl,
@@ -34,7 +47,7 @@ class TestSidebarX extends StatelessWidget {
         super(key: key);
 
   final SidebarXController _controller;
-  String? _imageUrl;
+  final String? _imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +108,7 @@ class TestSidebarX extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.0),
                     child:
                   (_imageUrl==null)?
-                   Image.memory(kTransparentImage):
+                   const SpinKitPianoWave(color:Colors.black):
                    Image.network(_imageUrl!)
                   )),
         );
@@ -110,6 +123,18 @@ class TestSidebarX extends StatelessWidget {
           label: 'Vehicle',
         ),
         SidebarXItem(
+          icon: Icons.speed_outlined,
+          label: 'Perf-Starting',
+        ),
+        SidebarXItem(
+          icon: Icons.speed_outlined,
+          label: 'Perf-Passing',
+        ),
+        SidebarXItem(
+          icon: Icons.speed_outlined,
+          label: 'Perf-Braking',
+        ),
+        SidebarXItem(
           icon: Icons.multiline_chart,
           label: 'CoastDown-J2263',
         ),
@@ -119,7 +144,7 @@ class TestSidebarX extends StatelessWidget {
         ),
         SidebarXItem(
           icon: Icons.mic,
-          label: 'Idle NVH',
+          label: 'NVH-Idle',
         ),
       ],
     );

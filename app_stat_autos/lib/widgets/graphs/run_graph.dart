@@ -2,32 +2,86 @@ import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import '../../data/coastdown_data.dart';
 import 'fl_graph.dart';
 
 
-// data => List<CoastdownRawData>
-class CoastdownGraph extends FlGraph {
-  CoastdownGraph(
+enum RunGraphValueType {
+  speed,
+  acc,
+  distance,
+}
+
+class RunGraph extends FlGraph {
+  final RunGraphValueType type;
+  RunGraph(
       {Key? key,
       required super.data,
       required super.color,
       super.minX,
       super.minY,
       super.maxX,
-      super.maxY})
+      super.maxY,
+      super.intervalX,
+      super.intervalY,
+      this.type = RunGraphValueType.speed,
+      })
       : super(key: key);
+
+
+  _getYAxisUnit(){
+    if(type == RunGraphValueType.speed){
+      return "kph";
+    }else if(type == RunGraphValueType.acc){
+      return "kph/s";
+    }if(type == RunGraphValueType.distance){
+      return "m";
+    }
+  }
+
+  _getY(datum){
+    try{
+    if(type == RunGraphValueType.speed){
+      return datum.speed;
+    }else if(type == RunGraphValueType.acc){
+      return datum.accel;
+    }if(type == RunGraphValueType.distance){
+      return datum.distance;
+    }
+    }catch(_){
+      // should be get value.
+      assert(false);
+      return 0.0;
+    }
+  }
+
+  _getFlSpot(run){
+    try{
+    if(type == RunGraphValueType.speed){
+      return run.toFlGraphDataSpeed();
+    }else if(type == RunGraphValueType.acc){
+      return run.toFlGraphDataAccel();
+    }if(type == RunGraphValueType.distance){
+      return run.toFlGraphDataDistance();
+    }
+    }catch(_){
+      // should be get value.
+      assert(false);
+      return run.toFlGraphDataSpeed();
+    }
+  }
+
 
   @override
   initMinMaxFromData() {
-    for (CoastdownRawData run in data) {
+   for (var run in data) {
       for (var datum in run.run) {
-        maxY = max(maxY, datum.speed);
+        var y = _getY(datum);
+        maxY = max(maxY, y);
         maxX = max(maxX, datum.time);
       }
     }
-    maxY = (((maxY + 10) ~/ 10) * 10).toDouble();
-    maxX = (((maxX + 10) ~/ 10) * 10).toDouble();
+    maxY = (((maxY + intervalY) ~/ intervalY) * intervalY).toDouble();
+    maxX = (((maxX + intervalX) ~/ intervalX) * intervalX).toDouble();
   }
 
   @override
@@ -44,7 +98,7 @@ class CoastdownGraph extends FlGraph {
           show: false,
           color: const Color(0x00aa4cfc),
         ),
-        spots: run.toFlGraphData(),
+        spots: _getFlSpot(run),
       ));
     }
     return ret;
@@ -77,7 +131,7 @@ class CoastdownGraph extends FlGraph {
               return touchedBarSpots.map((barSpot) {
                 final flSpot = barSpot;
                 return LineTooltipItem(
-                    '#${flSpot.barIndex + 1} - (${flSpot.x.toStringAsFixed(2)}s, ${flSpot.y.toStringAsFixed(2)}kph)',
+                    '${'#${flSpot.barIndex + 1} - (${flSpot.x.toStringAsFixed(2)}s, ${flSpot.y.toStringAsFixed(2)}'+_getYAxisUnit()})',
                     const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -88,3 +142,5 @@ class CoastdownGraph extends FlGraph {
             }),
       );
 }
+
+
