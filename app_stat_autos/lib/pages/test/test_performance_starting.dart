@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../data/chart_data.dart';
 import '../../data/coastdown_data.dart';
 import '../../loader/loader.dart';
+import '../../widgets/cards/table_card.dart';
 import 'test_data_models.dart';
 import '../../resources/help.dart';
 import '../../settings/ui_constants.dart';
@@ -19,6 +20,7 @@ import '../../widgets/test_title.dart';
 class TestPerformanceStartingPage extends StatelessWidget{
   late TestDataModels dataModel;
   late List<PerformanceRawData> _runs; 
+  late List<PerformanceTable> _tables;
   
   TestPerformanceStartingPage({Key? key}) : super(key:key);
 
@@ -72,34 +74,37 @@ class TestPerformanceStartingPage extends StatelessWidget{
                     ))),
          ],
         ),
-        /*
+        
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: MultiValueCard(
-                title: "Target Infomation",
-                color: dataModel.colors[0],
-                dataList: _log.toDataList(_log.targetInfo),
-              ),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.all(defaultPadding),
+            child: TableCard(
+              title: "Starting Performance Details",
+              subtitle: "by Speed",
+              color: dataModel.colors[0],
+              table: _tables[0],
             ),
-            Expanded(
-              child: MultiValueCard(
-                title: "Calibration Coefficients",
-                color: dataModel.colors[0],
-                dataList: _log.toDataList(_log.calibrationCoeffs),
-                help:HelpResources.coastdownCalibration,
-              ),
+          )),
+         ],
+        ),
+        Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.all(defaultPadding),
+            child: TableCard(
+              title: "Starting Performance Details",
+              subtitle: "by Distance",
+              color: dataModel.colors[0],
+              table: _tables[1],
             ),
-            Expanded(
-              child: MultiValueCard(
-                title: "Errors",
-                color: dataModel.colors[0],
-                dataList: _log.toDataList(_log.totalError),
-              ),
-            ),
-          ],
-        )*/
+          )),
+         ],
+        )
       ];
   }
 
@@ -110,7 +115,7 @@ class TestPerformanceStartingPage extends StatelessWidget{
     var isLoaded = dataModel.performanceDataMap[PerformanceType.Starting].loaded;
     if(isLoaded){
         _runs = dataModel.performanceDataMap[PerformanceType.Starting].runs;
-        //_log = dataModel.coastdownDataMap[type].log;
+        _tables = dataModel.performanceDataMap[PerformanceType.Starting].tables;
     }
 
     dataModel.loadPerformanceData(dataModel.chartData!.testId, PerformanceType.Starting);

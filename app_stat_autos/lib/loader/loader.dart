@@ -34,7 +34,6 @@ class Loader{
   } 
 
   static loadFromPerformanceRaw(String path, PerformanceType type) async {
-
     try {
     // get list of files.
     final fileList = await storageRef.child(path).listAll();
@@ -43,6 +42,25 @@ class Loader{
         if(item.name.contains("StartingAccel.zip")){
           final Uint8List? data = await storageRef.child(path+"/"+item.name).getData();
           var ret = PerformanceParser.rawDataParser(data, type);
+          return ret;
+        }
+      }
+    }
+    } on FirebaseException catch (e) {
+      // Handle any errors.
+      assert(false);
+    }
+  }
+
+  static loadFromPerformanceTable(String path, PerformanceType type) async {
+    try {
+    // get list of files.
+    final fileList = await storageRef.child(path).listAll();
+    for (var item in fileList.items) {
+      if(type == PerformanceType.Starting){
+        if(item.name.contains("Acceleration.json")){
+          final Uint8List? data = await storageRef.child(path+"/"+item.name).getData();
+          var ret = PerformanceParser.tableDataParser(data, type);
           return ret;
         }
       }

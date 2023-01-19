@@ -58,4 +58,53 @@ class PerformanceParser{
 
    return ret;
   }
+
+  static tableDataParser(Uint8List? data, PerformanceType type){
+    List<PerformanceTable> ret = [];
+
+    if(data == null){ return PerformanceTable([],[]); }
+    String s = String.fromCharCodes(data);
+
+    var json = jsonDecode(s); 
+    List tableData;
+    if(json.containsKey("data")){
+      tableData = json["data"];
+    }else{
+      return [];
+    }
+
+    if(type == PerformanceType.Starting){
+      // remove first table (= passing)
+      int rowIndex = 0;
+      while(tableData[rowIndex]["0"] != null){
+        rowIndex++;
+      }
+      tableData.removeRange(0,rowIndex+1);
+
+      //weather table
+      var weatherTable = tableData.sublist(30,33);
+
+      // speed table
+      var speedTable = tableData.sublist(0, 30);
+      ret.add(SpeedPerformanceTable(speedTable, weatherTable));      
+
+      // distance table
+      var distanceTable = tableData.sublist(33, 42);
+      ret.add(DistancePerformanceTable(distanceTable,weatherTable));
+
+      return ret;
+
+    }else if(type == PerformanceType.Passing){
+
+      assert(false);
+    }else if(type == PerformanceType.Braking){
+
+      assert(false);
+    }
+
+
+
+    return ret;
+  }
+ 
 }

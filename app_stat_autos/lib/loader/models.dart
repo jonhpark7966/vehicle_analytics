@@ -13,4 +13,5 @@ class CoastdownRawLoadedDataModel extends LoadedDataModel{
 
 class PerformanceRawLoadedDataModel extends LoadedDataModel{
   List<PerformanceRawData> runs = [];
+  List<PerformanceTable> tables = [];
 }
