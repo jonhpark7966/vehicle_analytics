@@ -7,8 +7,8 @@ import '../data/performance_data.dart';
 
 class PerformanceParser{
 
-  // pick data 1 of 10
-  static int pickNumber = 10;
+  // pick data 1 of 20 (= 100hz -> 5Hz)
+  static int pickNumber = 20;
 
   static rawDataParser(Uint8List? data, PerformanceType type){
     List<PerformanceRawData> ret = [];
@@ -85,7 +85,7 @@ class PerformanceParser{
       var weatherTable = tableData.sublist(30,33);
 
       // speed table
-      var speedTable = tableData.sublist(0, 30);
+      var speedTable = tableData.sublist(2, 30);
       ret.add(SpeedPerformanceTable(speedTable, weatherTable));      
 
       // distance table
@@ -96,7 +96,16 @@ class PerformanceParser{
 
     }else if(type == PerformanceType.Passing){
 
-      assert(false);
+      for(var table in  [tableData.sublist(2,13), tableData.sublist(13,24),
+                         tableData.sublist(24,35), tableData.sublist(35,46) ]){
+        //weather table
+        var weatherTable = table.sublist(8,11);
+        // speed table
+        var speedTable = table.sublist(0, 8);
+        ret.add(SpeedPerformanceTable(speedTable, weatherTable));
+      }
+
+      return ret;
     }else if(type == PerformanceType.Braking){
 
       assert(false);

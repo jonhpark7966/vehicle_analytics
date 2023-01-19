@@ -139,7 +139,7 @@ class PerformanceTable extends TableModel{
   toPlutoRows() {
     List<PlutoRow> ret = [];
     // speed
-    for(var i = 2; i < tableData.length; ++i){
+    for(var i = 0; i < tableData.length; ++i){
       var cells = <String, PlutoCell>{};
       for(var j = 2; j < 13; ++j){
         var value = tableData[i][j.toString()];

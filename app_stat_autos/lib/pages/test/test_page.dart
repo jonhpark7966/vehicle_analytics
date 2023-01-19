@@ -10,6 +10,7 @@ import '../../data/coastdown_data.dart';
 import '../../loader/loader.dart';
 import 'test_dashboard.dart';
 import 'test_data_models.dart';
+import 'test_performance_passing.dart';
 import 'test_performance_starting.dart';
 import 'test_sidebar.dart';
 import 'test_coastdown.dart';
@@ -37,7 +38,7 @@ class TestPage extends StatelessWidget{
       case 0: return TestDashboardPage(dataModel, _controller);
       case 1: return TestVehiclePage(dataModel, key:UniqueKey());
       case 2: return TestPerformanceStartingPage(key:UniqueKey());
-      case 3: return TestPerformanceStartingPage(key:UniqueKey());
+      case 3: return TestPerformancePassingPage(key:UniqueKey());
       case 4: return TestPerformanceStartingPage(key:UniqueKey());
       case 5: return TestCoastdownPage(CoastdownType.J2263, key:UniqueKey());
       case 6: return TestCoastdownPage(CoastdownType.WLTP, key:UniqueKey());

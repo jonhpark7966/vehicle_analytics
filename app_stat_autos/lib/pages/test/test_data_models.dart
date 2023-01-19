@@ -82,7 +82,6 @@ class TestDataModels extends ChangeNotifier{
     var runs = await Loader.loadFromPerformanceRaw("test/${testId}/performance", testType);
     data.runs = runs;
 
-    // TODO: Create Table.
     var tables = await Loader.loadFromPerformanceTable("test/${testId}/performance", testType);
     data.tables = tables;
 

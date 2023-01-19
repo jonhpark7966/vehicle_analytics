@@ -12,16 +12,17 @@ class TableCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final String help;
+  final double aspectRatio;
 
   const TableCard({Key? key,
    required this.table, required this.color, required this.title, required this.subtitle,
-   this.help=""})
+   this.help="", this.aspectRatio=2.0})
     : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 2,
+      aspectRatio: aspectRatio,
       child: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(

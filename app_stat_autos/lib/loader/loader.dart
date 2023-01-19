@@ -45,6 +45,14 @@ class Loader{
           return ret;
         }
       }
+      if(type == PerformanceType.Passing){
+        if(item.name.contains("PassingAccel.zip")){
+          final Uint8List? data = await storageRef.child(path+"/"+item.name).getData();
+          var ret = PerformanceParser.rawDataParser(data, type);
+          return ret;
+        }
+      }
+ 
     }
     } on FirebaseException catch (e) {
       // Handle any errors.
@@ -58,6 +66,13 @@ class Loader{
     final fileList = await storageRef.child(path).listAll();
     for (var item in fileList.items) {
       if(type == PerformanceType.Starting){
+        if(item.name.contains("Acceleration.json")){
+          final Uint8List? data = await storageRef.child(path+"/"+item.name).getData();
+          var ret = PerformanceParser.tableDataParser(data, type);
+          return ret;
+        }
+      }
+      else if(type == PerformanceType.Passing){
         if(item.name.contains("Acceleration.json")){
           final Uint8List? data = await storageRef.child(path+"/"+item.name).getData();
           var ret = PerformanceParser.tableDataParser(data, type);
