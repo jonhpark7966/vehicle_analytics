@@ -218,3 +218,65 @@ class DistancePerformanceTable extends PerformanceTable{
     return value;
   }
 }
+
+class BrakePerformanceTable extends PerformanceTable{
+
+
+  BrakePerformanceTable(tableData):super(tableData, []);
+
+  @override
+  toPlutoColummGroups() {
+    List<PlutoColumnGroup> ret= [];
+    return ret; 
+  }
+
+
+  getPlutoColumn(title, field){
+    return PlutoColumn(title: title, field: field, type: PlutoColumnType.text(),
+    textAlign: PlutoColumnTextAlign.center,
+    titleTextAlign: PlutoColumnTextAlign.center,
+     width:PlutoGridSettings.minColumnWidth,
+     enableEditingMode: false,
+     backgroundColor: Colors.blueGrey.shade100,
+     );
+  }
+
+  @override
+  toPlutoColumns() {
+    List<PlutoColumn> ret = [];
+
+    ret.add(getPlutoColumn("Init Speed", "2")); 
+    ret.add(getPlutoColumn("Brk Time", "3")); 
+    ret.add(getPlutoColumn("Brk Dist", "4")); 
+    ret.add(getPlutoColumn("Vb", "5")); 
+    ret.add(getPlutoColumn("Ve", "6")); 
+    ret.add(getPlutoColumn("Sb", "7")); 
+    ret.add(getPlutoColumn("Se", "8")); 
+    ret.add(getPlutoColumn("Decel", "9")); 
+    ret.add(getPlutoColumn("Corr Dist", "11")); 
+    ret.add(getPlutoColumn("J299 Dist", "12")); 
+   
+    return ret;
+  }
+
+  @override
+  toPlutoRows() {
+    List<PlutoRow> ret = [];
+    for(var i = 0; i < tableData.length; ++i){
+      var cells = <String, PlutoCell>{};
+      for(var j = 2; j < 13; ++j){
+        if(j == 10){
+          continue;
+        }
+        var value = tableData[i][j.toString()];
+        cells[j.toString()] = PlutoCell(value: value);
+      }
+
+      ret.add(PlutoRow(cells: cells));
+    }
+    return ret;
+  }
+
+
+
+}

@@ -158,7 +158,7 @@ class BrakingExcelConverter(VMSExcelConverter):
     def __init__(self, paths, outputPath):
         self.paths = paths
         self.outputPath = outputPath
-        self.variablesToGet = ["[Time]", "[GPSSpeed]"]
+        self.variablesToGet = ["[Time]", "[GPSSpeed]", "[RunningDistance]"]
 
     def convert(self):
         for filePath in self.paths:

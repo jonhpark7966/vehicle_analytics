@@ -8,7 +8,9 @@ import '../data/performance_data.dart';
 class PerformanceParser{
 
   // pick data 1 of 20 (= 100hz -> 5Hz)
-  static int pickNumber = 20;
+  static int accelPickNumber = 20;
+  // 100hz -> 10hz
+  static int brakePickNumber = 10;
 
   static rawDataParser(Uint8List? data, PerformanceType type){
     List<PerformanceRawData> ret = [];
@@ -24,6 +26,7 @@ class PerformanceParser{
     var lastSpeed = 0.0;
 
     for(var file in files){
+      if(file.name.contains("json")){continue;}
       String s = String.fromCharCodes(file.data);
       List<String> lines = const LineSplitter().convert(s);
 
@@ -41,6 +44,10 @@ class PerformanceParser{
       lastSpeed = 0;
       for(var line in lines){
         dataIndex++;
+        var pickNumber = accelPickNumber;
+        if(type == PerformanceType.Braking){
+          pickNumber = brakePickNumber;
+        }
         if(dataIndex%pickNumber != 0) continue;
         var values =  line.split(",");
         var time = double.parse(values[0]);
@@ -95,7 +102,6 @@ class PerformanceParser{
       return ret;
 
     }else if(type == PerformanceType.Passing){
-
       for(var table in  [tableData.sublist(2,13), tableData.sublist(13,24),
                          tableData.sublist(24,35), tableData.sublist(35,46) ]){
         //weather table
@@ -104,11 +110,11 @@ class PerformanceParser{
         var speedTable = table.sublist(0, 8);
         ret.add(SpeedPerformanceTable(speedTable, weatherTable));
       }
-
       return ret;
     }else if(type == PerformanceType.Braking){
+        ret.add(BrakePerformanceTable(tableData.sublist(2,5)));
+      return ret;
 
-      assert(false);
     }
 
 

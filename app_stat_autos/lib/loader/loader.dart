@@ -45,13 +45,20 @@ class Loader{
           return ret;
         }
       }
-      if(type == PerformanceType.Passing){
+      else if(type == PerformanceType.Passing){
         if(item.name.contains("PassingAccel.zip")){
           final Uint8List? data = await storageRef.child(path+"/"+item.name).getData();
           var ret = PerformanceParser.rawDataParser(data, type);
           return ret;
         }
+      }else if(type == PerformanceType.Braking){
+        if(item.name.contains("Braking.zip")){
+          final Uint8List? data = await storageRef.child(path+"/"+item.name).getData();
+          var ret = PerformanceParser.rawDataParser(data, type);
+          return ret;
+        }
       }
+
  
     }
     } on FirebaseException catch (e) {
@@ -78,7 +85,14 @@ class Loader{
           var ret = PerformanceParser.tableDataParser(data, type);
           return ret;
         }
+      }else if(type == PerformanceType.Braking){
+        if(item.name.contains("Braking.json")){
+          final Uint8List? data = await storageRef.child(path+"/"+item.name).getData();
+          var ret = PerformanceParser.tableDataParser(data, type);
+          return ret;
+        }
       }
+
     }
     } on FirebaseException catch (e) {
       // Handle any errors.
