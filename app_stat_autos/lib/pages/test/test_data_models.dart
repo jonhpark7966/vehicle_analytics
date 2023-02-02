@@ -4,6 +4,7 @@ import '../../brands/colors.dart';
 import '../../brands/manufacturers.dart';
 import '../../data/chart_data.dart';
 import '../../data/coastdown_data.dart';
+import '../../data/nvh_data.dart';
 import '../../data/performance_data.dart';
 import '../../loader/loader.dart';
 import '../../loader/models.dart';
@@ -21,6 +22,12 @@ class TestDataModels extends ChangeNotifier{
      PerformanceType.Starting : PerformanceRawLoadedDataModel(),
      PerformanceType.Passing : PerformanceRawLoadedDataModel(),
      PerformanceType.Braking : PerformanceRawLoadedDataModel(),
+  };
+  Map nvhDataMap = {
+    NVHType.Idle : NVHLoadedDataModel(),
+    NVHType.Cruise : NVHLoadedDataModel(),
+    NVHType.Accel : NVHLoadedDataModel(),
+    NVHType.WOT : NVHLoadedDataModel(),
   };
 
   loadChartData(int? testId)async{
@@ -91,12 +98,30 @@ class TestDataModels extends ChangeNotifier{
     return;
   }
 
+  loadNVHFiles(int testId, NVHType testType) async {
+   String testPath = testType.name;
 
+   NVHLoadedDataModel data = nvhDataMap[testType];
+   if(data.loaded){
+    return ;
+   }
+
+    var files = await Loader.loadFilesFromNVH("test/${testId}/nvh/$testPath", testType);
+    data.files = files;
+
+    data.loaded = true;
+    files.forEach((k,v){v.loaded = true;});
+
+    notifyListeners();
+    return;
+  }
+
+  loadNVHChannelData(){
+    //TODO.
+  }
 
   List<Color> _getBackgroundColorPalette(Manufactureres brand){
      return brandPalettes[brand] ?? defaultColors;
   }
-
-
 
 }

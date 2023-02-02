@@ -7,7 +7,9 @@ import '../../brands/colors.dart';
 import '../../brands/manufacturers.dart';
 import '../../data/chart_data.dart';
 import '../../data/coastdown_data.dart';
+import '../../data/nvh_data.dart';
 import '../../loader/loader.dart';
+import 'nvh/test_nvh.dart';
 import 'test_dashboard.dart';
 import 'test_data_models.dart';
 import 'test_performance_braking.dart';
@@ -43,6 +45,7 @@ class TestPage extends StatelessWidget{
       case 4: return TestPerformanceBrakingPage(key:UniqueKey());
       case 5: return TestCoastdownPage(CoastdownType.J2263, key:UniqueKey());
       case 6: return TestCoastdownPage(CoastdownType.WLTP, key:UniqueKey());
+      case 7: return TestNVHPage(NVHType.Idle, key:UniqueKey());
     }
     return TestDashboardPage(dataModel, _controller);
   }

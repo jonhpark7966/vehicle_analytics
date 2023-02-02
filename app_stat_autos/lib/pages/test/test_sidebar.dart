@@ -33,6 +33,8 @@ enum SidebarIndex{
       return SidebarIndex.PerformancePassing;
     }else if(name.contains("Braking Performance")){
       return SidebarIndex.PerformanceBraking;
+    }else if(name.contains("NVH-Idle")){
+      return SidebarIndex.IdleNVH;
     }
     return SidebarIndex.Dashboard;
   }
