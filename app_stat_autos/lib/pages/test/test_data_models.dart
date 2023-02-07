@@ -116,6 +116,24 @@ class TestDataModels extends ChangeNotifier{
     return;
   }
 
+  loadNVHReplays(int testId, NVHType testType) async{
+   String testPath = testType.name;
+
+   NVHLoadedDataModel data = nvhDataMap[testType];
+   if(data.isReplaysLoaded()){
+    return ;
+   }
+
+    // check files first.
+    await loadNVHFiles(testId, testType);
+
+    await Loader.loadFrontNoiseFromNVH(data, "test/$testId/nvh/$testPath", testType);
+
+    notifyListeners();
+    return;
+
+  }
+
   loadNVHChannelData(){
     //TODO.
   }

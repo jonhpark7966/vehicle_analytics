@@ -36,7 +36,7 @@ class ChartData{
   final double j2263_c;
   final double idleNoise;
   final double idleBoomingNoise;
-  final double idleVibraton;
+  final double idleVibration;
   final double idleVibrationSrc;
   final double wotNoiseSlope;
   final double wotNoiseIntercept;
@@ -75,7 +75,7 @@ class ChartData{
    required this.engineName, required this.engineType,  required this.cylinderVolumn, required this.transmission, required this.wheelDrive,
    required this.wltp_a, required this.wltp_b, required this.wltp_c,
    required this.j2263_a, required this.j2263_b, required this.j2263_c,
-   required this.idleNoise, required this.idleBoomingNoise, required this.idleVibraton, required this.idleVibrationSrc,
+   required this.idleNoise, required this.idleBoomingNoise, required this.idleVibration, required this.idleVibrationSrc,
    required this.wotNoiseSlope, required this.wotNoiseIntercept, required this.wotEngineVibrationBody, required this.wotEngineVibrationSource,
    required this.roadNoise, required this.roadBooming, required this.tireNoise, required this.rumble, required this.windNoise,
    required this.cruise65Vibration,  required this.cruise80Vibration, required this.cruise100Vibration, required this.cruise120Vibration,
@@ -117,7 +117,7 @@ class ChartData{
       j2263_c: nullToDouble(json["j2263_c"]),
       idleNoise: nullToDouble(json["idle_noise"]),
       idleBoomingNoise: nullToDouble(json["idle_booming_noise"]),
-      idleVibraton: nullToDouble(json["idle_vibration"]),
+      idleVibration: nullToDouble(json["idle_vibration"]),
       idleVibrationSrc: nullToDouble(json["idle_vibration_source"]),
       wotNoiseSlope: nullToDouble(json["wot_noise_slope"]),
       wotNoiseIntercept: nullToDouble(json["wot_noise_intercept"]),
@@ -176,7 +176,7 @@ class ChartData{
       "j2263_c":j2263_c,
       "idle_noise":idleNoise,
       "idle_booming_noise":idleBoomingNoise,
-      "idle_vibration":idleVibraton,
+      "idle_vibration":idleVibration,
       "idle_vibration_source":idleVibrationSrc,
       "wot_noise_slope":wotNoiseSlope,
       "wot_noise_intercept":wotNoiseIntercept,
@@ -245,6 +245,18 @@ class ChartData{
     ret.add(["Fuel Type", fuelType, ""]);
 
     return ret;
+  }
+
+  toNVHIdleDataList(){
+    List<List<String>> ret = [];
+
+    ret.add(["Idle Noise", idleNoise.toStringAsFixed(2), "dBA"]);
+    ret.add(["Idle Booming", idleBoomingNoise.toStringAsFixed(2), "dBC"]);
+    ret.add(["Idle Vibration", idleVibration.toStringAsFixed(2), "dB"]);
+    ret.add(["Idle Vibration (Engine)", idleVibrationSrc.toStringAsFixed(2), "dB"]);
+
+    return ret;
+ 
   }
 
 }

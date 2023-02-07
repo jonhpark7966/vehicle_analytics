@@ -62,6 +62,12 @@ dependencies:
   # Provider. State Manager.
   provider: ^6.0.4
 
+  # Audio
+  just_audio: ^0.9.31
+  audio_video_progress_bar: ^0.11.0
+
+
+
 
 
 

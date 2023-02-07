@@ -38,7 +38,7 @@ class ChartConverter{
     cells["nav_to_test_j2263"] = PlutoCell(value:"");
 
     cells["idle_noise"] = PlutoCell(value:data.idleNoise);
-    cells["idle_vibration"] = PlutoCell(value:data.idleVibraton);
+    cells["idle_vibration"] = PlutoCell(value:data.idleVibration);
     cells["idle_vibration_source"] = PlutoCell(value:data.idleVibrationSrc);
     cells["wot_noise_slope"] = PlutoCell(value:data.wotNoiseSlope);
     cells["wot_noise_intercept"] = PlutoCell(value:data.wotNoiseIntercept);

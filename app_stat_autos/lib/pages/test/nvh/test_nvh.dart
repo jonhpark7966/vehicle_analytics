@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:grid_ui_example/pages/test/nvh/test_nvh_summary_tab.dart';
 import 'package:provider/provider.dart';
 import '../../../settings/ui_constants.dart';
 import '../../../widgets/buttons/test_download_button.dart';
@@ -46,7 +47,7 @@ with TickerProviderStateMixin {
       var splits = ch.split(":");
       var isMic = (splits.first == "MIC")?true:false;
       ret.add(
- Text.rich(
+      Text.rich(
         TextSpan(
           children: [
             WidgetSpan(
@@ -65,7 +66,7 @@ with TickerProviderStateMixin {
 
   _getTabBodies(){
     List<Widget> ret =  <Widget>[
-      Text("body test")
+     TestNVHSummaryTab(widget.type), 
     ];
 
     for(var ch in channels){

@@ -117,7 +117,8 @@ class Loader{
         //if mp3 file exist -> its a channel.
         if(dataItem.name.contains('.mp3')){
           String channelName = dataItem.name.split('.mp3')[0];
-          testDataModel.channels[channelName] = NVHChannelLoadedDataModel(); 
+          var channelModel = NVHChannelLoadedDataModel(); 
+          testDataModel.channels[channelName] = channelModel;
         }
       }
       ret[item.name] = testDataModel;
@@ -128,6 +129,34 @@ class Loader{
       assert(false);
     }
   }
+
+static loadFrontNoiseFromNVH(NVHLoadedDataModel dataModel, String path, NVHType type) async {
+    try {
+    // get list of files.
+    final fileList = await storageRef.child(path).listAll();
+
+    // for test files
+    for (var item in fileList.prefixes) {
+      final dataFileList = await storageRef.child(path+"/"+item.name).listAll();
+      assert(dataModel.files.containsKey(item.name));
+      var testDataModel = dataModel.files[item.name];
+      // for data files
+      for (var dataItem in dataFileList.items) {
+        // for front mic.
+        if(dataItem.name.contains('MIC:Front.mp3')){
+          String channelName = dataItem.name.split('.mp3')[0];
+          assert(testDataModel!.channels.containsKey(channelName));
+          testDataModel!.channels[channelName]!.mp3Url = await dataItem.getDownloadURL();
+        }
+      }
+    }
+    } on FirebaseException catch (e) {
+      // Handle any errors.
+      assert(false);
+    }
+  }
+
+
 
 
 
