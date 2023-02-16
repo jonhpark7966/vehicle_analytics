@@ -31,11 +31,12 @@ class NVHLoadedDataModel extends LoadedDataModel{
     }
   }
 
-  List<Map<String,String>> getValues(List<String> fileNames, String channel){
-    var ret = <Map<String,String>>[];
+  // 1st key: file, 2nd key: value name, & value.
+  Map<String, Map<String,String>> getValues(List<String> fileNames, String channel){
+    Map<String, Map<String,String>> ret = {};
     for(var file in fileNames){
       assert(files.containsKey(file));
-      ret.add(files[file]!.getValues(channel));
+      ret[file] = files[file]!.getValues(channel);
     }
     return ret;
   }

@@ -7,7 +7,6 @@ import '../../../data/nvh_data.dart';
 import '../../../loader/models.dart';
 import '../../../settings/ui_constants.dart';
 import '../../../utils/nvh_files.dart';
-import '../../../widgets/cards/multi_value_card_horizontal.dart';
 import '../../../widgets/nvh/idle/idle_colormap_widget.dart';
 import '../../../widgets/nvh/idle/idle_graph_widget.dart';
 import '../../../widgets/nvh/idle/idle_replay_widget.dart';
@@ -21,13 +20,13 @@ class TestNVHTab extends StatelessWidget{
 
   TestNVHTab(this.type, this.channel, {Key? key}) : super(key:key);
 
-  Widget _getValuesWidget(){
+  Widget _getValuesWidget(Map<String, Map<String, String>> values){
     switch (type) {
       case NVHType.Idle:
-        return IdleValueWidget();
+        return IdleValueWidget(values);
       default:
         assert(false);
-        return IdleValueWidget();
+        return IdleValueWidget(values);
     }
   }
 
@@ -75,8 +74,8 @@ class TestNVHTab extends StatelessWidget{
     List<String> files = NVHFileUtils.filterFiles(nvhDataModel.files.keys.toList(), type);
     bool isChannelLoaded = nvhDataModel.isChannelLoaded(files, channel);
 
-    List<Map<String, String>> values =
-        isChannelLoaded ? nvhDataModel.getValues(files, channel) : [];
+    Map<String, Map<String, String>> values =
+        isChannelLoaded ? nvhDataModel.getValues(files, channel) : {};
 
     //graphs = get graphs
     //colormaps get colormaps
@@ -94,7 +93,7 @@ class TestNVHTab extends StatelessWidget{
               children: 
 <Widget>[
      TestSubtitle(title:"Values", ),
-     _getValuesWidget(),
+     _getValuesWidget(values),
      TestSubtitle(title:"Graphs", ),
      _getGraphsWidget(),
      TestSubtitle(title:"Colormaps", ),

@@ -22,8 +22,8 @@ class MultiValueCardHorizontal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height:150,
-      child:       Card(
+      height: (title=="")?150:170,
+      child: Card(
             color: cardBackgroundColor,
             elevation: 20,
             shadowColor: Colors.black,
@@ -31,7 +31,10 @@ class MultiValueCardHorizontal extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           margin: const EdgeInsets.all(defaultPadding),
           child:
-           ListView.separated(
+          Column(children: [
+           (title=="")? const SizedBox(height: 1,)
+           :Padding(padding: const EdgeInsets.only(top:8.0), child:Text(title, style: TextStyle(fontSize:25, fontWeight: FontWeight.bold, color: color),),),
+           Expanded(child:ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.all(15),
             itemCount: dataList.length,
@@ -72,7 +75,8 @@ class MultiValueCardHorizontal extends StatelessWidget {
               indent: 10,
               endIndent: 10,
             ),
-          ),
+          ),),
+          ],)
       ),
         );
   }
