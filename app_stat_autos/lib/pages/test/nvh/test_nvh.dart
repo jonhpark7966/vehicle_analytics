@@ -7,6 +7,7 @@ import '../../../widgets/buttons/test_download_button.dart';
 import '../../../widgets/test_title.dart';
 import '../test_data_models.dart';
 import '../../../data/nvh_data.dart';
+import 'test_nvh_tab.dart';
 
 class TestNVHPage extends StatefulWidget{
 
@@ -22,7 +23,6 @@ with TickerProviderStateMixin {
   late TabController _tabController;
   late TestDataModels dataModel;
   late List<String> channels;
-
 
   int _getTabsLength(){
     // 1 is for summary.
@@ -70,23 +70,30 @@ with TickerProviderStateMixin {
     ];
 
     for(var ch in channels){
-      ret.add(Text(ch));
+      var splits = ch.split(":");
+      var isMic = (splits.first == "MIC")?true:false;
+      ret.add(TestNVHTab(widget.type, ch));
     }
 
     return ret;
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     dataModel = Provider.of<TestDataModels>(context);
     var isLoaded = dataModel.nvhDataMap[widget.type].loaded;
     if(isLoaded){
-        channels = dataModel.nvhDataMap[widget.type].getChannels();
+      channels = dataModel.nvhDataMap[widget.type].getChannels();
     }
     dataModel.loadNVHFiles(dataModel.chartData!.testId, widget.type);
     
     Widget spinkit = SpinKitCubeGrid(color: dataModel.colors[0]);
     _tabController = TabController(length: isLoaded?_getTabsLength():1, vsync: this);
+    _tabController.index = dataModel.nvhDataMap[widget.type].currentTab;
+    _tabController.addListener((() {
+      dataModel.nvhDataMap[widget.type].currentTab = _tabController.index;
+    }));
+
 
     return (dataModel.chartData == null)
         ? Center(child: spinkit):

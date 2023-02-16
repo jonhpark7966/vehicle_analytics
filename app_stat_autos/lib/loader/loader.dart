@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -130,7 +131,7 @@ class Loader{
     }
   }
 
-static loadFrontNoiseFromNVH(NVHLoadedDataModel dataModel, String path, NVHType type) async {
+static loadFrontNoiseFromNVH(NVHLoadedDataModel dataModel, String path) async {
     try {
     // get list of files.
     final fileList = await storageRef.child(path).listAll();
@@ -154,6 +155,51 @@ static loadFrontNoiseFromNVH(NVHLoadedDataModel dataModel, String path, NVHType 
       // Handle any errors.
       assert(false);
     }
+  }
+
+  static loadChannelFromFile(NVHTestLoadedDataModel dataModel, String path, String channel) async{
+try {
+    // get list of files.
+    final fileList = await storageRef.child(path).listAll();
+
+      // for data files -> zip...?
+      for (var dataItem in fileList.items) {
+        if(dataItem.name.contains(channel)){
+          assert(dataModel.channels.containsKey(channel));
+
+          // mp3
+          if(dataItem.name.contains(".mp3")){
+            dataModel.channels[channel]!.mp3Url = await dataItem.getDownloadURL();
+          }
+          // values
+          else if(dataItem.name.contains("$channel.json")){
+            final Uint8List? data = await storageRef.child(path+"/"+dataItem.name).getData();
+            String s = String.fromCharCodes(data!);
+            dataModel.channels[channel]!.values = Map.from(jsonDecode(s));
+          }
+          // graphs
+          else if(dataItem.name.contains("Graph.json")){
+            final Uint8List? data = await storageRef.child(path+"/"+dataItem.name).getData();
+            String s = String.fromCharCodes(data!);
+            dataModel.channels[channel]!.graphs.add(NVHGraph.fromJson(jsonDecode(s)));
+
+          }
+          // colormap
+          else if(dataItem.name.contains("Colormap.json")){
+            // colormap bin & json -> parser.
+
+          }
+ 
+
+
+        }
+      }
+    } on FirebaseException catch (e) {
+      // Handle any errors.
+      assert(false);
+    }
+
+
   }
 
 

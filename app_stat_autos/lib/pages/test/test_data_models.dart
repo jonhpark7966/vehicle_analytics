@@ -8,6 +8,7 @@ import '../../data/nvh_data.dart';
 import '../../data/performance_data.dart';
 import '../../loader/loader.dart';
 import '../../loader/models.dart';
+import '../../utils/nvh_files.dart';
 
 class TestDataModels extends ChangeNotifier{
 
@@ -127,15 +128,32 @@ class TestDataModels extends ChangeNotifier{
     // check files first.
     await loadNVHFiles(testId, testType);
 
-    await Loader.loadFrontNoiseFromNVH(data, "test/$testId/nvh/$testPath", testType);
+    await Loader.loadFrontNoiseFromNVH(data, "test/$testId/nvh/$testPath");
 
     notifyListeners();
     return;
-
   }
 
-  loadNVHChannelData(){
-    //TODO.
+  loadNVHChannelData(int testId, channel, NVHType testType) async {
+   String testPath = testType.name;
+
+   NVHLoadedDataModel data = nvhDataMap[testType];
+    // check files first.
+    await loadNVHFiles(testId, testType);
+
+    List<String> files = NVHFileUtils.filterFiles(data.files.keys.toList(), testType);
+
+    if(data.isChannelLoaded(files, channel)){
+     return ;
+    }
+
+    for(var file in files){
+      await Loader.loadChannelFromFile(data.files[file]!, "test/$testId/nvh/$testPath/$file", channel);
+      data.files[file]!.channels[channel]!.loaded = true;
+    }
+    
+    notifyListeners();
+    return;
   }
 
   List<Color> _getBackgroundColorPalette(Manufactureres brand){

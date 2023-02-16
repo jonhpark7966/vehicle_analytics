@@ -19,7 +19,7 @@ class PerformanceRawLoadedDataModel extends LoadedDataModel{
 
 class NVHLoadedDataModel extends LoadedDataModel{
   Map<String, NVHTestLoadedDataModel> files = {};
-
+  int currentTab = 0;
 
   List<String> getChannels(){
     if(files.isEmpty){
@@ -29,6 +29,25 @@ class NVHLoadedDataModel extends LoadedDataModel{
     else{
       return files.values.toList().first.getChannels();
     }
+  }
+
+  List<Map<String,String>> getValues(List<String> fileNames, String channel){
+    var ret = <Map<String,String>>[];
+    for(var file in fileNames){
+      assert(files.containsKey(file));
+      ret.add(files[file]!.getValues(channel));
+    }
+    return ret;
+  }
+
+  bool isChannelLoaded(List<String> fileNames, String channel){
+    for(var file in fileNames){
+      assert(files.containsKey(file));
+      if(!files[file]!.isChannelLoaded(channel)){
+        return false;
+      }
+    }
+    return true;
   }
 
   Map<String, String> getFrontMp3Urls(){
@@ -58,6 +77,16 @@ class NVHLoadedDataModel extends LoadedDataModel{
 class NVHTestLoadedDataModel extends LoadedDataModel{
   Map<String, NVHChannelLoadedDataModel> channels = {};
 
+  Map<String, String> getValues(String channel){
+    assert(channels.containsKey(channel));
+    return channels[channel]!.values;
+  }
+
+  bool isChannelLoaded(String channel){
+    assert(channels.containsKey(channel));
+    return channels[channel]!.loaded;
+  }
+
   getChannels(){
     return channels.keys.toList();
   }
@@ -72,6 +101,7 @@ class NVHTestLoadedDataModel extends LoadedDataModel{
 
 class NVHChannelLoadedDataModel extends LoadedDataModel{
   String mp3Url = "";
+  Map<String, String> values = {}; 
   List<NVHGraph> graphs = [];
   List<NVHColormap> colormaps = [];
 }
