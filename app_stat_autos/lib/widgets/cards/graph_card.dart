@@ -9,10 +9,11 @@ class GraphCard extends StatefulWidget {
   final String title;
   final String subtitle;
   final String help;
+  final double aspectRatio;
 
   const GraphCard({Key? key,
    required this.graph, required this.color, required this.title, required this.subtitle,
-   this.help=""})
+   this.help="", this.aspectRatio=2.0})
     : super(key: key);
 
   @override
@@ -28,7 +29,7 @@ class GraphCardState extends State<GraphCard> {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 2,
+      aspectRatio: widget.aspectRatio,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(18)),

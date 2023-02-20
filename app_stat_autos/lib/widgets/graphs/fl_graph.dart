@@ -15,9 +15,12 @@ class FlGraph extends StatelessWidget {
   FlGraph({Key? key, required this.data, required this.color, this.minX=0, this.minY=0,
    this.maxX=100, this.maxY=100, this.intervalX=10, this.intervalY=20}) : super(key: key){
     initMinMaxFromData();
+    initUnit();
   }
 
   initMinMaxFromData(){}
+
+  initUnit(){}
 
   @override
   Widget build(BuildContext context) {

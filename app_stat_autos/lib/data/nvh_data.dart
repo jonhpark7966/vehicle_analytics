@@ -1,5 +1,7 @@
 
 
+import 'package:fl_chart/fl_chart.dart';
+
 enum NVHType{
   Idle,
   Cruise,
@@ -11,6 +13,8 @@ enum NVHType{
 }
 
 class NVHGraph{
+  int maxSpots = 1000;
+
   String name;
   String unit;
   String xAxisUnit;
@@ -27,10 +31,9 @@ class NVHGraph{
       String xAxisDelta = json.remove('xAxisDelata').toString(); // TODO typo!
 
       List<double> values = [];
-      List<String> sortedKey = json.keys.toList()..sort();
-      for(var index in sortedKey){
-        values.add(double.parse(json[index]));
-      }
+      json.forEach((key, value){
+        values.add(double.parse(value));
+      });
 
       return NVHGraph(name, unit, xAxisUnit, xAxisDelta, values);
 
@@ -40,6 +43,24 @@ class NVHGraph{
     }
       return NVHGraph("", "", "", "", []);
   }
+
+  factory NVHGraph.from(NVHGraph src){
+    return  NVHGraph(src.name, src.unit, src.xAxisUnit, src.xAxisDelta, List.from(src.values));
+  }
+
+  List<FlSpot> toFlGraphData(double maxX, double minX){
+    var ret = <FlSpot>[];
+    double xDelta = double.parse(xAxisDelta);
+    int numPoints = maxX~/xDelta;
+    assert(numPoints < maxSpots);
+
+    for(int i = minX~/xDelta; i < numPoints; ++i){
+      ret.add(FlSpot(i* xDelta, values[i]));
+    }
+    return ret;
+  }
+
+
 }
 
 

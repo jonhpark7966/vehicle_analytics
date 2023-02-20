@@ -41,6 +41,15 @@ class NVHLoadedDataModel extends LoadedDataModel{
     return ret;
   }
 
+  Map<String, List<NVHGraph>> getGraphs(List<String> fileNames, String channel){
+    Map<String, List<NVHGraph>> ret = {};
+    for(var file in fileNames){
+      assert(files.containsKey(file));
+      ret[file] = files[file]!.getGraphs(channel);
+    }
+    return ret;
+  }
+
   bool isChannelLoaded(List<String> fileNames, String channel){
     for(var file in fileNames){
       assert(files.containsKey(file));
@@ -50,6 +59,7 @@ class NVHLoadedDataModel extends LoadedDataModel{
     }
     return true;
   }
+
 
   Map<String, String> getFrontMp3Urls(){
     var ret = <String,String>{};
@@ -83,6 +93,11 @@ class NVHTestLoadedDataModel extends LoadedDataModel{
     return channels[channel]!.values;
   }
 
+  List<NVHGraph> getGraphs(String channel){
+    assert(channels.containsKey(channel));
+    return channels[channel]!.graphs;
+  }
+
   bool isChannelLoaded(String channel){
     assert(channels.containsKey(channel));
     return channels[channel]!.loaded;
@@ -101,6 +116,7 @@ class NVHTestLoadedDataModel extends LoadedDataModel{
 }
 
 class NVHChannelLoadedDataModel extends LoadedDataModel{
+  bool loading = false;
   String mp3Url = "";
   Map<String, String> values = {}; 
   List<NVHGraph> graphs = [];

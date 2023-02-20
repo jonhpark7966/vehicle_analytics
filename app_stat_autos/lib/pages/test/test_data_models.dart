@@ -143,15 +143,21 @@ class TestDataModels extends ChangeNotifier{
 
     List<String> files = NVHFileUtils.filterFiles(data.files.keys.toList(), testType);
 
+    
     if(data.isChannelLoaded(files, channel)){
      return ;
     }
 
     for(var file in files){
+      if(data.files[file]!.channels[channel]!.loaded){continue;}
+      if(data.files[file]!.channels[channel]!.loading){continue;}
+
+      data.files[file]!.channels[channel]!.loading = true;
       await Loader.loadChannelFromFile(data.files[file]!, "test/$testId/nvh/$testPath/$file", channel);
       data.files[file]!.channels[channel]!.loaded = true;
+      data.files[file]!.channels[channel]!.loading = false;
     }
-    
+
     notifyListeners();
     return;
   }

@@ -7,6 +7,7 @@ import '../../../data/nvh_data.dart';
 import '../../../loader/models.dart';
 import '../../../settings/ui_constants.dart';
 import '../../../utils/nvh_files.dart';
+import '../../../utils/nvh_utils.dart';
 import '../../../widgets/nvh/idle/idle_colormap_widget.dart';
 import '../../../widgets/nvh/idle/idle_graph_widget.dart';
 import '../../../widgets/nvh/idle/idle_replay_widget.dart';
@@ -30,13 +31,13 @@ class TestNVHTab extends StatelessWidget{
     }
   }
 
-  Widget _getGraphsWidget(){
+  Widget _getGraphsWidget(Map<String, List<NVHGraph>> graphs, Position pos){
     switch (type) {
       case NVHType.Idle:
-        return IdleGraphWidget();
+        return IdleGraphWidget(graphs, pos);
       default:
         assert(false);
-        return IdleGraphWidget();
+        return IdleGraphWidget(graphs, pos);
     }
   }
 
@@ -76,6 +77,9 @@ class TestNVHTab extends StatelessWidget{
 
     Map<String, Map<String, String>> values =
         isChannelLoaded ? nvhDataModel.getValues(files, channel) : {};
+    Map<String, List<NVHGraph>> graphs =
+        isChannelLoaded ? nvhDataModel.getGraphs(files, channel) : {};
+
 
     //graphs = get graphs
     //colormaps get colormaps
@@ -95,7 +99,7 @@ class TestNVHTab extends StatelessWidget{
      TestSubtitle(title:"Values", ),
      _getValuesWidget(values),
      TestSubtitle(title:"Graphs", ),
-     _getGraphsWidget(),
+     _getGraphsWidget(graphs, NVHUtils.getPosition(channel)),
      TestSubtitle(title:"Colormaps", ),
      _getColormapsWidget(),
      TestSubtitle(title:"Replays", ),

@@ -182,7 +182,6 @@ try {
             final Uint8List? data = await storageRef.child(path+"/"+dataItem.name).getData();
             String s = String.fromCharCodes(data!);
             dataModel.channels[channel]!.graphs.add(NVHGraph.fromJson(jsonDecode(s)));
-
           }
           // colormap
           else if(dataItem.name.contains("Colormap.json")){
