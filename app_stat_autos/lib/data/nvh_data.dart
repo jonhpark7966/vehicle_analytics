@@ -28,7 +28,7 @@ class NVHGraph{
       String name = json.remove('name');
       String unit = json.remove('unit');
       String xAxisUnit = json.remove('xAxisunit');
-      String xAxisDelta = json.remove('xAxisDelata').toString(); // TODO typo!
+      String xAxisDelta = json.remove('xAxisDelta').toString();
 
       List<double> values = [];
       json.forEach((key, value){

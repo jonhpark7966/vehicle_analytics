@@ -18,7 +18,7 @@ class DataModel2D:
 
         with open(os.path.join(outputPath, channelName+"_"+dataName+".json"), "w") as f:
             jsonDict = {"name":dataName, "unit":self.unit,
-             "xAxisunit": self.xAxisunit, "xAxisDelata":self.xAxisDelta,
+             "xAxisunit": self.xAxisunit, "xAxisDelta":self.xAxisDelta,
             }
             for i, datum in enumerate(self.data):
                 jsonDict[str(i)] = str(round(datum, 2))

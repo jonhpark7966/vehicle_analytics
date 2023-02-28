@@ -21,6 +21,8 @@ def nvhAnalyze(fileList, type, dst):
         for ch in hdf.channels:
             if ch.frequency > 10000: # only for NVH channel.
                 ch.toMP3File(path)
+            else: # tacho channels.
+                ch.toTachoJsonFile(path)
     
         analyzer = NVHAnalyzer(hdf.channels,type, path, organizer.vehicleJsonPath)
         analyzer.analyze()

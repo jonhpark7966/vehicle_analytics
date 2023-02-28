@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:data_handler/data_handler.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:grid_ui_example/loader/models.dart';
 
@@ -171,26 +172,13 @@ try {
           if(dataItem.name.contains(".mp3")){
             dataModel.channels[channel]!.mp3Url = await dataItem.getDownloadURL();
           }
-          // values
-          else if(dataItem.name.contains("$channel.json")){
+
+          // zip
+          else if(dataItem.name.contains("$channel.zip")){
             final Uint8List? data = await storageRef.child(path+"/"+dataItem.name).getData();
-            String s = String.fromCharCodes(data!);
-            dataModel.channels[channel]!.values = Map.from(jsonDecode(s));
-          }
-          // graphs
-          else if(dataItem.name.contains("Graph.json")){
-            final Uint8List? data = await storageRef.child(path+"/"+dataItem.name).getData();
-            String s = String.fromCharCodes(data!);
-            dataModel.channels[channel]!.graphs.add(NVHGraph.fromJson(jsonDecode(s)));
-          }
-          // colormap
-          else if(dataItem.name.contains("Colormap.json")){
-            // colormap bin & json -> parser.
+            await _unarchiveData(data!, channel, dataModel);
 
           }
- 
-
-
         }
       }
     } on FirebaseException catch (e) {
@@ -199,6 +187,26 @@ try {
     }
 
 
+  }
+
+  static _unarchiveData(Uint8List data, String channel, NVHTestLoadedDataModel dataModel) async {
+    List<FileOnMemory> files = ArchiveHandler.decompress(data);
+    for(var file in files){
+          // values
+          if(file.name.contains("$channel.json")){
+            String s = String.fromCharCodes(file.data);
+            dataModel.channels[channel]!.values = Map.from(jsonDecode(s));
+          }
+          // graphs
+          else if(file.name.contains("Graph.json")){
+            String s = String.fromCharCodes(file.data);
+            dataModel.channels[channel]!.graphs.add(NVHGraph.fromJson(jsonDecode(s)));
+          }
+          // colormap
+          else if(file.name.contains("Colormap.json")){
+            // colormap bin & json -> parser.
+          }
+    }
   }
 
 

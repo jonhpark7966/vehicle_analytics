@@ -3,6 +3,7 @@ import numpy as np
 import pydub
 import os
 import sys
+import json
 
 from enum import Enum
 
@@ -51,6 +52,19 @@ class ChannelDataModel:
     sound.export(mp3path, format="mp3")
     sys.stdout.write("Success! :"+mp3path+"\n")
 
+  def toTachoJsonFile(self, outputPath):
+
+    tachoPath = os.path.join(outputPath, self.name + "_tacho.json")
+
+    with open(tachoPath, "w") as f:
+        jsonDict = {"name":self.name, "unit":self.unit,
+         "xAxisunit": "ms", "xAxisDelta":1,
+        }
+        for i, datum in enumerate(self.data):
+            jsonDict[str(i)] = str(round(datum, 1))
+
+        json.dump(jsonDict, f)
+    sys.stdout.write("Success! :"+tachoPath+"\n")
 
   def getType(self):
     if self.unit == "Pa":

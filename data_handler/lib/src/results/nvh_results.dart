@@ -66,9 +66,11 @@ class NVHResults extends Results{
      workingDirectory: "../admin_python/",
      stdoutEncoding: const SystemEncoding());
 
-    List<String> oneDimensionJsonList = <String>[];
 
-     task.then((value){
+    task.then((value){
+      List<String> oneDimensionJsonList = <String>[];
+      Map<String, List<String>> hdfTachos = {};
+      Map<String, List<String>> channelFiles = {};
       Map<String,String> uploadFiles = {};
 
       var stdout = value.stdout;
@@ -76,32 +78,54 @@ class NVHResults extends Results{
       for(var line in splited){
         if(!line.contains("Success! :")) continue;
 
-
         var localPath = line.split("! :")[1];
         var pathSplits = localPath.split("/");
 
         //(ex) /Users/jonhpark/Desktop/auto_stat_example/outputs/
         //      Cruise/nvds_221018_101128_12s_LX2_CRUISE_65kph.hdf/MIC:Front.json
-        var fileName = pathSplits[pathSplits.length-3] + "/" +
-         pathSplits[pathSplits.length-2] + "/" + pathSplits[pathSplits.length -1];
-uploadFiles["nvh/$fileName"] = localPath;
+        var hdfName = pathSplits[pathSplits.length-3] + "/" +
+         pathSplits[pathSplits.length-2];
+        String fileName = hdfName + "/" + pathSplits[pathSplits.length -1];
 
-        if(localPath.contains(".json")  && !fileName.split("/").last.contains("_")){
-            // 1D json
+        // 1D json : per channel.
+        if(_is1DJson(localPath, fileName)){
             oneDimensionJsonList.add(localPath);
         }
+
+        // mp3 file
+        if( fileName.contains("mp3")){
+          uploadFiles['nvh/$fileName'] = localPath; 
+        }
+
+        // channel files : per channel
+        if( _is1DJson(localPath, fileName) || fileName.contains("Graph.json")
+              || fileName.contains("Colormap")){
+                var channelName = "";
+          if(_is1DJson(localPath, fileName)){
+            channelName = fileName.replaceAll(".json", "");
+          }else{
+            channelName = fileName.substring(0, fileName.lastIndexOf("_")).replaceAll(".json", "");
+          }
+
+          if(channelFiles[channelName] == null){
+            channelFiles[channelName] = <String>[];
+          }
+          channelFiles[channelName]!.add(localPath);
+        }
+
+
+        // tacho json : per hdf file
+        if(localPath.contains("tacho.json")){
+          if(hdfTachos[hdfName] == null){
+            hdfTachos[hdfName] = <String>[];
+          }
+          hdfTachos[hdfName]!.add(localPath);
+        }
       }
+      
+      _archiveTachos(uploadFiles, hdfTachos);
+      _archiveChannels(uploadFiles, channelFiles);
 
-      // TODO, nvh files to zip & filter?
-      //var pathSplits = oneDimensionJsonList.first.split("/"); 
-      //var hdfName = "${pathSplits[pathSplits.length-2]}/${pathSplits[pathSplits.length -1]}";
-      //var directoryPath = oneDimensionJsonList.first.replaceFirst("/$hdfName", "");
-      //var directoryName = directoryPath.split("/").last;
-      //assert(directoryName.toLowerCase() == type);
-      //var outputPath = "$directoryPath.zip";
-      //ArchiveHandler.compressLocalDirectory(directoryPath, outputPath);
-
-      //uploadFiles["nvh/$directoryName.zip"] = outputPath;
       callback(uploadFiles);
 
       dbResults.addAll(
@@ -111,6 +135,38 @@ uploadFiles["nvh/$fileName"] = localPath;
      });
      }
    }
+
+_archiveTachos(uploadFiles, Map<String, List<String>> hdfTachos){
+  hdfTachos.forEach((key, value) {
+    assert(value.length > 1);
+    var jsonPath = value.first;
+    int lastSlashIndex = jsonPath.lastIndexOf('/');
+    String localHdfPath =  jsonPath.substring(0,lastSlashIndex);
+    String localOutputPath = localHdfPath + "/tacho.zip";
+    ArchiveHandler.compressLocal(value, localOutputPath);
+    uploadFiles["nvh/$key/tacho.zip"] = localOutputPath;
+  });
+}
+
+_archiveChannels(uploadFiles, Map<String, List<String>> channelFiles){
+  try{
+  channelFiles.forEach((key, value) {
+    assert(value.length > 0);
+    var filePath = value.first;
+    String localHdfPath = filePath.substring(0, filePath.lastIndexOf('/'));
+    String channelName = key.substring(key.lastIndexOf('/'));
+    String localOutputPath = localHdfPath + channelName + ".zip";
+    ArchiveHandler.compressLocal(value, localOutputPath);
+    uploadFiles["nvh/$key.zip"] = localOutputPath;
+   });
+  }catch(_){
+    print(_);
+  }
+}
+
+bool _is1DJson(localPath, fileName){
+ return localPath.contains(".json")  && !fileName.split("/").last.contains("_");
+}
  
 
 Map<String, double> _parseResultFile(files, type){
