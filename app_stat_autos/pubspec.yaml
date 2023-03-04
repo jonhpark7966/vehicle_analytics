@@ -66,9 +66,8 @@ dependencies:
   just_audio: ^0.9.31
   audio_video_progress_bar: ^0.11.0
 
-
-
-
+  # webview for WEB (chart.js)
+  flutter_inappwebview: ^6.0.0-beta.22
 
 
 dev_dependencies:

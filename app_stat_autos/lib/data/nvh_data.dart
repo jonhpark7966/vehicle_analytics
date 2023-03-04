@@ -1,5 +1,8 @@
 
 
+import 'dart:convert';
+import 'dart:ui';
+
 import 'package:fl_chart/fl_chart.dart';
 
 enum NVHType{
@@ -60,6 +63,24 @@ class NVHGraph{
     return ret;
   }
 
+  // json.
+  String toChartjsDatasets(int skip, Color color){
+    Map<String, dynamic> json = {};
+    json['label'] = name;
+    List<double> data = [];
+    for(var i = 0; i < values.length; ++i){
+      if(i%skip == 0){
+        data.add(double.parse(values[i].toStringAsFixed(2)));
+      }
+    }
+    json['data'] = data;
+    json['fill'] = false;
+    json['borderColor'] = "rgba(${color.red}, ${color.green}, ${color.blue}, ${color.alpha} )";
+    json['backgroundColor'] = "rgba(${color.red}, ${color.green}, ${color.blue}, 0.5 )";
+    json['lineTension'] = 0;
+
+    return jsonEncode(json);
+  }
 
 }
 

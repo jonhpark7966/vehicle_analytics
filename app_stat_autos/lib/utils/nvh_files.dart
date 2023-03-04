@@ -21,6 +21,19 @@ class NVHFileUtils{
     return <String>[];
   }
 
+  // (IDLE ex) nvds ... idle_n_... -> Gear N, Gear D
+  // (Cruise ex) nvds ... speed -> 60kph, 100kph
+  static String filesToKey(String fileName, NVHType type){
+    switch (type) {
+      case NVHType.Idle:
+        return "Gear "+getGearFromName(fileName);
+      default:
+        assert(false); // TODO implement other missed types.
+    }
+
+    return "";
+  }
+
 
 
   //pick 1 N file & 1 D file.
@@ -41,6 +54,9 @@ class NVHFileUtils{
     }
     return ret;
   }
+
+
+
 }
 
 

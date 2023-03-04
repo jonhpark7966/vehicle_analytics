@@ -87,6 +87,7 @@ class NVHLoadedDataModel extends LoadedDataModel{
 
 class NVHTestLoadedDataModel extends LoadedDataModel{
   Map<String, NVHChannelLoadedDataModel> channels = {};
+  List<NVHGraph> tachos = [];
 
   Map<String, String> getValues(String channel){
     assert(channels.containsKey(channel));
@@ -122,3 +123,4 @@ class NVHChannelLoadedDataModel extends LoadedDataModel{
   List<NVHGraph> graphs = [];
   List<NVHColormap> colormaps = [];
 }
+

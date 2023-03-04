@@ -7,6 +7,7 @@ import 'package:grid_ui_example/loader/models.dart';
 
 import '../data/nvh_data.dart';
 import '../data/performance_data.dart';
+import '../utils/nvh_files.dart';
 import 'coastdown_parser.dart';
 import 'performance_parser.dart';
 
@@ -115,17 +116,33 @@ class Loader{
       var testDataModel = NVHTestLoadedDataModel();
       final dataFileList = await storageRef.child(path+"/"+item.name).listAll();
       // for data files
+      List<String> files = [];
       for (var dataItem in dataFileList.items) {
-        //if mp3 file exist -> its a channel.
+        files.add(dataItem.name);
+        // if mp3 file exist -> its a channel.
         if(dataItem.name.contains('.mp3')){
           String channelName = dataItem.name.split('.mp3')[0];
           var channelModel = NVHChannelLoadedDataModel(); 
           testDataModel.channels[channelName] = channelModel;
         }
-      }
+     }
       ret[item.name] = testDataModel;
     }
     return ret;
+    } on FirebaseException catch (e) {
+      // Handle any errors.
+      assert(false);
+    }
+  }
+
+static loadTachosFromNVH(String path, Map<String, NVHTestLoadedDataModel> files, NVHType type) async {
+    try {
+      //filter files.
+      var filteredFiles = NVHFileUtils.filterFiles( files.keys.toList() , type);
+      for(var filteredFile in filteredFiles){
+        final Uint8List? data = await storageRef.child(path+"/"+filteredFile+"/tacho.zip").getData();
+        files[filteredFile]!.tachos = await _unarchiveTachoData(data!);
+      }
     } on FirebaseException catch (e) {
       // Handle any errors.
       assert(false);
@@ -176,8 +193,7 @@ try {
           // zip
           else if(dataItem.name.contains("$channel.zip")){
             final Uint8List? data = await storageRef.child(path+"/"+dataItem.name).getData();
-            await _unarchiveData(data!, channel, dataModel);
-
+            await _unarchiveChannelData(data!, channel, dataModel);
           }
         }
       }
@@ -189,7 +205,7 @@ try {
 
   }
 
-  static _unarchiveData(Uint8List data, String channel, NVHTestLoadedDataModel dataModel) async {
+  static _unarchiveChannelData(Uint8List data, String channel, NVHTestLoadedDataModel dataModel) async {
     List<FileOnMemory> files = ArchiveHandler.decompress(data);
     for(var file in files){
           // values
@@ -209,8 +225,14 @@ try {
     }
   }
 
-
-
-
+  static Future<List<NVHGraph>> _unarchiveTachoData(Uint8List data) async {
+    List<NVHGraph> ret = [];
+    List<FileOnMemory> files = ArchiveHandler.decompress(data);
+    for(var file in files){
+      String s = String.fromCharCodes(file.data);
+      ret.add(NVHGraph.fromJson(jsonDecode(s)));
+    }
+    return ret;
+  }
 
 }

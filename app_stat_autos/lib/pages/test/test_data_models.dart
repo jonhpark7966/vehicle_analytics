@@ -107,7 +107,9 @@ class TestDataModels extends ChangeNotifier{
     return ;
    }
 
-    var files = await Loader.loadFilesFromNVH("test/${testId}/nvh/$testPath", testType);
+    var path = "test/${testId}/nvh/$testPath";
+    var files = await Loader.loadFilesFromNVH(path, testType);
+    await Loader.loadTachosFromNVH(path, files, testType);
     data.files = files;
 
     data.loaded = true;
