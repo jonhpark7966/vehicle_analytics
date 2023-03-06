@@ -3,6 +3,7 @@ import 'package:grid_ui_example/widgets/nvh/nvh_constants.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/nvh_data.dart';
+import '../../../loader/models.dart';
 import '../../../pages/test/test_data_models.dart';
 import '../../../settings/ui_constants.dart';
 import '../../../utils/nvh_utils.dart';
@@ -12,7 +13,7 @@ import '../../graphs/nvh_graph.dart';
 
 class IdleGraphWidget extends StatelessWidget{
  
-  IdleGraphWidget(this.graphs, this.pos, {Key? key}) : super(key:key);
+  IdleGraphWidget(this.graphs, this.pos,  {Key? key}) : super(key:key);
 
   Map<String, List<NVHGraph>> graphs;
   Position pos;
@@ -38,11 +39,42 @@ class IdleGraphWidget extends StatelessWidget{
      return ret;
   }
 
+  Map<String, double> _getRPMAverage(nvhDataModel, files){
+    Map<String, double> ret = {};
+  for(var file in files){
+      var tachos = nvhDataModel.files[file]!.tachos;
+      for(var tacho in tachos){
+        if(tacho.name == "Engine Speed"){
+          double sum=0;
+          tacho.values.forEach((e) => sum += e);
+          ret[file] = sum/tacho.values.length;
+        }
+      }
+    }
+    return ret;
+  }
+
+  Map<String, Map<String,double>> _getOrderSeries(rpms, chartData){
+    Map<String, Map<String,double>> ret = {};
+    rpms.forEach((key, rpm){
+      Map<String,double> orderFreqs = NVHUtils.getCOrderFreq(rpm, chartData);
+      ret[key] = orderFreqs;
+    });
+    return ret;
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
    var dataModel = Provider.of<TestDataModels>(context);
 
    Map<String, NVHGraph> freqGraphs = _getFreqGraphs(graphs);
+
+   NVHLoadedDataModel nvhDataModel = dataModel.nvhDataMap[NVHType.Idle];
+   Map<String, double> rpms = _getRPMAverage(nvhDataModel, freqGraphs.keys);
+   Map<String, Map<String,double>> COrderFreqs = _getOrderSeries(rpms, dataModel.chartData);
+
 
    if(pos == Position.Noise){
      Map<String, NVHGraph> freqGraphsAweighted = _weighting(freqGraphs, Weight.A);
@@ -60,7 +92,8 @@ class IdleGraphWidget extends StatelessWidget{
               intervalX: NVHConstants.idleHighInterval,
               minY: NVHConstants.idleNoiseMinY,
               maxY: NVHConstants.idledBANoiseMaxY,
-              pos: pos
+              pos: pos,
+              annotationFreqs: COrderFreqs,
             ),
             color: dataModel.colors[0],
             title: 'Frequency Graph',
@@ -78,6 +111,7 @@ class IdleGraphWidget extends StatelessWidget{
               minY: NVHConstants.idleNoiseMinY,
               maxY: NVHConstants.idledBCNoiseMaxY,
               pos:pos,
+              annotationFreqs: COrderFreqs,
             ),
             color: dataModel.colors[0],
             title: 'Frequency Graph (Booming)',
@@ -104,6 +138,7 @@ class IdleGraphWidget extends StatelessWidget{
               minY: minY,
               maxY: maxY,
               pos: pos,
+              annotationFreqs: COrderFreqs,
             ),
             color: dataModel.colors[0],
             title: 'Frequency Graph',

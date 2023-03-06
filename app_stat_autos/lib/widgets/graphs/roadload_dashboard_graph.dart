@@ -32,7 +32,6 @@ class RoadloadDashboardGraph extends FlGraph {
       maxY = max(maxY, maxload);
     }
 
-
     maxY = (((maxY+100)~/100)*100).toDouble();
   }
 

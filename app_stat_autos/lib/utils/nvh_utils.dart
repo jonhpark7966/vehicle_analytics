@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:data_handler/data_handler.dart';
+
 import '../data/nvh_data.dart';
 
   enum Weight{
@@ -66,6 +68,34 @@ class NVHUtils{
     }else{
       assert(false);
       return Position.Noise;
+    }
+  }
+
+  // 1 , main, main*2, main*3 (ex. C1, C2, C4, C6)
+  static Map<String, double> getCOrderFreq(double rpm, ChartData chartData){
+    Map<String, double> ret = {};
+    ret["C1"] = (rpm/60);
+
+    double mainOrder = engineTypeToMainOrder(chartData.engineType);
+    ret["C${mainOrder}"] = (mainOrder * rpm/60);
+    ret["C${mainOrder*2}"] = (2* mainOrder * rpm/60);
+    ret["C${mainOrder*3}"] = (3* mainOrder * rpm/60);
+
+    return ret;
+  } 
+
+  static double engineTypeToMainOrder(String engineType){
+    if(engineType.contains("8")){
+      return 4;
+    }else if(engineType.contains("6")){
+      return 3;
+    }else if(engineType.contains("4")){
+      return 2;
+    }else if(engineType.contains("3")){
+      return 1.5;
+    }else{
+      assert(false);
+      return 1;
     }
   }
 }

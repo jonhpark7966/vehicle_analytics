@@ -79,8 +79,7 @@ class TestNVHTab extends StatelessWidget{
         isChannelLoaded ? nvhDataModel.getValues(files, channel) : {};
     Map<String, List<NVHGraph>> graphs =
         isChannelLoaded ? nvhDataModel.getGraphs(files, channel) : {};
-
-    //graphs = get graphs
+        
     //colormaps get colormaps
     //Map<String, String> urls = nvhDataModel.getMp3Url(channel);
 

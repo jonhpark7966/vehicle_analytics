@@ -40,7 +40,13 @@ class FlGraph extends StatelessWidget {
         maxX: maxX,
         maxY: maxY,
         minY: minY,
+        rangeAnnotations: rangeAnnotations1
       );
+
+  RangeAnnotations get rangeAnnotations1{
+    return RangeAnnotations();
+  }
+
 
   List<LineChartBarData> get lineBarsData1{
     var ret = <LineChartBarData>[];

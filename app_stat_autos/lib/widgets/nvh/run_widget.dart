@@ -44,6 +44,7 @@ class RunWidget extends StatelessWidget{
   InAppWebViewController? webViewController;
   List<NVHGraph> tachosMap;
   String title;
+
  
   RunWidget(this.title, this.tachosMap, {Key? key}) : super(key:key);
 
@@ -54,15 +55,15 @@ class RunWidget extends StatelessWidget{
     return Padding(
               padding: const EdgeInsets.all(defaultPadding),
               child: GraphCard(
-                graph: SizedBox(child:InAppWebView(
+                graph: InAppWebView(
                   key: webViewKey,
                   initialData: InAppWebViewInitialData(
                     data: _getChartJsScript(tachosMap, dataModel.colors[0]),
-                  ),
-                  onWebViewCreated: (controller) {
-                    webViewController = controller;
-                  },
-                ),),
+            ),
+            onWebViewCreated: (controller) {
+              webViewController = controller;
+            },
+          ),
                 color: dataModel.colors[0],
                 title: 'Run Graph',
                 subtitle: title,

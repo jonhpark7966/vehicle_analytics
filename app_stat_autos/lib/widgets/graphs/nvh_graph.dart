@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../../data/nvh_data.dart';
+import '../../settings/theme.dart';
 import '../../utils/nvh_files.dart';
 import '../../utils/nvh_utils.dart';
 import 'fl_graph.dart';
@@ -13,12 +14,13 @@ class NVH2DGraph extends FlGraph {
   late String xAxisUnit;
   List<String> names;
   Position pos;
+  Map<String, Map<String,double>> annotationFreqs;
 
   //data ; Map<String, NVHGraph>, key=name
   NVH2DGraph(
       {Key? key,
       required super.data,
-      required super.color,
+      required super.color,  // Main Color
       super.minX,
       super.minY,
       super.maxX,
@@ -27,6 +29,7 @@ class NVH2DGraph extends FlGraph {
       super.intervalY,
       required this.names,
       required this.pos,
+      required this.annotationFreqs,
       })
       : super(key: key);
 
@@ -64,14 +67,40 @@ class NVH2DGraph extends FlGraph {
   }
 
   @override
+  RangeAnnotations get rangeAnnotations1{
+
+    var annotations = <VerticalRangeAnnotation>[];
+    int i = 0;
+    annotationFreqs.forEach(((key, Map<String, double> keyFreqs) {
+
+      keyFreqs.forEach((key, freq) {
+        annotations.add(VerticalRangeAnnotation(
+          x1: freq-2,
+          x2: freq+2,
+          color: graphColors[i].withOpacity(0.1),
+        ));
+      });
+      ++i;
+      if (graphColors.length == i) {
+        i = 0;
+      }
+    }));
+
+     return RangeAnnotations(
+        verticalRangeAnnotations: annotations
+      );
+  }
+
+  @override
   List<LineChartBarData> get lineBarsData1 {
     var ret = <LineChartBarData>[];
 
+    int i = 0;
     data.forEach((key, value){
 
       ret.add(LineChartBarData(
         isCurved: true,
-        color: color,
+        color: graphColors[i],
         barWidth: 1,
         isStrokeCapRound: true,
         dotData: FlDotData(show: false),
@@ -82,6 +111,8 @@ class NVH2DGraph extends FlGraph {
         spots: _getFlSpot(value),
       ));
 
+      ++i;
+      if(graphColors.length == i){ i = 0;}
     });
     return ret;
   }
