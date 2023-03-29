@@ -5,7 +5,7 @@ import 'package:data_handler/data_handler.dart';
 import '../data/nvh_data.dart';
 
   enum Weight{
-    A,C
+    A,C, none
   }
 
   enum Position{
@@ -30,9 +30,9 @@ import '../data/nvh_data.dart';
 
 
 class NVHUtils{
-
   static NVHGraph weighting(NVHGraph inputGraph, Weight w){
     NVHGraph ret = NVHGraph.from(inputGraph);
+    if(w == Weight.none){return ret;}
     assert(ret.unit == "dB");
     assert(ret.xAxisUnit == "Hz");
 
@@ -44,6 +44,24 @@ class NVHUtils{
     
     ret.unit = "dB${w.name}";
 
+    return ret;
+  }
+
+  static List<double> weightingList(List<double> input, double freqDelta, Weight w){
+    if(w == Weight.none){return input;}
+
+    List<double> ret = [];
+    for(int i = 0; i < input.length; ++i){
+      double freq = i*freqDelta;
+      if (freq == 0) {
+        // don't need to weighting.
+        ret.add(input[i]);
+      } else {
+        double scale = _getScale(freq, w);
+        ret.add(input[i] + 2.0 + 20 * log(scale) / ln10);
+      }
+    }
+    
     return ret;
   }
 

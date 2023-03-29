@@ -125,9 +125,7 @@ class IdleGraphWidget extends StatelessWidget{
     double maxY = NVHConstants.idleVibBodyMaxY;
     if(pos == Position.VibrationSource){maxY = NVHConstants.idleVibSrcMaxY;}
 
-
-
-   return  Padding(
+   return Padding(
           padding: const EdgeInsets.all(defaultPadding),
           child: GraphCard(
             graph: NVH2DGraph(

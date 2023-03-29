@@ -50,6 +50,17 @@ class NVHLoadedDataModel extends LoadedDataModel{
     return ret;
   }
 
+  Map<String, List<NVHColormap>> getColormaps(List<String> fileNames, String channel){
+    Map<String, List<NVHColormap>> ret = {};
+    for(var file in fileNames){
+      assert(files.containsKey(file));
+      ret[file] = files[file]!.getColormaps(channel);
+    }
+    return ret;
+  }
+
+
+
   bool isChannelLoaded(List<String> fileNames, String channel){
     for(var file in fileNames){
       assert(files.containsKey(file));
@@ -97,6 +108,11 @@ class NVHTestLoadedDataModel extends LoadedDataModel{
   List<NVHGraph> getGraphs(String channel){
     assert(channels.containsKey(channel));
     return channels[channel]!.graphs;
+  }
+
+  List<NVHColormap> getColormaps(String channel){
+    assert(channels.containsKey(channel));
+    return channels[channel]!.colormaps;
   }
 
   bool isChannelLoaded(String channel){

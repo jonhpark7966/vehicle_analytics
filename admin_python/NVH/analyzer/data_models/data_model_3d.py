@@ -43,8 +43,8 @@ class DataModel3D:
 
         with open(os.path.join(outputPath, channelName+"_"+dataName+".json"), "w") as f:
             jsonDict = {"name":dataName, "unit":self.unit,
-             "xAxisunit": self.xAxisunit, "xAxisDelata":self.xAxisDelta, "xAxisNumber":len(self.data[0]),
-             "yAxisunit": self.yAxisunit, "yAxisDelata":self.yAxisDelta,
+             "xAxisunit": self.xAxisunit, "xAxisDelta":self.xAxisDelta, "xAxisNumber": int(endFreq/self.xAxisDelta),
+             "yAxisunit": self.yAxisunit, "yAxisDelta":self.yAxisDelta,
              }
             json.dump(jsonDict, f)
             sys.stdout.write("Success! :" + f.name + "\n")

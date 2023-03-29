@@ -41,13 +41,13 @@ class TestNVHTab extends StatelessWidget{
     }
   }
 
-  Widget _getColormapsWidget(){
+  Widget _getColormapsWidget(Map<String, List<NVHColormap>> colormaps, Position pos){
     switch (type) {
       case NVHType.Idle:
-        return IdleColormapWidget();
+        return IdleColormapWidget(colormaps, pos);
       default:
         assert(false);
-        return IdleColormapWidget();
+        return IdleColormapWidget(colormaps, pos);
     }
   }
 
@@ -79,8 +79,9 @@ class TestNVHTab extends StatelessWidget{
         isChannelLoaded ? nvhDataModel.getValues(files, channel) : {};
     Map<String, List<NVHGraph>> graphs =
         isChannelLoaded ? nvhDataModel.getGraphs(files, channel) : {};
+    Map<String, List<NVHColormap>> colormaps = 
+        isChannelLoaded ? nvhDataModel.getColormaps(files, channel) : {};
         
-    //colormaps get colormaps
     //Map<String, String> urls = nvhDataModel.getMp3Url(channel);
 
     Widget spinkit = SpinKitCubeGrid(color: dataModel.colors[0]);
@@ -99,7 +100,7 @@ class TestNVHTab extends StatelessWidget{
      TestSubtitle(title:"Graphs", ),
      _getGraphsWidget(graphs, NVHUtils.getPosition(channel)),
      TestSubtitle(title:"Colormaps", ),
-     _getColormapsWidget(),
+     _getColormapsWidget(colormaps, NVHUtils.getPosition(channel)),
      TestSubtitle(title:"Replays", ),
      //_getReplaysWidget(urls),
             ] 

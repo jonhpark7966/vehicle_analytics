@@ -221,6 +221,9 @@ try {
           // colormap
           else if(file.name.contains("Colormap.json")){
             // colormap bin & json -> parser.
+            String s = String.fromCharCodes(file.data);
+            FileOnMemory binFile = files.firstWhere((element) => element.name == file.name.replaceFirst("Colormap.json", "Colormap.bin"));
+            dataModel.channels[channel]!.colormaps.add(NVHColormap.fromJsonBin(jsonDecode(s), binFile.data));
           }
     }
   }
