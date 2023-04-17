@@ -43,20 +43,29 @@ if __name__ == '__main__':
     organizer = FileOrganizer(args.path)
     errormsg = organizer.checkFiles()
 
+    # make output path
+    outputPath = args.path + "/outputs"
+    try:
+        if not os.path.isdir(outputPath):
+            os.mkdir(outputPath)
+    except:
+        print("Error!")
+        pass
+
     if args.test == "performance":
-        startingAccelConverter = StartingAccelExcelConverter(organizer.performanceStartingAccelRawList, "/Users/jonhpark/Desktop/auto_stat_example/outputs")
+        startingAccelConverter = StartingAccelExcelConverter(organizer.performanceStartingAccelRawList, outputPath)
         startingAccelConverter.convert()
         
-        passingAccelConverter = PassingAccelExcelConverter(organizer.performancePassingAccelRawList, "/Users/jonhpark/Desktop/auto_stat_example/outputs")
+        passingAccelConverter = PassingAccelExcelConverter(organizer.performancePassingAccelRawList, outputPath)
         passingAccelConverter.convert()
         
-        brakingConverter = BrakingExcelConverter(organizer.brakingRawList, "/Users/jonhpark/Desktop/auto_stat_example/outputs")
+        brakingConverter = BrakingExcelConverter(organizer.brakingRawList, outputPath)
         brakingConverter.convert()
         
-        accelHtmlConverter = AccelHtmlConverter([organizer.performanceHtmlPath], "/Users/jonhpark/Desktop/auto_stat_example/outputs")
+        accelHtmlConverter = AccelHtmlConverter([organizer.performanceHtmlPath], outputPath)
         accelHtmlConverter.convert()
         
-        brakeHtmlConverter = BrakeHtmlConverter([organizer.brakingHtmlPath], "/Users/jonhpark/Desktop/auto_stat_example/outputs")
+        brakeHtmlConverter = BrakeHtmlConverter([organizer.brakingHtmlPath], outputPath)
         brakeHtmlConverter.convert()
 
     elif args.test == "nvh":

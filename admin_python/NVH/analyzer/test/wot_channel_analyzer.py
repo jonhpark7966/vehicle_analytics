@@ -12,7 +12,7 @@ class WOTNoiseAnalyzer(NoiseChannelAnalyzer):
         super().__init__(signalChannel, tachoChannels, vehicleMap)
         self.lowEndFreq = 2000
         self.highFreqRes = 20
-        self.highEndFreq = 20000
+        self.highEndFreq = 10000 # TODO, check EV for over 10kHz
 
 
     def analyzeSignalTo3(self):
@@ -29,11 +29,11 @@ class WOTNoiseAnalyzer(NoiseChannelAnalyzer):
         self.dataDict2D["RPM Overall Graph"] = processor.projectYOA(
             self.dataDict3D["Engine RPM Colormap"],
             self.analyzeOptions.referenceValue,
-            20, 20000, True)
+            20, self.highEndFreq, True)
         self.dataDict2D["Speed Overall Graph"] = processor.projectYOA(
             self.dataDict3D["Speed Colormap"],
             self.analyzeOptions.referenceValue,
-            20,20000, True)
+            20, self.highEndFreq, True)
 
 
 

@@ -79,9 +79,11 @@ class ChannelDataModel:
         return SignalType.ETC
 
   def _maxToNormalize(self):
-    if "MIC" in self.name:
+    if "MIC" in self.name or "Mic" in self.name:
         return 10.0 # pascal
     elif "Floor" in self.name:
         return 10.0 # m/s^2
     elif "Engine" in self.name:
         return 100.0 # m/s^2
+    else:
+       assert(False)

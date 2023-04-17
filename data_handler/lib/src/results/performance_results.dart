@@ -13,6 +13,7 @@ class PerformanceResults extends Results{
 
   @override
   checkInputFiles() {
+    // Korean not works here!
     var ret = 0;
     var rootDirectory = Directory(inputPath);
     for(var subDir in rootDirectory.listSync()){

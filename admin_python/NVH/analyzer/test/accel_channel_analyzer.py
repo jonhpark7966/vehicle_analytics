@@ -12,7 +12,8 @@ class AccelNoiseAnalyzer(NoiseChannelAnalyzer):
         super().__init__(signalChannel, tachoChannels, vehicelMap)
         self.lowEndFreq = 2000
         self.highFreqRes = 20
-        self.highEndFreq = 20000
+        self.highEndFreq = 10000
+        #TODO, for EV Cars, high end freq should be 20000?
 
     def analyzeSignalTo3(self):
         processor = FourierSignalProcess()
@@ -28,11 +29,11 @@ class AccelNoiseAnalyzer(NoiseChannelAnalyzer):
         self.dataDict2D["Speed Overall Graph"] = processor.projectYOA(
             self.dataDict3D["Speed Colormap"],
             self.analyzeOptions.referenceValue,
-            20,20000, True)
+            20,self.highEndFreq, True)
         self.dataDict2D["RPM Overall Graph"] = processor.projectYOA(
             self.dataDict3D["Engine RPM Colormap"],
             self.analyzeOptions.referenceValue,
-            20, 20000, True)
+            20, self.highEndFreq, True)
 
     def analyze2to1(self):
         noiseSlope, noiseIntercept = UtilsProcessor().getLinearRegression(
