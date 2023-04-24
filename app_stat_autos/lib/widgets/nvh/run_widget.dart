@@ -72,9 +72,9 @@ class RunWidget extends StatelessWidget{
   }
  
   _tachoDataToScript(List<NVHGraph> tachoData, Color color){
-    //1ms -> 50ms 
+    //1ms -> 80ms 
     // pick 1 of $dataSkip data
-    const int dataSkip = 50;
+    const int dataSkip = 80;
 
     // make x axis lables (time in ms)
     List<String> labels = [];

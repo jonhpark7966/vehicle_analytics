@@ -22,7 +22,7 @@ class NVHResults extends Results{
             ret++;
             msgLogs += ("Idle file found, ${file.path}\n");
           }
-          if(file.path.contains("WOT")){
+          if(file.path.contains("_WOT")){
             ret++;
             msgLogs += ("WOT file found, ${file.path}\n");
           }
@@ -298,7 +298,7 @@ Map<String, double> _parseWOTResultValues(List<NVHValue> values){
 
     String memo = _getMemoFromFileName(nvhValue.fileName);
 
-    if( memo == "acc"){
+    if( (memo == "acc") | (memo == "WOT")){
       // 0 - 140 kph
       // Mic channels
       if(nvhValue.channel.contains("MIC:Front") ){
@@ -370,6 +370,7 @@ Map<String, double> _parseMDPSResultValues(List<NVHValue> values){
 
 String _getMemoFromFileName(fileName){
   //nvds_221018_102245_11s_LX2_CRUISE_120kph.hdf -> 120kph
+  // if nothing, returns test name
   return fileName.split(".hdf").first.split("_").last;
 }
 

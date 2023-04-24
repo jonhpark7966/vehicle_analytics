@@ -19,7 +19,7 @@ def nvhAnalyze(fileList, type, dst):
         path = args.path+"/outputs/" +  dst + "/" + basename
         Path(path).mkdir(parents=True, exist_ok=True)
         for ch in hdf.channels:
-            if ch.frequency > 10000: # only for NVH channel.
+            if ch.frequency >= 10000: # only for NVH channel.
                 ch.toMP3File(path)
             else: # tacho channels.
                 ch.toTachoJsonFile(path)

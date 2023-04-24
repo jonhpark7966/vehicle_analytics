@@ -73,6 +73,10 @@ class HdfReader:
                 index = index + 1
                 if "name str" in line:
                     name = (line.split("name str:")[-1].strip().replace("\\r\\n'", ""))
+                    # handle USB mic
+                    if "USB" in name:
+                        name = name.replace("USB Mic", "MIC")
+
                 if "physical unit" in line:
                     unit = (line.split(":")[-1].strip().replace("\\r\\n'", ""))
                     break

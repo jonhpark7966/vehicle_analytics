@@ -95,7 +95,7 @@ class FileOrganizer:
                     if "IDLE" in filePath:
                         self.idleHdfPathList.append(os.path.join(self.rootPath, dirpath, filePath))
                     # WOT 
-                    if "WOT" in filePath:
+                    if "_WOT" in filePath:
                         self.wotHdfPathList.append(os.path.join(self.rootPath, dirpath, filePath))
                     # Cruise 
                     if "CRUISE" in filePath:

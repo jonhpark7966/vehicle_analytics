@@ -5,6 +5,7 @@ enum Manufactureres {
   bmw,
   benz,
   audi,
+  ford,
   unknown;
 
   static Manufactureres fromString(String src){
@@ -22,6 +23,8 @@ enum Manufactureres {
         return Manufactureres.benz;
       case "audi":
         return Manufactureres.audi;
+      case "ford":
+        return Manufactureres.ford;
     }
 
     return Manufactureres.unknown;
