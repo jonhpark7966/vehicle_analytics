@@ -84,7 +84,7 @@ class FileOrganizer:
                     elif "제동.html" in filePath:
                         self.brakingHtmlPath = os.path.join(self.rootPath, dirpath, filePath)
 
-                    elif '제동성능' in filePath:
+                    elif '.txt' in filePath:
                         self.brakingRawList.append(os.path.join(self.rootPath, dirpath, filePath))
 
     def checkNVHFiles(self, list):

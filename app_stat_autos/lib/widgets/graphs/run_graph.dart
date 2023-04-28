@@ -77,10 +77,12 @@ class RunGraph extends FlGraph {
       for (var datum in run.run) {
         var y = _getY(datum);
         maxY = max(maxY, y);
+        minY = min(minY, y);
         maxX = max(maxX, datum.time);
       }
     }
     maxY = (((maxY + intervalY) ~/ intervalY) * intervalY).toDouble();
+    minY = (((minY - intervalY+1) ~/ intervalY) * intervalY).toDouble();
     maxX = (((maxX + intervalX) ~/ intervalX) * intervalX).toDouble();
   }
 

@@ -42,6 +42,7 @@ class PerformanceParser{
       int dataIndex = -1;
       lastTime = 0;
       lastSpeed = 0;
+
       for(var line in lines){
         dataIndex++;
         var pickNumber = accelPickNumber;
@@ -54,6 +55,14 @@ class PerformanceParser{
         var speed = double.parse(values[1]);
         var distance = double.parse(values[2]);
         retElem.addDatum(PerformanceRawDatum(time, speed, distance, lastTime, lastSpeed));
+
+        if(type == PerformanceType.Braking){
+          // remove early data.
+          if(retElem.run.last.accel > 10.0){
+            retElem.run.last.accel = 0.0;
+          }
+        }
+
         lastTime = time;
         lastSpeed = speed;
       } 

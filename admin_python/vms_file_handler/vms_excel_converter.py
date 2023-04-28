@@ -44,22 +44,37 @@ class VMSExcelConverter:
         sheet = pd.read_csv(filePath, delimiter='\t', keep_default_na=False)
 
         rowsToWrite = []
-        distanceInit = False
+        testState = 0  # 0: before start, # 1: running over 100kph , # 2: started braking.
+        distance = 0.0
+        lastSpeed = 0.0
         for i, row in sheet.iterrows():
             rowToWrite = []
 
             if i == 0: # skip second line. 
                 continue
 
+            speed = float(row["[GPSSpeed]"])
+
+            if testState == 0:
+                if speed >= 100.0 and (lastSpeed - speed) < 1.0: # validate by speed changing. 
+                    testState = 1
+                continue
+            
+            if testState == 1 and speed < 100.0:
+                testState = 2
+
             for var in self.variablesToGet:
-                if var == "[RunningDistance]" and not distanceInit:
-                    if row[var] == 0.0:
-                        distanceInit = True
-                    else:
+                if var == "[RunningDistance]":
+                    if testState == 1:
                         row[var] = 0.0
+                    elif testState == 2:
+                        distance += speed *1000/3600 * 0.01 #0.01s per row
+                        row[var] = distance 
 
                 rowToWrite.append("{:.2f}".format(float(row[var])))
             rowsToWrite.append(rowToWrite)
+
+            lastSpeed = speed
 
             if i == 0:
                 barometer = "{:.2f}".format(row["[Barometer]"])

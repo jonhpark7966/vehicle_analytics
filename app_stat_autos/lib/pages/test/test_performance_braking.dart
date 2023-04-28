@@ -138,7 +138,7 @@ class TestPerformanceBrakingPage extends StatelessWidget{
                           title: "Max Deceleration",
                           color: dataModel.colors[0],
                           value: (dataModel.chartData!.braking_maxDecel).toStringAsFixed(2),
-                          unit: "s",
+                          unit: "m/s²",
                           icon: Icons.share_arrival_time_outlined),
                       ]),
                 ),] + loadedCard
