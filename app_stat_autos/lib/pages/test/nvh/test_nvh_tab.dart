@@ -14,6 +14,9 @@ import '../../../widgets/nvh/idle/idle_replay_widget.dart';
 import '../../../widgets/nvh/idle/idle_value_widget.dart';
 import '../../../widgets/test_subtitle.dart';
 import '../test_data_models.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'dart:html';
+
 
 class TestNVHTab extends StatelessWidget{
   NVHType type;
@@ -61,6 +64,35 @@ class TestNVHTab extends StatelessWidget{
     }
   }
 
+  _launchColormapPage() async {
+    String currentUrl = window.location.href;
+
+  // Remove the trailing slash if it exists.
+  if (currentUrl.endsWith('/')) {
+    currentUrl = currentUrl.substring(0, currentUrl.length - 1);
+  }
+
+  // Combine the current URL with the relative sub path.
+  String newUrl = '$currentUrl/${type.name}/${channel}';
+
+  if (!await launchUrl(Uri.parse(newUrl))){
+     throw 'Could not launch';
+  }
+ }
+
+  Widget _getColormapButton(bgColor){
+
+    return
+    CircleAvatar(
+      backgroundColor: bgColor,
+      child:
+     IconButton(icon: Icon(Icons.open_in_new , color: Colors.white70,),
+        onPressed: () async {
+          await _launchColormapPage();
+                }),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -97,10 +129,13 @@ class TestNVHTab extends StatelessWidget{
 <Widget>[
      TestSubtitle(title:"Values", ),
      _getValuesWidget(values),
+     const Divider(color: Colors.white70,),
      TestSubtitle(title:"Graphs", ),
      _getGraphsWidget(graphs, NVHUtils.getPosition(channel)),
-     TestSubtitle(title:"Colormaps", ),
+     const Divider(color: Colors.white70,),
+     TestSubtitle(title:"Colormaps  ", button:_getColormapButton(dataModel.colors[0])),
      _getColormapsWidget(colormaps, NVHUtils.getPosition(channel)),
+     const Divider(color: Colors.white70,),
      TestSubtitle(title:"Replays", ),
      //_getReplaysWidget(urls),
             ] 

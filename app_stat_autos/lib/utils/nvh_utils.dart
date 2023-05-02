@@ -4,8 +4,24 @@ import 'package:data_handler/data_handler.dart';
 
 import '../data/nvh_data.dart';
 
+enum ColorMapPalette{
+  Viridis, Jet, RdBu, Magma
+}
+
   enum Weight{
-    A,C, none
+    A,C, none;
+
+    String get unit{
+      if(this == A){
+        return "dBA";
+      }else if(this == C){
+        return "dBC";
+      }
+      else{
+        return "dB";
+      }
+    }
+
   }
 
   enum Position{
@@ -47,12 +63,12 @@ class NVHUtils{
     return ret;
   }
 
-  static List<double> weightingList(List<double> input, double freqDelta, Weight w){
+  static List<double> weightingList(List<double> input, double freqDelta, Weight w, double startFreq){
     if(w == Weight.none){return input;}
 
     List<double> ret = [];
     for(int i = 0; i < input.length; ++i){
-      double freq = i*freqDelta;
+      double freq = startFreq + i*freqDelta;
       if (freq == 0) {
         // don't need to weighting.
         ret.add(input[i]);

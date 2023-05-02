@@ -32,7 +32,7 @@ class _TestDashboardPageState extends State<TestDashboardPage> {
  }
 
 _getNavIconButton(int index){
- return IconButton(icon: Icon(Icons.arrow_circle_right_outlined, color: Colors.white70,),
+ return IconButton(icon: const Icon(Icons.arrow_circle_right_outlined, color: Colors.white70,),
         onPressed: () => widget.controller.selectIndex(index),);
 }
 

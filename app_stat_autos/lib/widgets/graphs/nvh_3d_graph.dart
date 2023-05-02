@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:html';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:grid_ui_example/widgets/popups/todo.dart';
@@ -14,146 +14,175 @@ import '../../settings/theme.dart';
 import '../../settings/ui_constants.dart';
 import '../../utils/nvh_utils.dart';
 import '../cards/graph_card.dart';
+import 'nvh_3d_graph_settings.dart';
 
-class NVH3DSettings{
-  Weight weighting;
-
-  NVH3DSettings({this.weighting = Weight.none});
-  NVH3DSettings.clone(NVH3DSettings object): this(weighting: object.weighting);
-}
-
-
-
-class NVH3DGraph extends StatefulWidget{
-
+class NVH3DGraph extends StatefulWidget {
   final GlobalKey webViewKey = GlobalKey();
   NVHColormap data;
+  NVH3DSettings settings;
+  bool fullSize = false;
 
-  double maxX;
-  double minY;
-  double maxY;
-  Color color;
- 
-  NVH3DGraph({Key? key, required this.data, required this.color,
-    required this.maxX, required this.minY, required this.maxY}) : super(key:key);
-    
-      @override
-      State<StatefulWidget> createState()=>_NVH3DGraphState();
+  NVH3DGraph(
+      {Key? key,
+      required this.data,
+      required this.settings,
+      this.fullSize = false})
+      : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _NVH3DGraphState();
 }
 
 class _NVH3DGraphState extends State<NVH3DGraph> {
   InAppWebViewController? webViewController;
 
-  NVH3DSettings settings = NVH3DSettings();  
-
-  _showSettingsPopup(context) async {
-    NVH3DSettings tmpSettings = NVH3DSettings.clone(settings);
-    await showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: cardBackgroundColor,
-            content: NVH3DGraphSettings(tmpSettings),
-            actions: [
-              ElevatedButton(
-                child: const Text("OK"),
-                onPressed: () {
-                  settings = tmpSettings;
-                  setState(() {
-                    webViewController?.loadData(data: _getPlotlyJsScript(widget.data),);
-                    //webViewController?.reload(); 
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              ElevatedButton(
-                child: const Text("Cancel"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-            );
-        });
-    return;
+  _getWebview(){
+    return InAppWebView(
+            key: widget.webViewKey,
+            initialData: InAppWebViewInitialData(
+              data: _getPlotlyJsScript(widget.data),
+            ),
+            onWebViewCreated: (controller) {
+              webViewController = controller;
+            },
+          );
   }
-
 
   @override
   Widget build(BuildContext context) {
-    return 
-    Row(
-      children:[
-      SizedBox(
-        width:graph3DWidth+30, height:graph3DHeight+30,
-        child:
-        InAppWebView(
-          key: widget.webViewKey,
-          initialData: InAppWebViewInitialData(
-            data: _getPlotlyJsScript(widget.data),
-          ),
-          onWebViewCreated: (controller) {
-            webViewController = controller;
-          },
-        )),
-      Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-      FloatingActionButton.small(
-        backgroundColor: widget.color,
-        child: Icon(Icons.settings),
-        onPressed: (){
-          _showSettingsPopup(context);
-      }),
-      SizedBox(height:8),
-      FloatingActionButton.small(
-        backgroundColor: widget.color,
-        child: Icon(Icons.open_in_new),
-        onPressed: (){
-        showTodoPopup(context);
-      }),
-
-      ],),
-        ]
-        );
+      return widget.fullSize? _getWebview()
+      : SizedBox(
+          width: (graph3DWidth + 30),
+            height: (graph3DHeight + 30),
+            child: _getWebview(),
+          );
   }
 
-  String _getData(NVHColormap data){
-
-    Map<String, dynamic> ret = {
-      'type' : "surface",
-      'contours': {'z':{'show':true, 'usecolormap':true, 'project':{'z':true}}}
-      };
+  _filterData(Map<String, dynamic> ret, NVHColormap data, NVH3DSettings settings){
 
     double xDelta = double.parse(data.xAxisDelta);
-    List<double> x = List.generate(widget.maxX~/xDelta, (index) => index*xDelta);
+    double minX = settings.minX ?? 0;
+    double maxX = settings.maxX ?? (data.values.first.length * xDelta);
+
+    List<double> x =
+        List.generate((maxX-minX) ~/ xDelta, (index) => index * xDelta);
     ret["x"] = x;
 
     double yDelta = double.parse(data.yAxisDelta);
-    List<double> y = List.generate(widget.maxX~/yDelta, (index) => index*yDelta);
-    ret["x"] = y;
+    double minY = settings.minY ?? 0;
+    double maxY = settings.maxY ?? (data.values.length * yDelta);
+
+    List<double> y =
+        List.generate((maxY-minY) ~/ yDelta, (index) => index * yDelta);
+    ret["y"] = y;
 
     List<List<double>> filteredValue = [];
-    for(List<double> line in data.values){
-      var weightedList = NVHUtils.weightingList(line.sublist(0, widget.maxX~/xDelta), double.parse(data.xAxisDelta), settings.weighting);
-      for(int i = 0; i < 4; ++i){
-        weightedList[i] = 0.0;  // make it null?
-      }
-      filteredValue.add( weightedList );
-    }
-    ret["z"] =filteredValue; 
+    for (List<double> line in data.values) {
+      var weightedList = NVHUtils.weightingList(
+          line.sublist(minX ~/ xDelta, maxX ~/ xDelta),
+          double.parse(data.xAxisDelta),
+          settings.weighting,
+          minX
+          );
+      
+      int i = 0;
+      while(minX + i*xDelta < 2){ // freq < 2Hz.
+        weightedList[i] = 0.0; // make it null?
+        ++i;
+      } 
 
-    String s= jsonEncode(ret);
+      filteredValue.add(weightedList);
+    }
+    ret["z"] = filteredValue;
+  }
+
+  String _getData(Map<String, dynamic> ret, NVHColormap data) {
+    
+
+    // SET color min/max,
+    // TODO: min shoulbe be over 0 because of "-" char error.
+    if(widget.settings.cmax !=null){
+      ret['cmax'] = widget.settings.cmax!;
+    }
+    if(widget.settings.cmin !=null){
+      ret['cmin'] = widget.settings.cmin!;
+    }
+
+    // Filterring values
+    _filterData(ret, data, widget.settings);
+
+    String s = jsonEncode(ret);
     return s;
   }
- 
-  _getPlotlyJsScript(data){
+
+  _getMax(List<List<double>> data){
+    double ret = data.first.first;
+    for(List<double> row in data){
+      double rowMax = row.reduce(max);
+      ret = max(ret,rowMax);
+    }
+  }
+
+  String _getSceneOptions(Map<String,dynamic> ret, NVHColormap data){
+
+    double xDelta = double.parse(data.xAxisDelta);
+    double minX = widget.settings.minX ?? 0;
+    double maxX = widget.settings.maxX ?? (data.values.first.length * xDelta);
+
+    double yDelta = double.parse(data.yAxisDelta);
+    double minY = widget.settings.minY ?? 0;
+    double maxY = widget.settings.maxY ?? (data.values.length * yDelta);
+
+    double minZ = widget.settings.minZ ?? 0;
+    double maxZ = widget.settings.maxZ ?? _getMax(ret["z"]);
+
+
+    return """scene: {
+		xaxis:{title: 'Frequency (Hz)',
+    range:[$minX, $maxX]
+    },
+		yaxis:{title: 'Time (s)',
+    range:[$minY, $maxY]
+    },
+		zaxis:{
+      title: 'Level (${widget.settings.weighting.unit})',
+      range:[$minZ, $maxZ]
+    },
+	  },""";
+  }
+
+  String _getSizeLayout(){
+    if(widget.fullSize){
+      return "height: ${MediaQuery.of(context).size.height - 150},";
+    }else{
+      return """
+         autosize:false,
+         width: ${graph3DWidth},
+         height: ${graph3DHeight},
+         """;
+    }
+  }
+
+  _getPlotlyJsScript(data) {
+    Map<String, dynamic> ret = {
+      'type': "surface",
+      'contours': {
+        'z': {
+          'show': true,
+          'usecolormap': true,
+          'project': {'z': true}
+        }
+      },
+      'colorscale': widget.settings.palette.name,
+    };
+
+    String dataString = _getData(ret, data);
 
     return """
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <script src="https://cdn.plot.ly/plotly-2.18.2.min.js"></script>
 </head>
 <body>
@@ -161,22 +190,17 @@ class _NVH3DGraphState extends State<NVH3DGraph> {
 </div>
 <script>
 
-var data = [${_getData(data)},];
+var data = [$dataString,
+];
 
 var layout = {
-  autosize: false,
-  width: $graph3DWidth,
-  height: $graph3DHeight,
+  ${_getSizeLayout()}
   paper_bgcolor:'rgba(0,0,0,0)',
   plot_bgcolor:'rgba(0,0,0,0)',
-  scene: {
-		xaxis:{title: 'Frequency (Hz)'},
-		yaxis:{title: 'Time (s)'},
-		zaxis:{
-      title: 'Level (dB)',
-      range:[0,150]
-    },
-	},
+  ${_getSceneOptions(ret, data)}
+    font: {
+    family: 'Arial, sans-serif'
+  },
   margin: {
 	 l: 0,
 	 r: 0,
@@ -192,85 +216,6 @@ Plotly.newPlot(document.getElementById("plotly"), data, layout);
 </body>
 </html>
 """;
-
   }
 }
-
-
-
-class NVH3DGraphSettings extends StatefulWidget{
-  NVH3DSettings settings;
-
-  NVH3DGraphSettings(this.settings, {Key? key}) : super(key:key);
-    
-      @override
-      State<StatefulWidget> createState()=>_NVH3DGraphSettingsState();
-}
-
-class _NVH3DGraphSettingsState extends State<NVH3DGraphSettings> {
-
-  
-  @override
-  Widget build(BuildContext context) {
-        return SizedBox(
-            width: 500,
-            child: Column(
-              children: [
-  const SizedBox(
-                  height: defaultPadding,
-                ),
-               const Text(
-                  "3D Graph Settings",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                Text("Weighting"),
-                    ListTile(
-                      title: const Text('A'),
-                      leading: Radio<Weight>(
-                        value: Weight.A,
-                        groupValue: widget.settings.weighting,
-                        onChanged: (Weight? value) {
-                          setState(() {
-                            if(value == null){return;}
-                            widget.settings.weighting = value;
-                          });
-                        },
-                      ),
-                    ),
-                    ListTile(
-                      title: const Text('C'),
-                      leading: Radio<Weight>(
-                        value: Weight.C,
-                        groupValue: widget.settings.weighting,
-                        onChanged: (Weight? value) {
-                          setState(() {
-                            if(value == null){return;}
-                            widget.settings.weighting = value;
-                          });
-                        },
-                      ),
-                    ),
-                    ListTile(
-                      title: const Text('None'),
-                      leading: Radio<Weight>(
-                        value: Weight.none,
-                        groupValue: widget.settings.weighting,
-                        onChanged: (Weight? value) {
-                          setState(() {
-                            if(value == null){return;}
-                            widget.settings.weighting = value;
-                          });
-                        },
-                      ),
-                    ),
-                  const Divider(),
-                  Text("Color Palette"),
-                  ],),
-                  );
-  }
-  }
 

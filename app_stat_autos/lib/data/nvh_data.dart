@@ -14,6 +14,17 @@ enum NVHType{
 
   String get toLowerString => name.toLowerCase();
   String get toUpperString => name.toUpperCase();
+
+  factory NVHType.fromString(String str){
+    for(NVHType type in NVHType.values){
+      if(type.name.toLowerCase() == str.toLowerCase()){
+        return type;
+      }
+    }
+    print("Unknown NVH Test type!");
+    assert(false);
+    return NVHType.Idle;
+  }
 }
 
 class NVHGraph{
@@ -118,6 +129,7 @@ class NVHColormap{
     }
       return NVHColormap("", "", "", "",0,"","", []);
   }
+
 
   static List<List<double>> _parseBin(int xAxisNumber, Uint8List bin){
     List<List<double>> ret = [];

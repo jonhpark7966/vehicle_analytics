@@ -8,6 +8,7 @@ import '../../../settings/ui_constants.dart';
 import '../../../utils/nvh_utils.dart';
 import '../../cards/graph_card.dart';
 import '../../graphs/nvh_3d_graph.dart';
+import '../../graphs/nvh_3d_graph_settings.dart';
 import '../nvh_constants.dart';
 
 
@@ -19,26 +20,30 @@ class IdleColormapWidget extends StatelessWidget{
   Position pos;
 
 
-  Widget _getNVH3dWidget(String name, NVHColormap data, Color color){
-   return SizedBox(height: graph3DCardHeight, width: graph3DCardWidth, 
+  Widget _getNVH3dWidget(String name, NVHColormap data, Color color, Position position){
+    var maxX = NVHConstants.idleHighFreq;
+    var minZ = (position == Position.Noise) ? NVHConstants.idleNoiseMinY : ((position==Position.VibrationBody)? NVHConstants.idleVibBodyMinY:NVHConstants.idleVibSrcMinY);
+    var maxZ = (position == Position.Noise) ? NVHConstants.idledBANoiseMaxY : ((position==Position.VibrationBody)? NVHConstants.idleVibSrcMaxY:NVHConstants.idleVibSrcMaxY);
+    var weight = (position == Position.Noise) ? Weight.A: Weight.none;
+
+    return SizedBox(height: graph3DCardHeight, width: graph3DCardWidth, 
                   child:
         Padding(
           padding: const EdgeInsets.all(defaultPadding),
           child: GraphCard(
             graph: Center(child:NVH3DGraph(
               data: data,
-              maxX: NVHConstants.idleHighFreq,
-              minY: NVHConstants.idleNoiseMinY,
-              maxY: NVHConstants.idledBANoiseMaxY,
-              color: color,
+              settings: NVH3DSettings(
+                maxX: maxX,
+                minZ: minZ,
+                maxZ: maxZ,
+                weighting: weight),
             )),
             color: color,
             title: 'Time / Frequency Colormap',
             subtitle: 'Gear ${NVHFileUtils.getGearFromName(name)}',
           )),);
-    
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +54,9 @@ class IdleColormapWidget extends StatelessWidget{
     //Idle should have 1 colormap.
     assert(value.length == 1);
 
-    if(pos == Position.Noise){
-      NVH3dWidgets.add(_getNVH3dWidget(key, value.first, dataModel.colors[0]));
-    }else{
-      // TODO. for vib.
-      NVH3dWidgets.add(_getNVH3dWidget(key, value.first, dataModel.colors[0]));
-    }
+    NVH3dWidgets.add(_getNVH3dWidget(key, value.first, dataModel.colors[0], pos));
    },);
 
    return SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: NVH3dWidgets));
-
  }
 }
