@@ -2,7 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../data/nvh_data.dart';
-import '../pages/test/nvh/nvh_colormap_page.dart';
+import '../pages/nvh_colormap_page.dart';
 import '../pages/test/test_data_models.dart';
 import '../pages/test/test_page.dart';
 import '../pages/test/test_sidebar.dart';

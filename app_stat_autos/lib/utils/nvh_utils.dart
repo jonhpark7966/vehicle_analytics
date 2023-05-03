@@ -5,7 +5,7 @@ import 'package:data_handler/data_handler.dart';
 import '../data/nvh_data.dart';
 
 enum ColorMapPalette{
-  Viridis, Jet, RdBu, Magma
+  Viridis, Jet, RdBu, 
 }
 
   enum Weight{

@@ -12,13 +12,19 @@ import '../../../widgets/buttons/test_download_button.dart';
 import '../../../widgets/graphs/nvh_3d_graph.dart';
 import '../../../widgets/test_title.dart';
 import '../../../data/nvh_data.dart';
+import '../../utils/nvh_utils.dart';
 
 
 class NVHColormapSettingWidget extends StatefulWidget {
   NVHColormap colormap;
   Color mainColor;
+  NVHType type;
+  String channel;
 
-  NVHColormapSettingWidget(this.colormap, this.mainColor,  {Key? key})
+
+  NVHColormapSettingWidget(this.colormap, this.mainColor,
+  this.type, this.channel,
+    {Key? key})
       : super(key: key);
 
   @override
@@ -36,11 +42,8 @@ class _NVHColormapSettingWidgetState extends State<NVHColormapSettingWidget> {
   }
 
   _createNVH3DSettings() {
-    //TODO make default settings by some options.
-    var ret =  NVH3DSettings(
-      maxX: 100,
-      minZ: 0,
-      maxZ: 100,
+    var ret =  NVH3DSettings.fromTypeChannel(
+      widget.type, NVHUtils.getPosition(widget.channel),
       update3DGraphCallback: setState,
     );
     return ret;
@@ -54,10 +57,13 @@ class _NVHColormapSettingWidgetState extends State<NVHColormapSettingWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          color: Colors.white70,
+          margin: const EdgeInsets.all(defaultPadding),
+          decoration: BoxDecoration(
+            color: Colors.white70,
+            borderRadius: BorderRadius.circular(8.0),
+          ),
           child: NVH3DSettingsWidget(settings, widget.mainColor),
         ),
         Expanded(

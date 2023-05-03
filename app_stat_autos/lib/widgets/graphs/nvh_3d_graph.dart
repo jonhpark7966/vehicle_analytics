@@ -62,7 +62,9 @@ class _NVH3DGraphState extends State<NVH3DGraph> {
 
     double xDelta = double.parse(data.xAxisDelta);
     double minX = settings.minX ?? 0;
+    minX = max(minX, 0);
     double maxX = settings.maxX ?? (data.values.first.length * xDelta);
+    maxX = min(maxX, (data.values.first.length * xDelta));
 
     List<double> x =
         List.generate((maxX-minX) ~/ xDelta, (index) => index * xDelta);
@@ -70,7 +72,10 @@ class _NVH3DGraphState extends State<NVH3DGraph> {
 
     double yDelta = double.parse(data.yAxisDelta);
     double minY = settings.minY ?? 0;
+    minY = max(minY, 0);
     double maxY = settings.maxY ?? (data.values.length * yDelta);
+    maxY = min(maxY, (data.values.length * yDelta));
+
 
     List<double> y =
         List.generate((maxY-minY) ~/ yDelta, (index) => index * yDelta);

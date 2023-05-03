@@ -21,10 +21,6 @@ class IdleColormapWidget extends StatelessWidget{
 
 
   Widget _getNVH3dWidget(String name, NVHColormap data, Color color, Position position){
-    var maxX = NVHConstants.idleHighFreq;
-    var minZ = (position == Position.Noise) ? NVHConstants.idleNoiseMinY : ((position==Position.VibrationBody)? NVHConstants.idleVibBodyMinY:NVHConstants.idleVibSrcMinY);
-    var maxZ = (position == Position.Noise) ? NVHConstants.idledBANoiseMaxY : ((position==Position.VibrationBody)? NVHConstants.idleVibSrcMaxY:NVHConstants.idleVibSrcMaxY);
-    var weight = (position == Position.Noise) ? Weight.A: Weight.none;
 
     return SizedBox(height: graph3DCardHeight, width: graph3DCardWidth, 
                   child:
@@ -33,11 +29,7 @@ class IdleColormapWidget extends StatelessWidget{
           child: GraphCard(
             graph: Center(child:NVH3DGraph(
               data: data,
-              settings: NVH3DSettings(
-                maxX: maxX,
-                minZ: minZ,
-                maxZ: maxZ,
-                weighting: weight),
+              settings: NVH3DSettings.fromTypeChannel(NVHType.Idle, pos)
             )),
             color: color,
             title: 'Time / Frequency Colormap',

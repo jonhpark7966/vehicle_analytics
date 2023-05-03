@@ -68,6 +68,7 @@ dependencies:
 
   # webview for WEB (chart.js)
   flutter_inappwebview: ^6.0.0-beta.22
+  flutter_simple_treeview: ^3.0.2
 
 
 dev_dependencies:

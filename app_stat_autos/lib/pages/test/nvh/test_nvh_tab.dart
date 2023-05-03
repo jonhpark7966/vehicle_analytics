@@ -86,7 +86,7 @@ class TestNVHTab extends StatelessWidget{
     CircleAvatar(
       backgroundColor: bgColor,
       child:
-     IconButton(icon: Icon(Icons.open_in_new , color: Colors.white70,),
+     IconButton(icon: const Icon(Icons.open_in_new , color: Colors.white70,),
         onPressed: () async {
           await _launchColormapPage();
                 }),

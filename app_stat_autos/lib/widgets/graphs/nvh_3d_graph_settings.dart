@@ -16,6 +16,7 @@ import '../../settings/theme.dart';
 import '../../settings/ui_constants.dart';
 import '../../utils/nvh_utils.dart';
 import '../cards/graph_card.dart';
+import '../nvh/nvh_constants.dart';
 
 class NVH3DSettings{
   Weight weighting;
@@ -59,6 +60,27 @@ class NVH3DSettings{
             cmax: object.cmax,
             weighting: object.weighting,
             palette: object.palette);
+
+  factory NVH3DSettings.fromTypeChannel(NVHType type, Position position, {Function? update3DGraphCallback}){
+
+    double maxX = 1000;
+    double minZ = 0;
+    double maxZ = 0;
+    Weight weight = Weight.none;
+
+    switch (type) {
+      case NVHType.Idle:
+        maxX = NVHConstants.idleHighFreq;
+        minZ = (position == Position.Noise) ? NVHConstants.idleNoiseMinY : ((position==Position.VibrationBody)? NVHConstants.idleVibBodyMinY:NVHConstants.idleVibSrcMinY);
+        maxZ = (position == Position.Noise) ? NVHConstants.idledBANoiseMaxY : ((position==Position.VibrationBody)? NVHConstants.idleVibSrcMaxY:NVHConstants.idleVibSrcMaxY);
+        weight = (position == Position.Noise) ? Weight.A: Weight.none;
+        break;
+      default:
+        assert(false);
+    }
+
+    return NVH3DSettings(maxX: maxX, minZ: minZ, maxZ: maxZ, weighting: weight);
+  }
 
   update3dGraph(Map<String, TextEditingController> axisController){
     if(update3DGraphCallback == null){
@@ -213,10 +235,12 @@ List<Widget> _getColorPaletteTiles(){
   @override
   Widget build(BuildContext context) {
 
-    return SizedBox(
-      width: 400,
-      child: Column(
-        children: [
+    return 
+      SizedBox(
+      width: 300,
+      child: SingleChildScrollView(child:Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
           const SizedBox(
             height: defaultPadding,
           ),
@@ -228,7 +252,8 @@ List<Widget> _getColorPaletteTiles(){
             ),
             textAlign: TextAlign.center,
           ),
-          const Text("Weighting"),
+          const Divider(),
+const Text("Weighting"),
           ]+
           _getWeightingTiles()
           +[const Divider(),
@@ -237,7 +262,7 @@ List<Widget> _getColorPaletteTiles(){
           +[const Divider(),
           const Text("Color Palette"),]
           +_getColorPaletteTiles()
-                    +[
+          +[
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: widget.mainColor),
               onPressed: () async {
@@ -266,8 +291,7 @@ List<Widget> _getColorPaletteTiles(){
              ),
              const SizedBox(height:defaultPadding),
           ]
-        ,
       ),
-    );
+    ));
   }
 }
